@@ -1,0 +1,40 @@
+
+overworld_jobs.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BlackMage
+  rotate: false
+  xy: 0, 1
+  size: 101, 16
+  orig: 101, 16
+  offset: 0, 0
+  index: -1
+Monk
+  rotate: false
+  xy: 102, 1
+  size: 101, 16
+  orig: 101, 16
+  offset: 0, 0
+  index: -1
+RedMage
+  rotate: false
+  xy: 204, 1
+  size: 101, 16
+  orig: 101, 16
+  offset: 0, 0
+  index: -1
+WhiteMage
+  rotate: false
+  xy: 306, 1
+  size: 101, 16
+  orig: 101, 16
+  offset: 0, 0
+  index: -1
+Warrior
+  rotate: false
+  xy: 408, 1
+  size: 96, 16
+  orig: 96, 16
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,205 @@
+package com.dommie.mariobros.sprites;
+
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.World;
+import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.tools.WorldContactListener;
+
+/**
+ * Created by njdom24 on 5/27/2017.
+ */
+
+public class NPC extends InteractiveTileObject
+{
+    private int index;
+    private boolean isVertical;
+
+    private boolean isMoving;
+    private int distance;
+    private Vector2 originalPos;
+    private Vector2 intendedPos;
+
+    private int distancePos;
+    private int distanceNeg;
+    private String lastAdded = "";
+
+    private float time;
+
+    public NPC(World world, TiledMap map, Rectangle bounds, int index)
+    {
+        super(world, map, bounds, true);
+        fixture.setUserData(this);
+        setCategoryFilter(MarioBros.COLLISION_BIT);
+
+        intendedPos = body.getPosition();
+        isVertical = false;
+        this.index = index;
+        isMoving = false;
+    }
+
+    public NPC(World world, TiledMap map, Rectangle bounds, int index, boolean vertical, int distance)
+    {
+        super(world, map, bounds, true);
+        fixture.setUserData(this);
+        setCategoryFilter(MarioBros.COLLISION_BIT);
+
+        intendedPos = body.getPosition();
+        isVertical = vertical;
+
+        this.index = index;
+        this.distance = distance;
+        isMoving = false;
+
+        distancePos = 0;
+        distanceNeg = distance/2;
+    }
+
+    public void update(float dt)
+    {
+        body.setAwake(true);
+        if(!isMoving)
+        {
+            originalPos = new Vector2(body.getPosition().x, body.getPosition().y);
+            time += dt;
+            if (time >= 1)
+            {
+                time = 0;
+
+                handleMovement(dt);
+            }
+        }
+        else
+        {
+            //15.9 is used instead of 16 because it will go over, which makes snapping back into position look bad
+            if(Math.abs(body.getPosition().x - originalPos.x) >= 15.9f/MarioBros.PPM || Math.abs(body.getPosition().y - originalPos.y) >= 15.9f/MarioBros.PPM)
+            {
+                isMoving = false;
+                Vector2 lastSpeed = new Vector2(body.getLinearVelocity().x, body.getLinearVelocity().y);
+                body.setLinearVelocity(0,0);
+                body.setTransform(originalPos.x + lastSpeed.x/4, originalPos.y+lastSpeed.y/4, 0);
+            }
+        }
+    }
+
+    public void handleMovement(float dt)
+    {
+        float npcX = body.getPosition().x;
+        float npcY = body.getPosition().y;
+        float playerX = WorldContactListener.player.getIntendedPos().x;
+        float playerY = WorldContactListener.player.getIntendedPos().y;
+
+        System.out.println("NpcX: " + npcX);
+        System.out.println("NpcY: " + npcY);
+        System.out.println("PlayerX: " + playerX);
+        System.out.println("PlayerY: " + playerY);
+
+        if(smallDifference(npcX, playerX) && smallDifference(npcY, playerY))
+            System.out.println("SAME POS");
+
+        if(isVertical)
+        {
+            //player is either not in the same x position or player is not 16 y pixels below
+            if(distanceNeg > 0 && (!smallDifference(npcX, playerX) || !smallDifference(npcY -16/MarioBros.PPM,  playerY)))
+            {
+                distanceNeg--;
+                if(distanceNeg == 0)
+                    distancePos = distance/2 + 1;
+
+                moveDown();
+            }
+            else
+                //player is either not in the same x position or player is not 16 y pixels above
+                if(distancePos > 0  && (!smallDifference(npcX, playerX) || !smallDifference(npcY +16/MarioBros.PPM,  playerY)))
+                {
+                    distancePos--;
+                    if(distancePos == 0)
+                        distanceNeg = distance/2 + 1;
+
+                    moveUp();
+                }
+        }
+        else
+            //player is either not in the same y position or player is not 16 x pixels to the left
+            if(distanceNeg > 0 && (!smallDifference(npcY, playerY) || !smallDifference(npcX -16/MarioBros.PPM,  playerX)))
+            {
+                distanceNeg--;
+                if(distanceNeg == 0)
+                    distancePos = distance/2 + 1;
+
+                moveLeft();
+            }
+            else
+                //player is either not in the same y position or player is not 16 x pixels to the right
+                if(distancePos > 0  && (!smallDifference(npcY, playerY) || !smallDifference(npcX +16/MarioBros.PPM,  playerX)))
+                {
+                    distancePos--;
+                    if(distancePos == 0)
+                        distanceNeg = distance/2 + 1;
+
+                    moveRight();
+                }
+    }
+
+    private boolean smallDifference(float a, float b)
+    {
+        System.out.println("REE: " + (Math.abs(a-b)));
+        return (Math.abs(a-b) <= 0.01);
+    }
+
+    private void moveLeft()
+    {
+        WorldContactListener.currentCollisions.remove(lastAdded);
+        isMoving = true;
+        intendedPos = new Vector2(body.getPosition().x - 16/MarioBros.PPM, body.getPosition().y);
+        body.setLinearVelocity(-64f / MarioBros.PPM, 0);
+    }
+
+    private void moveRight()
+    {
+        WorldContactListener.currentCollisions.remove(lastAdded);
+        isMoving = true;
+        intendedPos = new Vector2(body.getPosition().x + 16/MarioBros.PPM, body.getPosition().y);
+        body.setLinearVelocity(64f / MarioBros.PPM, 0);
+    }
+
+    private void moveUp()
+    {
+        WorldContactListener.currentCollisions.remove(lastAdded);
+        isMoving = true;
+        intendedPos = new Vector2(body.getPosition().x, body.getPosition().y + 16/MarioBros.PPM);
+        body.setLinearVelocity(0, 64f / MarioBros.PPM);
+    }
+
+    private void moveDown()
+    {
+        WorldContactListener.currentCollisions.remove(lastAdded);
+        isMoving = true;
+        intendedPos = new Vector2(body.getPosition().x, body.getPosition().y - 16/MarioBros.PPM);
+        body.setLinearVelocity(0, -64f / MarioBros.PPM);
+    }
+
+    public void setCategoryFilter(short filterBit)
+    {
+        Filter filter = new Filter();
+        filter.categoryBits = filterBit;
+        fixture.setFilterData(filter);
+    }
+
+    public Vector2 getIntendedPos()
+    {
+        return intendedPos;
+    }
+
+    @Override
+    public void onDownCollision() {
+    }
+    public void onUpCollision() {
+    }
+    public void onLeftCollision() {
+    }
+    public void onRightCollision() {
+    }
+}
