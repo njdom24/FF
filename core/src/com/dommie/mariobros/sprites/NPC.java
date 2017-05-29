@@ -138,7 +138,6 @@ public class NPC extends InteractiveTileObject
     //necessary because body positions are slightly off
     private boolean smallDifference(float a, float b)
     {
-        System.out.println("REE: " + (Math.abs(a-b)));
         return (Math.abs(a-b) <= 0.01);
     }
 
