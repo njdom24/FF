@@ -276,12 +276,6 @@ public class Mario extends Sprite
         }
         else
         {
-            /*for(NPC n : npcs)
-                if(smallDifference(getIntendedPos().x, n.getIntendedPos().x) && smallDifference(getIntendedPos().y, n.getIntendedPos().y)) {
-                    isMoving = false;
-                    b2body.setLinearVelocity(0,0);
-                    b2body.setTransform(originalPos, 0);
-                }*/
             //15.8 is used instead of 16 because it will go over, which makes snapping back into position look bad
             if(Math.abs(b2body.getPosition().x - originalPos.x) >= 15.9f/MarioBros.PPM || Math.abs(b2body.getPosition().y - originalPos.y) >= 15.9f/MarioBros.PPM) {
                 isMoving = false;
@@ -292,6 +286,7 @@ public class Mario extends Sprite
         }
     }
 
+    //necessary because body positions are slightly off
     private boolean smallDifference(float a, float b)
     {
         System.out.println("REE: " + (Math.abs(a-b)));
@@ -306,6 +301,7 @@ public class Mario extends Sprite
             return (b2body.getLinearVelocity().x != 0 || b2body.getLinearVelocity().y != 0);
     }
 
+    //where the body will end up at the end of its movement
     public Vector2 getIntendedPos()
     {
         return intendedPos;

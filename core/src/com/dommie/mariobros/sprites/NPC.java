@@ -91,14 +91,6 @@ public class NPC extends InteractiveTileObject
         float playerX = WorldContactListener.player.getIntendedPos().x;
         float playerY = WorldContactListener.player.getIntendedPos().y;
 
-        System.out.println("NpcX: " + npcX);
-        System.out.println("NpcY: " + npcY);
-        System.out.println("PlayerX: " + playerX);
-        System.out.println("PlayerY: " + playerY);
-
-        if(smallDifference(npcX, playerX) && smallDifference(npcY, playerY))
-            System.out.println("SAME POS");
-
         if(isVertical)
         {
             //player is either not in the same x position or player is not 16 y pixels below
@@ -143,6 +135,7 @@ public class NPC extends InteractiveTileObject
                 }
     }
 
+    //necessary because body positions are slightly off
     private boolean smallDifference(float a, float b)
     {
         System.out.println("REE: " + (Math.abs(a-b)));
@@ -188,6 +181,7 @@ public class NPC extends InteractiveTileObject
         fixture.setFilterData(filter);
     }
 
+    //where the player will end up at the end of their movement
     public Vector2 getIntendedPos()
     {
         return intendedPos;
