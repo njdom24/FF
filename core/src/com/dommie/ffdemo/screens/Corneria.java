@@ -1,8 +1,8 @@
-package com.dommie.mariobros.screens;
+package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.dommie.mariobros.GameInfo;
+import com.dommie.ffdemo.GameInfo;
 
 /**
  * Created by njdom24 on 5/20/2017.

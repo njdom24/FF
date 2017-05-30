@@ -1,4 +1,4 @@
-package com.dommie.mariobros.sprites;
+package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.dommie.mariobros.tools.WorldContactListener;
+import com.dommie.ffdemo.tools.WorldContactListener;
 
 /**
  * Created by njdom24 on 5/29/2017.

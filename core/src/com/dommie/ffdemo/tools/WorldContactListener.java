@@ -1,13 +1,13 @@
-package com.dommie.mariobros.tools;
+package com.dommie.ffdemo.tools;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.dommie.mariobros.sprites.InteractiveTileObject;
-import com.dommie.mariobros.sprites.Player;
-import com.dommie.mariobros.sprites.NPC;
+import com.dommie.ffdemo.sprites.InteractiveTileObject;
+import com.dommie.ffdemo.sprites.Player;
+import com.dommie.ffdemo.sprites.NPC;
 
 import java.util.ArrayList;
 import java.util.Set;

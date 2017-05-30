@@ -1,9 +1,9 @@
-package com.dommie.mariobros;
+package com.dommie.ffdemo;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dommie.mariobros.screens.Corneria;
+import com.dommie.ffdemo.screens.Corneria;
 
 import java.util.Stack;
 

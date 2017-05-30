@@ -1,4 +1,4 @@
-package com.dommie.mariobros.screens;
+package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -7,9 +7,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.dommie.mariobros.GameInfo;
-import com.dommie.mariobros.scenes.Hud;
-import com.dommie.mariobros.tools.WorldContactListener;
+import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.scenes.Hud;
+import com.dommie.ffdemo.tools.WorldContactListener;
 
 public abstract class GameScreen implements Screen{
     //Reference to Game, used to set Screens
@@ -29,13 +29,13 @@ public abstract class GameScreen implements Screen{
 
     public void changeMap(Screen m)
     {
-        GameInfo.screens.push(this);
+        com.dommie.ffdemo.GameInfo.screens.push(this);
         game.setScreen(m);
     }
 
     public void revertMap()
     {
-        Screen futureScreen = GameInfo.screens.pop();
+        Screen futureScreen = com.dommie.ffdemo.GameInfo.screens.pop();
 
         if(futureScreen instanceof MapScreen)
             WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;

@@ -1,4 +1,4 @@
-package com.dommie.mariobros.sprites;
+package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,12 +13,12 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.dommie.mariobros.GameInfo;
-import com.dommie.mariobros.screens.MapScreen;
+import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.screens.MapScreen;
 
-import static com.dommie.mariobros.tools.WorldContactListener.currentCollisions;
-import static com.dommie.mariobros.tools.WorldContactListener.npcs;
-import static com.dommie.mariobros.tools.WorldContactListener.smallDifference;
+import static com.dommie.ffdemo.tools.WorldContactListener.currentCollisions;
+import static com.dommie.ffdemo.tools.WorldContactListener.npcs;
+import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
 
 /**
  * Created by njdom24 on 5/5/2015.
@@ -310,9 +310,9 @@ public class Player extends Sprite
 
         FixtureDef fdef = new FixtureDef();
 
-        fdef.filter.categoryBits = GameInfo.PLAYER_BIT;
+        fdef.filter.categoryBits = com.dommie.ffdemo.GameInfo.PLAYER_BIT;
         //what player can collide with
-        fdef.filter.maskBits = GameInfo.DEFAULT_BIT | GameInfo.COLLISION_BIT;
+        fdef.filter.maskBits = com.dommie.ffdemo.GameInfo.DEFAULT_BIT | GameInfo.COLLISION_BIT;
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(8f,8f);

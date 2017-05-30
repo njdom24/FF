@@ -1,4 +1,4 @@
-package com.dommie.mariobros.screens;
+package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,13 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.dommie.mariobros.GameInfo;
-import com.dommie.mariobros.scenes.Hud;
-import com.dommie.mariobros.sprites.Player;
-import com.dommie.mariobros.sprites.NPC;
-import com.dommie.mariobros.sprites.TestBody;
-import com.dommie.mariobros.tools.B2WorldCreator;
-import com.dommie.mariobros.tools.WorldContactListener;
+import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.scenes.Hud;
+import com.dommie.ffdemo.sprites.Player;
+import com.dommie.ffdemo.sprites.NPC;
+import com.dommie.ffdemo.sprites.TestBody;
+import com.dommie.ffdemo.tools.B2WorldCreator;
+import com.dommie.ffdemo.tools.WorldContactListener;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -50,7 +50,7 @@ public abstract class MapScreen extends GameScreen{
         this.game = game;
         gamecam = new OrthographicCamera();
 
-        gamePort = new FitViewport(GameInfo.V_WIDTH, GameInfo.V_HEIGHT, gamecam);
+        gamePort = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, com.dommie.ffdemo.GameInfo.V_HEIGHT, gamecam);
         hud = new Hud(game.batch, gamecam);
 
         maploader = new TmxMapLoader();
@@ -86,7 +86,7 @@ public abstract class MapScreen extends GameScreen{
 
     public void revertMap()
     {
-        Screen futureScreen = GameInfo.screens.pop();
+        Screen futureScreen = com.dommie.ffdemo.GameInfo.screens.pop();
 
         if(futureScreen instanceof MapScreen)
             WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;

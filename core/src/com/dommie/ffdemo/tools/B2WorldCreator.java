@@ -1,4 +1,4 @@
-package com.dommie.mariobros.tools;
+package com.dommie.ffdemo.tools;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -9,8 +9,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.dommie.mariobros.sprites.Collision;
-import com.dommie.mariobros.sprites.NPC;
+import com.dommie.ffdemo.sprites.Collision;
+import com.dommie.ffdemo.sprites.NPC;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,10 @@
-package com.dommie.mariobros.sprites;
+package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
-import com.dommie.mariobros.GameInfo;
-import com.dommie.mariobros.tools.WorldContactListener;
+import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.tools.WorldContactListener;
 
 /**
  * Created by njdom24 on 5/18/2017.

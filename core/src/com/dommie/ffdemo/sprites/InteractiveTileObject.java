@@ -1,4 +1,4 @@
-package com.dommie.mariobros.sprites;
+package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;

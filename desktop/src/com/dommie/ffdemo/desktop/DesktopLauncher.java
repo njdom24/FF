@@ -1,8 +1,8 @@
-package com.dommie.mariobros.desktop;
+package com.dommie.ffdemo.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.dommie.mariobros.GameInfo;
+import com.dommie.ffdemo.GameInfo;
 
 public class DesktopLauncher {
 	public static void main (String[] arg)
