@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 import com.dommie.mariobros.tools.WorldContactListener;
 
 import static com.dommie.mariobros.tools.WorldContactListener.smallDifference;
@@ -33,7 +33,7 @@ public class NPC extends InteractiveTileObject
     {
         super(world, map, bounds, true);
         fixture.setUserData(this);
-        setCategoryFilter(MarioBros.COLLISION_BIT);
+        setCategoryFilter(GameInfo.COLLISION_BIT);
 
         intendedPos = body.getPosition();
         isVertical = false;
@@ -45,7 +45,7 @@ public class NPC extends InteractiveTileObject
     {
         super(world, map, bounds, true);
         fixture.setUserData(this);
-        setCategoryFilter(MarioBros.COLLISION_BIT);
+        setCategoryFilter(GameInfo.COLLISION_BIT);
 
         intendedPos = body.getPosition();
         isVertical = vertical;

@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 
 public class Hud implements Disposable
 {
@@ -40,7 +40,7 @@ public class Hud implements Disposable
 		timeCount = 0;
 		score = 0;
 
-		viewport = new FitViewport(MarioBros.V_WIDTH, MarioBros.V_HEIGHT, new OrthographicCamera());
+		viewport = new FitViewport(GameInfo.V_WIDTH, GameInfo.V_HEIGHT, new OrthographicCamera());
 		stage = new Stage(viewport, sb);
 
 		Table table = new Table();//used to organize labels
@@ -102,7 +102,7 @@ public class Hud implements Disposable
                 region = new TextureRegion(sprites[i][j].getTexture(), sprites[i][j].getRegionX(), sprites[i][j].getRegionY(), 16, 16);
                 sprites[i][j].setBounds(0, 0, 16, 16);
                 sprites[i][j].setRegion(region);
-                sprites[i][j].setPosition((gamecam.position.x - width*16/2 + j*16), (gamecam.position.y - MarioBros.V_HEIGHT/2 + height*16 - (i+1)*16));
+                sprites[i][j].setPosition((gamecam.position.x - width*16/2 + j*16), (gamecam.position.y - GameInfo.V_HEIGHT/2 + height*16 - (i+1)*16));
             }
     }
 

@@ -2,7 +2,7 @@ package com.dommie.mariobros.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 
 public class DesktopLauncher {
 	public static void main (String[] arg)
@@ -16,6 +16,6 @@ public class DesktopLauncher {
 		//config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
 		config.resizable = false;
 
-		new LwjglApplication(new MarioBros(), config);
+		new LwjglApplication(new GameInfo(), config);
 	}
 }

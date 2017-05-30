@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 import com.dommie.mariobros.scenes.Hud;
 import com.dommie.mariobros.sprites.Player;
 import com.dommie.mariobros.sprites.NPC;
@@ -44,13 +44,13 @@ public abstract class MapScreen extends GameScreen{
 
     private ArrayList<NPC> npcs;
 
-    public MapScreen(MarioBros game, String mapName, float locX, float locY)
+    public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
         atlas = new TextureAtlas("overworld_jobs.atlas");
         this.game = game;
         gamecam = new OrthographicCamera();
 
-        gamePort = new FitViewport(MarioBros.V_WIDTH, MarioBros.V_HEIGHT, gamecam);
+        gamePort = new FitViewport(GameInfo.V_WIDTH, GameInfo.V_HEIGHT, gamecam);
         hud = new Hud(game.batch, gamecam);
 
         maploader = new TmxMapLoader();
@@ -80,13 +80,13 @@ public abstract class MapScreen extends GameScreen{
 
     public void changeMap(Screen m)
     {
-        MarioBros.screens.push(this);
+        GameInfo.screens.push(this);
         game.setScreen(m);
     }
 
     public void revertMap()
     {
-        Screen futureScreen = MarioBros.screens.pop();
+        Screen futureScreen = GameInfo.screens.pop();
 
         if(futureScreen instanceof MapScreen)
             WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;

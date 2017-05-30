@@ -7,7 +7,7 @@ import com.dommie.mariobros.screens.Corneria;
 
 import java.util.Stack;
 
-public class MarioBros extends Game {
+public class GameInfo extends Game {
 	public static final int V_WIDTH = 432;
 	public static final int V_HEIGHT = 240;
 

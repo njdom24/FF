@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 import com.dommie.mariobros.screens.MapScreen;
 
 import static com.dommie.mariobros.tools.WorldContactListener.currentCollisions;
@@ -310,9 +310,9 @@ public class Player extends Sprite
 
         FixtureDef fdef = new FixtureDef();
 
-        fdef.filter.categoryBits = MarioBros.PLAYER_BIT;
+        fdef.filter.categoryBits = GameInfo.PLAYER_BIT;
         //what player can collide with
-        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.COLLISION_BIT;
+        fdef.filter.maskBits = GameInfo.DEFAULT_BIT | GameInfo.COLLISION_BIT;
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(8f,8f);

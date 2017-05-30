@@ -3,7 +3,7 @@ package com.dommie.mariobros.sprites;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 import com.dommie.mariobros.tools.WorldContactListener;
 
 /**
@@ -16,7 +16,7 @@ public class Collision extends InteractiveTileObject
     {
         super(world, map, bounds, false);
         fixture.setUserData(this);
-        setCategoryFilter(MarioBros.COLLISION_BIT);
+        setCategoryFilter(GameInfo.COLLISION_BIT);
     }
 
     @Override

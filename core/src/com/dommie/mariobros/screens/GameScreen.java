@@ -7,13 +7,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 import com.dommie.mariobros.scenes.Hud;
 import com.dommie.mariobros.tools.WorldContactListener;
 
 public abstract class GameScreen implements Screen{
     //Reference to Game, used to set Screens
-    protected MarioBros game;
+    protected GameInfo game;
     protected TextureAtlas atlas;
 
     protected Viewport gamePort;
@@ -29,13 +29,13 @@ public abstract class GameScreen implements Screen{
 
     public void changeMap(Screen m)
     {
-        MarioBros.screens.push(this);
+        GameInfo.screens.push(this);
         game.setScreen(m);
     }
 
     public void revertMap()
     {
-        Screen futureScreen = MarioBros.screens.pop();
+        Screen futureScreen = GameInfo.screens.pop();
 
         if(futureScreen instanceof MapScreen)
             WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;

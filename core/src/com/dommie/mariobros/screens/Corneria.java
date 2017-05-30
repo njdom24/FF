@@ -2,7 +2,7 @@ package com.dommie.mariobros.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.dommie.mariobros.MarioBros;
+import com.dommie.mariobros.GameInfo;
 
 /**
  * Created by njdom24 on 5/20/2017.
@@ -10,7 +10,7 @@ import com.dommie.mariobros.MarioBros;
 
 public class Corneria extends MapScreen {
 
-    public Corneria(MarioBros game, float locX, float locY)
+    public Corneria(GameInfo game, float locX, float locY)
     {
         super(game, "corneria.tmx", locX, locY);
     }
