@@ -10,7 +10,7 @@ import java.util.Stack;
 public class MarioBros extends Game {
 	public static final int V_WIDTH = 432;
 	public static final int V_HEIGHT = 240;
-	public static final float PPM = 100;
+	//public static final float PPM = 1;
 
     public static final short DEFAULT_BIT = 1;
     public static final short PLAYER_BIT = 2;
@@ -23,7 +23,7 @@ public class MarioBros extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new Corneria(this, 264/MarioBros.PPM, 8/MarioBros.PPM));
+		setScreen(new Corneria(this, 264, 8));
 	}
 
 	@Override

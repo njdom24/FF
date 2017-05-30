@@ -52,13 +52,13 @@ public abstract class MapScreen extends GameScreen{
         this.game = game;
         gamecam = new OrthographicCamera();
 
-        gamePort = new FitViewport(MarioBros.V_WIDTH / MarioBros.PPM, MarioBros.V_HEIGHT / MarioBros.PPM, gamecam);
+        gamePort = new FitViewport(MarioBros.V_WIDTH, MarioBros.V_HEIGHT, gamecam);
         hud = new Hud(game.batch, gamecam);
 
         maploader = new TmxMapLoader();
         map = maploader.load(mapName);
         prop = map.getProperties();
-        renderer = new OrthogonalTiledMapRenderer(map, 1/MarioBros.PPM);
+        renderer = new OrthogonalTiledMapRenderer(map);//,1 if doesnt work
 
 
         world = new World(new Vector2(0, 0), true);//sets gravity properties
@@ -102,15 +102,15 @@ public abstract class MapScreen extends GameScreen{
 
         //changes inital camera placement based on initial player position
         if(isTooFarLeft())
-            gamecam.position.set(13.5f*16/MarioBros.PPM, gamecam.position.y, 0);
+            gamecam.position.set(13.5f*16, gamecam.position.y, 0);
         else
         if(isTooFarRight())
-            gamecam.position.set((prop.get("width", Integer.class)-13.5f)*16f/MarioBros.PPM, gamecam.position.y, 0);
+            gamecam.position.set((prop.get("width", Integer.class)-13.5f)*16f, gamecam.position.y, 0);
         if(isTooFarUp())
-            gamecam.position.set(gamecam.position.x, (prop.get("height", Integer.class)-7.5f)*16f/MarioBros.PPM, 0);
+            gamecam.position.set(gamecam.position.x, (prop.get("height", Integer.class)-7.5f)*16f, 0);
         else
         if(isTooFarDown())
-            gamecam.position.set(gamecam.position.x, 7.5f*16/MarioBros.PPM, 0);
+            gamecam.position.set(gamecam.position.x, 7.5f*16, 0);
     }
 
     public TextureAtlas getAtlas()
@@ -192,7 +192,7 @@ public abstract class MapScreen extends GameScreen{
 
     public boolean isTooFarLeft()
     {
-        if(player.b2body.getPosition().x*MarioBros.PPM+8 <= 14*16)
+        if(player.b2body.getPosition().x+8 <= 14*16)
             return true;
         else
             return false;
@@ -203,7 +203,7 @@ public abstract class MapScreen extends GameScreen{
         int mapWidth = prop.get("width", Integer.class)+1;
         int mapPixelWidth = mapWidth*16;
 
-        if(player.b2body.getPosition().x*MarioBros.PPM+8 >= mapPixelWidth - 14*16)
+        if(player.b2body.getPosition().x+8 >= mapPixelWidth - 14*16)
             return true;
         else
             return false;
@@ -214,7 +214,7 @@ public abstract class MapScreen extends GameScreen{
         int mapHeight = prop.get("height", Integer.class)+1;
         int mapPixelHeight = mapHeight*16;
 
-        if(player.b2body.getPosition().y*MarioBros.PPM+8 >= mapPixelHeight - 8*16)
+        if(player.b2body.getPosition().y+8 >= mapPixelHeight - 8*16)
             return true;
         else
             return false;
@@ -222,7 +222,7 @@ public abstract class MapScreen extends GameScreen{
 
     public boolean isTooFarDown()
     {
-        if(player.b2body.getPosition().y*MarioBros.PPM+8 <= 8*16)
+        if(player.b2body.getPosition().y+8 <= 8*16)
             return true;
         else
             return false;

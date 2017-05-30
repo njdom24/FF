@@ -95,6 +95,6 @@ public class WorldContactListener implements ContactListener
     //returns true if a and b are 1/1000 of a pixel off or closer
     public static boolean smallDifference(float a, float b)
     {
-        return (Math.abs(a-b) <= 0.00001);
+        return (Math.abs(a-b) <= 0.001);
     }
 }

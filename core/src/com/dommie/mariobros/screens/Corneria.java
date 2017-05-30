@@ -20,7 +20,7 @@ public class Corneria extends MapScreen {
         super.handleInput(dt);
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            changeMap(new Corneria(game, 8 / MarioBros.PPM, 8 / MarioBros.PPM));
+            changeMap(new Corneria(game, 8, 8));
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.B)) {
             revertMap();

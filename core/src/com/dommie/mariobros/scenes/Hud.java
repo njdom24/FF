@@ -100,9 +100,9 @@ public class Hud implements Disposable
             for(int j = 0; j < width; j++)
             {
                 region = new TextureRegion(sprites[i][j].getTexture(), sprites[i][j].getRegionX(), sprites[i][j].getRegionY(), 16, 16);
-                sprites[i][j].setBounds(0, 0, 16/MarioBros.PPM, 16/MarioBros.PPM);
+                sprites[i][j].setBounds(0, 0, 16, 16);
                 sprites[i][j].setRegion(region);
-                sprites[i][j].setPosition((gamecam.position.x*100 - width*16/2 + j*16)/MarioBros.PPM, (gamecam.position.y*100 - MarioBros.V_HEIGHT/2 + height*16 - (i+1)*16)/MarioBros.PPM);
+                sprites[i][j].setPosition((gamecam.position.x - width*16/2 + j*16), (gamecam.position.y - MarioBros.V_HEIGHT/2 + height*16 - (i+1)*16));
             }
     }
 

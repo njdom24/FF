@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 import com.dommie.mariobros.MarioBros;
 import com.dommie.mariobros.screens.MapScreen;
 
-import static com.dommie.mariobros.MarioBros.PPM;
 import static com.dommie.mariobros.tools.WorldContactListener.currentCollisions;
 import static com.dommie.mariobros.tools.WorldContactListener.npcs;
 import static com.dommie.mariobros.tools.WorldContactListener.smallDifference;
@@ -72,7 +71,7 @@ public class Mario extends Sprite
 
         defineMario();
 
-        setBounds(0,1, 16 / PPM, 16 / PPM);
+        setBounds(0, 1, 16, 16);
     }
 
     public void update(float dt)
@@ -173,7 +172,7 @@ public class Mario extends Sprite
                     npcX = n.getIntendedPos().x;
                     npcY = n.getIntendedPos().y;
 
-                    if(!smallDifference(npcX, playerX) || !smallDifference(playerY+16/MarioBros.PPM,  npcY))
+                    if(!smallDifference(npcX, playerX) || !smallDifference(playerY+16,  npcY))
                         canMove = true;
                 }
 
@@ -183,8 +182,8 @@ public class Mario extends Sprite
                     updateAnimationSpeed(0.15f);
                     if (!currentCollisions.contains("up")) {
                         isMoving = true;
-                        intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16/MarioBros.PPM);
-                        b2body.setLinearVelocity(0, 64f / MarioBros.PPM);
+                        intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16);
+                        b2body.setLinearVelocity(0, 64f );
                         currentCollisions.clear();
                     }
                     else
@@ -201,7 +200,7 @@ public class Mario extends Sprite
                     npcX = n.getIntendedPos().x;
                     npcY = n.getIntendedPos().y;
 
-                    if(!smallDifference(npcX, playerX) || !smallDifference(playerY-16/MarioBros.PPM,  npcY))
+                    if(!smallDifference(npcX, playerX) || !smallDifference(playerY-16,  npcY))
                         canMove = true;
                 }
 
@@ -212,8 +211,8 @@ public class Mario extends Sprite
                     if (!currentCollisions.contains("down"))
                     {
                         isMoving = true;
-                        intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y - 16/MarioBros.PPM);
-                        b2body.setLinearVelocity(0, -64f / MarioBros.PPM);
+                        intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y - 16);
+                        b2body.setLinearVelocity(0, -64f );
                         currentCollisions.clear();
                     }
                     else
@@ -230,7 +229,7 @@ public class Mario extends Sprite
                     npcX = n.getIntendedPos().x;
                     npcY = n.getIntendedPos().y;
 
-                    if(!smallDifference(npcY, playerY) || !smallDifference(playerX-16/MarioBros.PPM,  npcX))
+                    if(!smallDifference(npcY, playerY) || !smallDifference(playerX-16,  npcX))
                         canMove = true;
                 }
 
@@ -240,8 +239,8 @@ public class Mario extends Sprite
                     updateAnimationSpeed(0.15f);
                     if (!currentCollisions.contains("left")) {
                         isMoving = true;
-                        intendedPos = new Vector2(b2body.getPosition().x - 16/MarioBros.PPM, b2body.getPosition().y);
-                        b2body.setLinearVelocity(-64f / MarioBros.PPM, 0);
+                        intendedPos = new Vector2(b2body.getPosition().x - 16, b2body.getPosition().y);
+                        b2body.setLinearVelocity(-64f, 0);
                         currentCollisions.clear();
                     } else
                         updateAnimationSpeed(0.30f);
@@ -257,7 +256,7 @@ public class Mario extends Sprite
                     npcX = n.getIntendedPos().x;
                     npcY = n.getIntendedPos().y;
 
-                    if(!smallDifference(npcY, playerY) || !smallDifference(playerX+16/MarioBros.PPM,  npcX))
+                    if(!smallDifference(npcY, playerY) || !smallDifference(playerX+16,  npcX))
                         canMove = true;
                 }
                 setState(Mario.State.RIGHT);
@@ -265,8 +264,8 @@ public class Mario extends Sprite
                     updateAnimationSpeed(0.15f);
                     if (!currentCollisions.contains("right")) {
                         isMoving = true;
-                        intendedPos = new Vector2(b2body.getPosition().x + 16/MarioBros.PPM, b2body.getPosition().y);
-                        b2body.setLinearVelocity(64f / MarioBros.PPM, 0);
+                        intendedPos = new Vector2(b2body.getPosition().x + 16, b2body.getPosition().y);
+                        b2body.setLinearVelocity(64f, 0);
                         currentCollisions.clear();
                     } else
                         updateAnimationSpeed(0.30f);
@@ -278,7 +277,7 @@ public class Mario extends Sprite
         else
         {
             //15.8 is used instead of 16 because it will go over, which makes snapping back into position look bad
-            if(Math.abs(b2body.getPosition().x - originalPos.x) >= 15.9f/MarioBros.PPM || Math.abs(b2body.getPosition().y - originalPos.y) >= 15.9f/MarioBros.PPM) {
+            if(Math.abs(b2body.getPosition().x - originalPos.x) >= 15.9f || Math.abs(b2body.getPosition().y - originalPos.y) >= 15.9f) {
                 isMoving = false;
                 Vector2 lastSpeed = new Vector2(b2body.getLinearVelocity().x, b2body.getLinearVelocity().y);
                 b2body.setLinearVelocity(0,0);
@@ -305,7 +304,7 @@ public class Mario extends Sprite
     public void defineMario()
     {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / PPM, 32 / PPM);
+        bdef.position.set(32, 32 );
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -316,7 +315,7 @@ public class Mario extends Sprite
         fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.COLLISION_BIT;
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(8f/MarioBros.PPM,8f/MarioBros.PPM);
+        shape.setAsBox(8f,8f);
         fdef.shape = shape;
         fdef.isSensor = true;
         b2body.createFixture(fdef);
@@ -325,7 +324,7 @@ public class Mario extends Sprite
         //bottom edge
         fdef = new FixtureDef();
         EdgeShape edge = new EdgeShape();
-        edge.set(new Vector2(-5/MarioBros.PPM, -10f/MarioBros.PPM), new Vector2(5/MarioBros.PPM, -10f/MarioBros.PPM));
+        edge.set(new Vector2(-5, -10f), new Vector2(5, -10f));
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("bottom");
@@ -333,7 +332,7 @@ public class Mario extends Sprite
         //top edge
         fdef = new FixtureDef();
         edge = new EdgeShape();
-        edge.set(new Vector2(-5/MarioBros.PPM, 10f/MarioBros.PPM), new Vector2(5/MarioBros.PPM, 10f/MarioBros.PPM));
+        edge.set(new Vector2(-5, 10f), new Vector2(5, 10f));
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("top");
@@ -341,7 +340,7 @@ public class Mario extends Sprite
         //left edge
         fdef = new FixtureDef();
         edge = new EdgeShape();
-        edge.set(new Vector2(-10f/MarioBros.PPM, 5/MarioBros.PPM), new Vector2(-10f/MarioBros.PPM, -5/MarioBros.PPM));
+        edge.set(new Vector2(-10f, 5), new Vector2(-10f, -5));
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("left");
@@ -349,7 +348,7 @@ public class Mario extends Sprite
         //right edge
         fdef = new FixtureDef();
         edge = new EdgeShape();
-        edge.set(new Vector2(10f/MarioBros.PPM, 5/MarioBros.PPM), new Vector2(10f/MarioBros.PPM, -5/MarioBros.PPM));
+        edge.set(new Vector2(10f, 5), new Vector2(10f, -5));
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("right");
