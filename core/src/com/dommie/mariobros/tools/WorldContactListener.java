@@ -90,4 +90,11 @@ public class WorldContactListener implements ContactListener
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
+
+    //necessary because body positions are slightly off
+    //returns true if a and b are 1/1000 of a pixel off or closer
+    public static boolean smallDifference(float a, float b)
+    {
+        return (Math.abs(a-b) <= 0.00001);
+    }
 }

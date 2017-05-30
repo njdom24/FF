@@ -19,6 +19,7 @@ import com.dommie.mariobros.screens.MapScreen;
 import static com.dommie.mariobros.MarioBros.PPM;
 import static com.dommie.mariobros.tools.WorldContactListener.currentCollisions;
 import static com.dommie.mariobros.tools.WorldContactListener.npcs;
+import static com.dommie.mariobros.tools.WorldContactListener.smallDifference;
 
 /**
  * Created by njdom24 on 5/5/2015.
@@ -284,12 +285,6 @@ public class Mario extends Sprite
                 b2body.setTransform(originalPos.x + lastSpeed.x/4, originalPos.y+lastSpeed.y/4, 0);
             }
         }
-    }
-
-    //necessary because body positions are slightly off
-    private boolean smallDifference(float a, float b)
-    {
-        return (Math.abs(a-b) <= 0.01);
     }
 
     public boolean isTryingToMove()

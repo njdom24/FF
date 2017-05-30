@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.dommie.mariobros.MarioBros;
 import com.dommie.mariobros.tools.WorldContactListener;
 
+import static com.dommie.mariobros.tools.WorldContactListener.smallDifference;
+
 /**
  * Created by njdom24 on 5/27/2017.
  */
@@ -133,12 +135,6 @@ public class NPC extends InteractiveTileObject
 
                     moveRight();
                 }
-    }
-
-    //necessary because body positions are slightly off
-    private boolean smallDifference(float a, float b)
-    {
-        return (Math.abs(a-b) <= 0.01);
     }
 
     private void moveLeft()
