@@ -10,7 +10,6 @@ import java.util.Stack;
 public class MarioBros extends Game {
 	public static final int V_WIDTH = 432;
 	public static final int V_HEIGHT = 240;
-	//public static final float PPM = 1;
 
     public static final short DEFAULT_BIT = 1;
     public static final short PLAYER_BIT = 2;

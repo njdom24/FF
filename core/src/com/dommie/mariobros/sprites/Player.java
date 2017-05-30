@@ -24,7 +24,7 @@ import static com.dommie.mariobros.tools.WorldContactListener.smallDifference;
  * Created by njdom24 on 5/5/2015.
  */
 
-public class Mario extends Sprite
+public class Player extends Sprite
 {
     public enum State{LEFT, RIGHT, UP, DOWN}
     public State currentState;
@@ -42,7 +42,7 @@ public class Mario extends Sprite
 
     private Vector2 originalPos;
 
-    public Mario(World world, MapScreen screen)
+    public Player(World world, MapScreen screen)
     {
         super(screen.getAtlas().findRegion("Warrior"));
         this.world = world;
@@ -176,14 +176,14 @@ public class Mario extends Sprite
                         canMove = true;
                 }
 
-                setState(Mario.State.UP);
+                setState(Player.State.UP);
                 if(canMove)
                 {
                     updateAnimationSpeed(0.15f);
                     if (!currentCollisions.contains("up")) {
                         isMoving = true;
                         intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16);
-                        b2body.setLinearVelocity(0, 64f );
+                        b2body.setLinearVelocity(0, 64f);
                         currentCollisions.clear();
                     }
                     else
@@ -204,7 +204,7 @@ public class Mario extends Sprite
                         canMove = true;
                 }
 
-                setState(Mario.State.DOWN);
+                setState(Player.State.DOWN);
                 if(canMove)
                 {
                     updateAnimationSpeed(0.15f);
@@ -212,7 +212,7 @@ public class Mario extends Sprite
                     {
                         isMoving = true;
                         intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y - 16);
-                        b2body.setLinearVelocity(0, -64f );
+                        b2body.setLinearVelocity(0, -64f);
                         currentCollisions.clear();
                     }
                     else
@@ -233,7 +233,7 @@ public class Mario extends Sprite
                         canMove = true;
                 }
 
-                setState(Mario.State.LEFT);
+                setState(Player.State.LEFT);
                 if(canMove)
                 {
                     updateAnimationSpeed(0.15f);
@@ -259,7 +259,7 @@ public class Mario extends Sprite
                     if(!smallDifference(npcY, playerY) || !smallDifference(playerX+16,  npcX))
                         canMove = true;
                 }
-                setState(Mario.State.RIGHT);
+                setState(Player.State.RIGHT);
                 if(canMove) {
                     updateAnimationSpeed(0.15f);
                     if (!currentCollisions.contains("right")) {
@@ -304,7 +304,7 @@ public class Mario extends Sprite
     public void defineMario()
     {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32, 32 );
+        bdef.position.set(32, 32);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 

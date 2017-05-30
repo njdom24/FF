@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.dommie.mariobros.sprites.InteractiveTileObject;
-import com.dommie.mariobros.sprites.Mario;
+import com.dommie.mariobros.sprites.Player;
 import com.dommie.mariobros.sprites.NPC;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.TreeSet;
 public class WorldContactListener implements ContactListener
 {
     public static Set<String> currentCollisions = new TreeSet<String>();
-    public static Mario player;
+    public static Player player;
     public static ArrayList<NPC> npcs;
 
     @Override

@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dommie.mariobros.MarioBros;
 import com.dommie.mariobros.scenes.Hud;
-import com.dommie.mariobros.sprites.Mario;
+import com.dommie.mariobros.sprites.Player;
 import com.dommie.mariobros.sprites.NPC;
 import com.dommie.mariobros.sprites.TestBody;
 import com.dommie.mariobros.tools.B2WorldCreator;
@@ -35,11 +35,9 @@ public abstract class MapScreen extends GameScreen{
     protected MapProperties prop;
 
     //Box2d variables
-    protected Mario player;
+    protected Player player;
 
     //Movement variables
-    protected boolean isMoving = false;
-    protected Vector2 originalPos;
     public Set<String> mapCollisions;
 
     private TestBody t;
@@ -58,14 +56,14 @@ public abstract class MapScreen extends GameScreen{
         maploader = new TmxMapLoader();
         map = maploader.load(mapName);
         prop = map.getProperties();
-        renderer = new OrthogonalTiledMapRenderer(map);//,1 if doesnt work
+        renderer = new OrthogonalTiledMapRenderer(map);
 
 
         world = new World(new Vector2(0, 0), true);//sets gravity properties
         b2dr = new Box2DDebugRenderer();
         //map.getLayers().get(0).getObjects().get(0).
 
-        player = new Mario(world, this);
+        player = new Player(world, this);
         player.b2body.setTransform(locX, locY, 0);//world entrance location
 
         setCamera();
@@ -178,12 +176,6 @@ public abstract class MapScreen extends GameScreen{
         hud.stage.draw();
     }
 
-    private boolean smallDifference(float a, float b)
-    {
-        System.out.println("REE: " + (Math.abs(a-b)));
-        return (Math.abs(a-b) <= 0.01);
-    }
-
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
@@ -214,7 +206,7 @@ public abstract class MapScreen extends GameScreen{
         int mapHeight = prop.get("height", Integer.class)+1;
         int mapPixelHeight = mapHeight*16;
 
-        if(player.b2body.getPosition().y+8 >= mapPixelHeight - 8*16)
+        if(player.b2body.getPosition().y+8 >= mapPixelHeight - 8*16 + 1)
             return true;
         else
             return false;
