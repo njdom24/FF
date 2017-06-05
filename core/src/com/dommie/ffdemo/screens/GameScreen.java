@@ -15,6 +15,7 @@ public abstract class GameScreen implements Screen{
     //Reference to Game, used to set Screens
     protected GameInfo game;
     protected TextureAtlas atlas;
+    protected TextureAtlas npcAtlas;
 
     protected Viewport gamePort;
     protected Hud hud;
@@ -27,25 +28,33 @@ public abstract class GameScreen implements Screen{
     protected World world;
     protected Box2DDebugRenderer b2dr;
 
-    public void changeMap(Screen m)
+    public void changeMap(GameScreen m)
     {
         com.dommie.ffdemo.GameInfo.screens.push(this);
+
+        GameInfo.currentScreen = m;
         game.setScreen(m);
     }
 
     public void revertMap()
     {
-        Screen futureScreen = com.dommie.ffdemo.GameInfo.screens.pop();
+        GameScreen futureScreen = com.dommie.ffdemo.GameInfo.screens.pop();
 
         if(futureScreen instanceof MapScreen)
             WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;
 
+        GameInfo.currentScreen = futureScreen;
         game.setScreen(futureScreen);
     }
 
     public TextureAtlas getAtlas()
     {
         return atlas;
+    }
+
+    public TextureAtlas getNPCAtlas()
+    {
+        return npcAtlas;
     }
     @Override
     public void show() {

@@ -51,16 +51,19 @@ public class B2WorldCreator
         }
 
     }
-//give an update method
-    public ArrayList<NPC> createGenericNPCs(String[] texts)
+
+    //TODO checks for direction (direction boolean array?)
+    public ArrayList<NPC> createGenericNPCs(String[] texts, String[] npcTypes)
     {
         //create npc bodies/fixtures
         ArrayList<NPC> npcArray = new ArrayList<NPC>();
+
+        int i = 0;
         for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class))
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            npcArray.add(new NPC(world, map, rect, npcIndex++, true, 2));
+            npcArray.add(new NPC(world, map, rect, npcIndex++, true, 2, npcTypes[i++]));
         }
         return npcArray;
     }

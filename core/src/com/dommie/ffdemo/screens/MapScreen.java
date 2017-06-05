@@ -1,7 +1,6 @@
 package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,10 +13,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.scenes.Hud;
-import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.sprites.NPC;
+import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.sprites.TestBody;
-import com.dommie.ffdemo.tools.B2WorldCreator;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import java.util.TreeSet;
 
 public abstract class MapScreen extends GameScreen{
     //Reference to Game, used to set Screens
-    protected TextureAtlas mapAtlas;
 
     protected OrthographicCamera gamecam;//what the viewport displays
 
@@ -42,7 +39,7 @@ public abstract class MapScreen extends GameScreen{
 
     private TestBody t;
 
-    private ArrayList<NPC> npcs;
+    protected ArrayList<NPC> npcs;
 
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
@@ -68,31 +65,16 @@ public abstract class MapScreen extends GameScreen{
 
         setCamera();
 
-        npcs = new B2WorldCreator(world, map).createGenericNPCs(new String[0]);
+
         world.setContactListener(new WorldContactListener());
         mapCollisions = new TreeSet<String>();
         WorldContactListener.currentCollisions = mapCollisions;
         WorldContactListener.player = player;
-        WorldContactListener.npcs = npcs;
+        GameInfo.currentScreen = this;
 
         t = new TestBody(world, map);
     }
 
-    public void changeMap(Screen m)
-    {
-        GameInfo.screens.push(this);
-        game.setScreen(m);
-    }
-
-    public void revertMap()
-    {
-        Screen futureScreen = com.dommie.ffdemo.GameInfo.screens.pop();
-
-        if(futureScreen instanceof MapScreen)
-            WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;
-
-        game.setScreen(futureScreen);
-    }
 
     public void setCamera()
     {
@@ -168,7 +150,7 @@ public abstract class MapScreen extends GameScreen{
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        hud.draw(game.batch);
+        //hud.draw(game.batch);
         game.batch.end();
 
         //set batch to draw what the Hud camera sees
