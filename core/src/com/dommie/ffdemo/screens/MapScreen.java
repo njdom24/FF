@@ -72,6 +72,8 @@ public abstract class MapScreen extends GameScreen{
         WorldContactListener.player = player;
         GameInfo.currentScreen = this;
 
+
+
         t = new TestBody(world, map);
     }
 
@@ -110,16 +112,12 @@ public abstract class MapScreen extends GameScreen{
 
     public void update(float dt)//delta time
     {
-        for(NPC n : npcs)
-        {
-            n.update(dt);
-        }
-
         player.update(dt);
 
         handleInput(dt);
         t.update(dt);
         world.step(1/60f, 6, 2);
+
 
         if(!isTooFarLeft() && !isTooFarRight())
             gamecam.position.x = player.b2body.getPosition().x;
@@ -151,6 +149,12 @@ public abstract class MapScreen extends GameScreen{
         game.batch.begin();
         player.draw(game.batch);
         //hud.draw(game.batch);
+        for(NPC n : npcs)
+        {
+            n.update(delta);
+            n.draw(game.batch);
+        }
+
         game.batch.end();
 
         //set batch to draw what the Hud camera sees
@@ -177,7 +181,7 @@ public abstract class MapScreen extends GameScreen{
         int mapWidth = prop.get("width", Integer.class)+1;
         int mapPixelWidth = mapWidth*16;
 
-        if(player.b2body.getPosition().x+8 >= mapPixelWidth - 14*16)
+        if(player.b2body.getPosition().x+8 >= mapPixelWidth - 14*16 - 1)
             return true;
         else
             return false;

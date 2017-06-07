@@ -71,7 +71,7 @@ public class Player extends Sprite
 
         defineMario();
 
-        setBounds(0, 1, 16, 16);
+        setBounds(0, 0, 16, 16);
     }
 
     public void update(float dt)

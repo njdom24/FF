@@ -2,18 +2,13 @@ package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.dommie.ffdemo.GameInfo;
@@ -25,15 +20,8 @@ import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
  * Created by njdom24 on 5/27/2017.
  */
 
-public class NPC extends Sprite
+public class NPC extends InteractiveTileObject
 {
-    protected World world;
-    protected TiledMap map;
-    protected TiledMapTile tile;
-    protected Rectangle bounds;
-    public Body body;
-    protected Fixture fixture;
-
     public State currentState;
     public State previousState;
     private enum State{LEFT, RIGHT, UP, DOWN};
@@ -43,6 +31,7 @@ public class NPC extends Sprite
 
     private float stateTimer;
     private float animSpeed;
+    private Sprite spr;
 
     protected TextureAtlas atlas;
 
@@ -61,8 +50,9 @@ public class NPC extends Sprite
 
     public NPC(World world, TiledMap map, Rectangle bounds, int index, String name)
     {
-        super(GameInfo.currentScreen.getNPCAtlas().findRegion(name));
-        makeCollisions(world, map, bounds);
+        super(world, map, bounds, true);
+        spr = new Sprite(GameInfo.currentScreen.getNPCAtlas().findRegion(name));
+
         fixture.setUserData(this);
         setCategoryFilter(GameInfo.COLLISION_BIT);
 
@@ -74,9 +64,14 @@ public class NPC extends Sprite
 
     public NPC(World world, TiledMap map, Rectangle bounds, int index, boolean vertical, int distance, String name)
     {
-        super(GameInfo.currentScreen.getNPCAtlas().findRegion(name));
+        super(world, map, bounds, true);
 
-        makeCollisions(world, map, bounds);
+        spr = new Sprite(GameInfo.currentScreen.getNPCAtlas().findRegion(name));
+        currentState = State.UP;
+        stateTimer = 0;
+        animSpeed = 0.125f;
+        spr.setPosition(16,16);
+
         fixture.setUserData(this);
         setCategoryFilter(com.dommie.ffdemo.GameInfo.COLLISION_BIT);
 
@@ -90,59 +85,30 @@ public class NPC extends Sprite
         distancePos = 0;
         distanceNeg = distance/2;
 
-        currentState = State.UP;
-        stateTimer = 0;
-        animSpeed = 0.15f;
-
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
         for(int i = 0; i <= 1; i++)
-            frames.add(new TextureRegion(getTexture(), i*16+getRegionX(), getRegionY(), 16, 16));
+            frames.add(new TextureRegion(spr.getTexture(), i*16+spr.getRegionX(), spr.getRegionY(), 16, 16));
         runDown = new Animation<TextureRegion>(animSpeed, frames);
         frames.clear();
 
         frames = new Array<TextureRegion>();
         for(int i = 0; i <= 1; i++)
-            frames.add(new TextureRegion(getTexture(), i*16+getRegionX(), getRegionY()+16, 16, 16));
+            frames.add(new TextureRegion(spr.getTexture(), i*16+spr.getRegionX(), spr.getRegionY()+16, 16, 16));
         runUp = new Animation<TextureRegion>(animSpeed, frames);
         frames.clear();
 
         frames = new Array<TextureRegion>();
         for(int i = 0; i <= 1; i++)
-            frames.add(new TextureRegion(getTexture(), i*16+getRegionX(), getRegionY()+48, 16, 16));
+            frames.add(new TextureRegion(spr.getTexture(), i*16+spr.getRegionX(), spr.getRegionY()+32, 16, 16));
         runHorizontal = new Animation<TextureRegion>(animSpeed, frames);
         frames.clear();
 
-        setBounds(0, 0, 16, 16);
-    }
-
-    private void makeCollisions(World world, TiledMap map, Rectangle bounds)
-    {
-        this.world = world;
-        this.map = map;
-        this.bounds = bounds;
-
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-
-        bdef.type = BodyDef.BodyType.DynamicBody;
-
-        bdef.position.set((bounds.getX() + bounds.getWidth()/2), (bounds.getY() + bounds.getHeight()/2));
-
-        body = world.createBody(bdef);
-
-        shape.setAsBox(bounds.getWidth()/2, bounds.getHeight()/2);
-        fdef.shape = shape;
-        fdef.isSensor = true;
-        fixture = body.createFixture(fdef);
+        spr.setBounds(0, 0, 16, 16);
     }
 
     public void update(float dt)
     {
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight()/2);
-        setRegion(getFrame(dt));
-        body.setAwake(true);
         if(!isMoving)
         {
             originalPos = new Vector2(body.getPosition().x, body.getPosition().y);
@@ -165,6 +131,14 @@ public class NPC extends Sprite
                 body.setTransform(originalPos.x + lastSpeed.x/4, originalPos.y+lastSpeed.y/4, 0);
             }
         }
+        spr.setPosition(body.getPosition().x - spr.getWidth()/2, body.getPosition().y - spr.getHeight()/2);
+        spr.setRegion(getFrame(dt));
+        body.setAwake(true);
+    }
+
+    public void draw(SpriteBatch sb)
+    {
+        spr.draw(sb);
     }
 
     public void handleMovement(float dt)
@@ -329,6 +303,7 @@ public class NPC extends Sprite
         return intendedPos;
     }
 
+    @Override
     public void onDownCollision() {
     }
     public void onUpCollision() {
