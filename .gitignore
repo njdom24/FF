@@ -112,6 +112,3 @@ gradle-app.setting
 ## OS Specific
 .DS_Store
 Thumbs.db
-/core/assets/Overworld/Maps/Corneria/NPC/NPCs.atlas
-/core/assets/Overworld/Maps/Corneria/NPC/NPCs.png
-/core/assets/Overworld/Maps/Corneria/NPC/Dancer.png
