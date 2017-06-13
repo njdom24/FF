@@ -72,11 +72,23 @@ public abstract class MapScreen extends GameScreen{
         WorldContactListener.player = player;
         GameInfo.currentScreen = this;
 
-
-
         t = new TestBody(world, map);
     }
-
+    
+    public void changeMap(GameScreen m)
+    {
+    	super.changeMap(m);
+    	player.b2body.setTransform(player.getIntendedPos(), 0);
+    }
+    
+    protected void setChangeElements()
+    {
+    	super.setChangeElements();
+    	
+    	WorldContactListener.currentCollisions = mapCollisions;
+    	WorldContactListener.player = player;
+    	WorldContactListener.npcs = npcs;
+    }
 
     public void setCamera()
     {

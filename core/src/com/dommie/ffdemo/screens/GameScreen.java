@@ -39,12 +39,14 @@ public abstract class GameScreen implements Screen{
     public void revertMap()
     {
         GameScreen futureScreen = com.dommie.ffdemo.GameInfo.screens.pop();
-
-        if(futureScreen instanceof MapScreen)
-            WorldContactListener.currentCollisions = ((MapScreen) futureScreen).mapCollisions;
-
-        GameInfo.currentScreen = futureScreen;
-        game.setScreen(futureScreen);
+        
+        futureScreen.setChangeElements();
+    }
+    
+    protected void setChangeElements()
+    {
+    	GameInfo.currentScreen = this;
+    	game.setScreen(this);
     }
 
     public TextureAtlas getAtlas()
