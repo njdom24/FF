@@ -18,27 +18,15 @@ public class Hud implements Disposable
 	public Stage stage;
 	private Viewport viewport;//separate from world viewport
 
-	private Integer worldTimer;
-	private float timeCount;
-	private Integer score;
-
-	Label countdownLabel;
-	Label scoreLabel;
-	Label timeLabel;
-	Label levelLabel;
-	Label worldLabel;
-	Label marioLabel;
     //private Sprite s;
     private TextureRegion region;
     private Sprite[][] sprites;
     private OrthographicCamera gamecam;
+    private TextureAtlas atlas;
 
 	public Hud(SpriteBatch sb, OrthographicCamera o)
 	{
         gamecam = o;
-		worldTimer = 300;
-		timeCount = 0;
-		score = 0;
 
 		viewport = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, GameInfo.V_HEIGHT, new OrthographicCamera());
 		stage = new Stage(viewport, sb);
@@ -47,24 +35,6 @@ public class Hud implements Disposable
 		table.top();//align at the top of the stage
 		table.setFillParent(true);
 
-		//countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));//3 digits in countdown timer. d = integer
-		//scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		//timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		//levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		//worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		//marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
-		//top row
-		table.add(marioLabel).expandX().padTop(10);
-		table.add(worldLabel).expandX().padTop(10);
-		table.add(timeLabel).expandX().padTop(10);
-
-		table.row();
-
-		table.add(scoreLabel).expandX();
-		table.add(levelLabel).expandX();
-		table.add(countdownLabel).expandX();
-
 		stage.addActor(table);
 
         createTextbox(4,3);
@@ -72,7 +42,14 @@ public class Hud implements Disposable
 
 	public void createTextbox(int width, int height)
     {
-        TextureAtlas atlas = new TextureAtlas("Text/Text.atlas");
+		/*
+		atlas.dispose();
+		for(Sprite[] sprite : sprites)
+            for(Sprite s : sprite)
+                s.getTexture().dispose();
+        */
+		
+        atlas = new TextureAtlas("Text/Text.atlas");
         sprites = new Sprite[height][width];
         for(int i = 0; i < height; i++)
             for(int j = 0; j< width; j++)
@@ -106,7 +83,8 @@ public class Hud implements Disposable
             }
     }
 
-    public void draw(SpriteBatch sb){
+    public void draw(SpriteBatch sb)
+    {
         for(Sprite[] sprite : sprites)
             for(Sprite s : sprite)
                 s.draw(sb);
@@ -119,7 +97,9 @@ public class Hud implements Disposable
         for(Sprite[] sprite : sprites)
             for(Sprite s : sprite)
                 s.getTexture().dispose();
-        //clears by resetting the sprite array
-        createTextbox(0,0);
+        
+        region.getTexture().dispose();
+        atlas.dispose();
+        stage.dispose();
     }
 }

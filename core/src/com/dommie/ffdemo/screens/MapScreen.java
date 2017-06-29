@@ -88,6 +88,8 @@ public abstract class MapScreen extends GameScreen{
     	WorldContactListener.currentCollisions = mapCollisions;
     	WorldContactListener.player = player;
     	WorldContactListener.npcs = npcs;
+    	
+    	//System.out.println("Baws");
     }
 
     public void setCamera()
@@ -128,6 +130,14 @@ public abstract class MapScreen extends GameScreen{
 
         handleInput(dt);
         t.update(dt);
+        
+        if(toDispose != null)
+        {
+        	toDispose.dispose();
+        	toDispose = null;
+        	System.out.println("disposed");
+        }
+        
         world.step(1/60f, 6, 2);
 
 
@@ -160,12 +170,12 @@ public abstract class MapScreen extends GameScreen{
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        //hud.draw(game.batch);
         for(NPC n : npcs)
         {
             n.update(delta);
             n.draw(game.batch);
         }
+        hud.draw(game.batch);
 
         game.batch.end();
 
@@ -216,6 +226,16 @@ public abstract class MapScreen extends GameScreen{
             return true;
         else
             return false;
+    }
+    
+    public void dispose()
+    {
+    	super.dispose();
+    	player.dispose();
+
+    	for(NPC n : npcs)
+    		n.dispose();
+
     }
 
 }

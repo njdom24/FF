@@ -1,5 +1,9 @@
 package com.dommie.ffdemo.sprites;
 
+import static com.dommie.ffdemo.tools.WorldContactListener.currentCollisions;
+import static com.dommie.ffdemo.tools.WorldContactListener.npcs;
+import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,33 +17,34 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.screens.MapScreen;
-
-import static com.dommie.ffdemo.tools.WorldContactListener.currentCollisions;
-import static com.dommie.ffdemo.tools.WorldContactListener.npcs;
-import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
 
 /**
  * Created by njdom24 on 5/5/2015.
  */
 
-public class Player extends Sprite
+public class Player extends Sprite implements Disposable
 {
     public enum State{LEFT, RIGHT, UP, DOWN}
     public State currentState;
     public State previousState;
+    
     public World world;
     public Body b2body;
     private TextureRegion stand;
+    
+    private Array<TextureRegion> animFrames;
     private Animation<TextureRegion> runHorizontal;
     private Animation<TextureRegion> runUp;
     private Animation<TextureRegion> runDown;
+    
     private float stateTimer;
     private float animSpeed;
     private boolean isMoving;
+    
     private Vector2 intendedPos = new Vector2(0,0);
-
     private Vector2 originalPos;
 
     public Player(World world, MapScreen screen)
@@ -50,23 +55,28 @@ public class Player extends Sprite
         stateTimer = 0;
         animSpeed = 0.15f;
 
+        animFrames = new Array<TextureRegion>();
+        
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 0; i <= 1; i++)
             frames.add(new TextureRegion(getTexture(), i*16+getRegionX()-2, getRegionY(), 16, 16));
 
         runHorizontal = new Animation<TextureRegion>(animSpeed, frames);
+        animFrames.addAll(frames);
         frames.clear();
 
         frames = new Array<TextureRegion>();
         for(int i = 2; i <= 3; i++)
             frames.add(new TextureRegion(getTexture(), i*16+getRegionX()-1, getRegionY(), 16, 16));
         runUp = new Animation<TextureRegion>(animSpeed, frames);
+        animFrames.addAll(frames);
         frames.clear();
 
         frames = new Array<TextureRegion>();
         for(int i = 4; i <= 5; i++)
             frames.add(new TextureRegion(getTexture(), i*16+getRegionX()+1, getRegionY(), 16, 16));
         runDown = new Animation<TextureRegion>(animSpeed, frames);
+        animFrames.addAll(frames);
         frames.clear();
 
         defineMario();
@@ -368,5 +378,14 @@ public class Player extends Sprite
     {
         previousState = currentState;
         currentState = s;
+    }
+    
+    public void dispose()
+    {
+    	//stand.getTexture().dispose();
+    	
+    	super.getTexture().dispose();
+    	for(TextureRegion t : animFrames)
+    		t.getTexture().dispose();
     }
 }

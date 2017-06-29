@@ -1,5 +1,7 @@
 package com.dommie.ffdemo.sprites;
 
+import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,20 +13,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.tools.WorldContactListener;
-
-import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
 
 /**
  * Created by njdom24 on 5/27/2017.
  */
 
-public class NPC extends InteractiveTileObject
+public class NPC extends InteractiveTileObject implements Disposable
 {
     public State currentState;
     public State previousState;
     private enum State{LEFT, RIGHT, UP, DOWN};
+    
+    private Array<TextureRegion> animFrames;
     private Animation<TextureRegion> runHorizontal;
     private Animation<TextureRegion> runUp;
     private Animation<TextureRegion> runDown;
@@ -86,22 +89,26 @@ public class NPC extends InteractiveTileObject
         distanceNeg = distance/2;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
+        animFrames = new Array<TextureRegion>();
 
         for(int i = 0; i <= 1; i++)
             frames.add(new TextureRegion(spr.getTexture(), i*16+spr.getRegionX(), spr.getRegionY(), 16, 16));
         runDown = new Animation<TextureRegion>(animSpeed, frames);
+        animFrames.addAll(frames);
         frames.clear();
 
         frames = new Array<TextureRegion>();
         for(int i = 0; i <= 1; i++)
             frames.add(new TextureRegion(spr.getTexture(), i*16+spr.getRegionX(), spr.getRegionY()+16, 16, 16));
         runUp = new Animation<TextureRegion>(animSpeed, frames);
+        animFrames.addAll(frames);
         frames.clear();
 
         frames = new Array<TextureRegion>();
         for(int i = 0; i <= 1; i++)
             frames.add(new TextureRegion(spr.getTexture(), i*16+spr.getRegionX(), spr.getRegionY()+32, 16, 16));
         runHorizontal = new Animation<TextureRegion>(animSpeed, frames);
+        animFrames.addAll(frames);
         frames.clear();
 
         spr.setBounds(0, 0, 16, 16);
@@ -311,5 +318,13 @@ public class NPC extends InteractiveTileObject
     public void onLeftCollision() {
     }
     public void onRightCollision() {
+    }
+    
+    public void dispose()
+    {
+    	spr.getTexture().dispose();
+    	
+    	for(TextureRegion t : animFrames)
+    		t.getTexture().dispose();
     }
 }
