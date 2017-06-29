@@ -324,7 +324,9 @@ public class NPC extends InteractiveTileObject implements Disposable
     {
     	spr.getTexture().dispose();
     	
+    	/*
     	for(TextureRegion t : animFrames)
     		t.getTexture().dispose();
+    	*/
     }
 }

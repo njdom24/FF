@@ -329,6 +329,7 @@ public class Player extends Sprite implements Disposable
         fdef.shape = shape;
         fdef.isSensor = true;
         b2body.createFixture(fdef);
+        shape.dispose();
 
 
         //bottom edge
@@ -338,6 +339,7 @@ public class Player extends Sprite implements Disposable
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("bottom");
+        edge.dispose();
 
         //top edge
         fdef = new FixtureDef();
@@ -346,6 +348,7 @@ public class Player extends Sprite implements Disposable
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("top");
+        edge.dispose();
 
         //left edge
         fdef = new FixtureDef();
@@ -354,6 +357,7 @@ public class Player extends Sprite implements Disposable
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("left");
+        edge.dispose();
 
         //right edge
         fdef = new FixtureDef();
@@ -362,6 +366,7 @@ public class Player extends Sprite implements Disposable
         fdef.shape = edge;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("right");
+        edge.dispose();
 
     }
 
@@ -385,7 +390,9 @@ public class Player extends Sprite implements Disposable
     	//stand.getTexture().dispose();
     	
     	super.getTexture().dispose();
+    	/*
     	for(TextureRegion t : animFrames)
     		t.getTexture().dispose();
+    	*/
     }
 }

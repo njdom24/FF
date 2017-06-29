@@ -175,7 +175,7 @@ public abstract class MapScreen extends GameScreen{
             n.update(delta);
             n.draw(game.batch);
         }
-        hud.draw(game.batch);
+        //hud.draw(game.batch);
 
         game.batch.end();
 
@@ -187,7 +187,6 @@ public abstract class MapScreen extends GameScreen{
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
-
     }
 
     public boolean isTooFarLeft()

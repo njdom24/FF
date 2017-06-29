@@ -26,10 +26,6 @@ public class B2WorldCreator
     public B2WorldCreator(World world, TiledMap map)
     {
         npcIndex = 0;
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
         this.world = world;
         this.map = map;
 

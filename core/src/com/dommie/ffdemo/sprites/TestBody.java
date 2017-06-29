@@ -44,6 +44,7 @@ public class TestBody
         fdef.shape = shape;
         fdef.isSensor = true;
         fixture = body.createFixture(fdef);
+        shape.dispose();
     }
 
     public void update(float dt)

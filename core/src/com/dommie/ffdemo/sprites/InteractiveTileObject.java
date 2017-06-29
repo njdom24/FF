@@ -33,7 +33,7 @@ public abstract class InteractiveTileObject
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
+        PolygonShape shape = new PolygonShape();    
 
         if(isDynamic)
             bdef.type = BodyDef.BodyType.DynamicBody;
@@ -46,6 +46,7 @@ public abstract class InteractiveTileObject
 
         shape.setAsBox(bounds.getWidth()/2, bounds.getHeight()/2);
         fdef.shape = shape;
+        //shape.dispose();
         fdef.isSensor = true;
         fixture = body.createFixture(fdef);
     }
