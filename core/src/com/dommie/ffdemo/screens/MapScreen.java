@@ -55,22 +55,21 @@ public abstract class MapScreen extends GameScreen{
         prop = map.getProperties();
         renderer = new OrthogonalTiledMapRenderer(map);
 
-
         world = new World(new Vector2(0, 0), true);//sets gravity properties
         b2dr = new Box2DDebugRenderer();
-        //map.getLayers().get(0).getObjects().get(0).
 
         player = new Player(world, this);
         player.b2body.setTransform(locX, locY, 0);//world entrance location
 
         setCamera();
 
-
         world.setContactListener(new WorldContactListener());
         mapCollisions = new TreeSet<String>();
         WorldContactListener.currentCollisions = mapCollisions;
         WorldContactListener.player = player;
         GameInfo.currentScreen = this;
+
+        hud.createTextbox(20, 4);
 
         t = new TestBody(world, map);
     }
@@ -165,7 +164,6 @@ public abstract class MapScreen extends GameScreen{
         //render Box2DDebugLines
         b2dr.render(world, gamecam.combined);
 
-        hud.createTextbox(20,4);
         //set batch to draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -175,13 +173,12 @@ public abstract class MapScreen extends GameScreen{
             n.update(delta);
             n.draw(game.batch);
         }
-        //hud.draw(game.batch);
 
         game.batch.end();
 
-        //set batch to draw what the Hud camera sees
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        game.hudBatch.begin();
+        hud.draw(game.hudBatch);
+        game.hudBatch.end();
     }
 
     @Override

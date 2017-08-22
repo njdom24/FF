@@ -29,7 +29,8 @@ public abstract class GameScreen implements Screen, Disposable{
     protected World world;
     protected Box2DDebugRenderer b2dr;
     
-    protected GameScreen toDispose;
+    protected GameScreen toDispose;//almost deprecated; do not use
+    protected GameScreen prevScreen;
 
     public void changeMap(GameScreen m)
     {

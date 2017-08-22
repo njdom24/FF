@@ -15,7 +15,6 @@ import com.dommie.ffdemo.GameInfo;
 
 public class Hud implements Disposable
 {
-	public Stage stage;
 	private Viewport viewport;//separate from world viewport
 
     //private Sprite s;
@@ -24,32 +23,30 @@ public class Hud implements Disposable
     private OrthographicCamera gamecam;
     private TextureAtlas atlas;
 
+    private int width;
+    private int height;
+
 	public Hud(SpriteBatch sb, OrthographicCamera o)
 	{
         gamecam = o;
 
 		viewport = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, GameInfo.V_HEIGHT, new OrthographicCamera());
-		stage = new Stage(viewport, sb);
 
 		Table table = new Table();//used to organize labels
 		table.top();//align at the top of the stage
 		table.setFillParent(true);
-
-		stage.addActor(table);
-
-        createTextbox(4,3);
+        //createTextbox(4,3);
 	}
 
-	public void createTextbox(int width, int height)
+	public void createTextbox(int width, int height)//TODO: Create overloaded method for user-specified origin coordinates
     {
-		/*
-		atlas.dispose();
-		for(Sprite[] sprite : sprites)
-            for(Sprite s : sprite)
-                s.getTexture().dispose();
-        */
-		
-        atlas = new TextureAtlas("Text/Text.atlas");
+		this.width = width;
+		this.height = height;
+
+		if(region != null)
+		    dispose();
+
+        atlas = new TextureAtlas("Text/Textbox.atlas");
         sprites = new Sprite[height][width];
         for(int i = 0; i < height; i++)
             for(int j = 0; j< width; j++)
@@ -77,9 +74,9 @@ public class Hud implements Disposable
             for(int j = 0; j < width; j++)
             {
                 region = new TextureRegion(sprites[i][j].getTexture(), sprites[i][j].getRegionX(), sprites[i][j].getRegionY(), 16, 16);
-                sprites[i][j].setBounds(0, 0, 16, 16);
+                //sprites[i][j].setBounds(0, 0, 16, 16);
                 sprites[i][j].setRegion(region);
-                sprites[i][j].setPosition((gamecam.position.x - width*16/2 + j*16), (gamecam.position.y - com.dommie.ffdemo.GameInfo.V_HEIGHT/2 + height*16 - (i+1)*16));
+                sprites[i][j].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH - width*16)/2 + j*16), (height*16 -(i+1)*16));
             }
     }
 
@@ -93,13 +90,34 @@ public class Hud implements Disposable
     @Override
     public void dispose()
     {
-        stage.dispose();
+        /*
         for(Sprite[] sprite : sprites)
             for(Sprite s : sprite)
                 s.getTexture().dispose();
+        */
         
         region.getTexture().dispose();
         atlas.dispose();
-        stage.dispose();
+    }
+
+    public void drawText(String text)
+    {
+        if(text.length() > width)
+        {
+            drawText(text.substring(0, width));
+            drawText(text.substring(width, text.length()-width));
+        }
+
+
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
     }
 }

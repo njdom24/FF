@@ -19,10 +19,12 @@ public class GameInfo extends Game {
     public static GameScreen currentScreen;
 
 	public SpriteBatch batch;
+	public SpriteBatch hudBatch;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		hudBatch = new SpriteBatch();
 		setScreen(new Corneria(this, 264, 8));
 	}
 

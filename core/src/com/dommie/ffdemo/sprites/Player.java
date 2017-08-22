@@ -44,7 +44,7 @@ public class Player extends Sprite implements Disposable
     private float animSpeed;
     private boolean isMoving;
     
-    private Vector2 intendedPos = new Vector2(0,0);
+    private Vector2 intendedPos;
     private Vector2 originalPos;
 
     public Player(World world, MapScreen screen)
@@ -55,6 +55,8 @@ public class Player extends Sprite implements Disposable
         stateTimer = 0;
         animSpeed = 0.15f;
 
+        intendedPos = new Vector2(0,0);
+        originalPos = new Vector2(0,0);
         animFrames = new Array<TextureRegion>();
         
         Array<TextureRegion> frames = new Array<TextureRegion>();
