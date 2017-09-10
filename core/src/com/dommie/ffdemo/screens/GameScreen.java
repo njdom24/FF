@@ -29,33 +29,34 @@ public abstract class GameScreen implements Screen, Disposable{
     protected World world;
     protected Box2DDebugRenderer b2dr;
     
-    protected GameScreen toDispose;//almost deprecated; do not use
-    protected GameScreen prevScreen;
+    protected GameScreen prevScreen;//dispose on normal change, keep on BattleScreen change
 
     public void changeMap(GameScreen m)
     {
-        GameInfo.screens.push(this);
+        //GameInfo.screens.push(this);
+        //GameInfo.currentScreen = m;
 
-        GameInfo.currentScreen = m;
         game.setScreen(m);
     }
 
+    /*
     public void revertMap()
     {
-    	GameScreen g = GameInfo.screens.pop();
-    	g.setChangeElements();
-    	g.setToDispose(this);
-    }
+    	//prevScreen.setChangeElements();
+        game.setScreen(prevScreen);
+    	prevScreen.setToDispose(this);
+    }*/
+
     
     protected void setChangeElements()
     {
     	game.setScreen(this);
-    	GameInfo.currentScreen = this;
+    	//GameInfo.currentScreen = this;
     }
     
     public void setToDispose(GameScreen g)
     {
-    	toDispose = g;
+    	prevScreen = g;
     }
 
     public TextureAtlas getAtlas()

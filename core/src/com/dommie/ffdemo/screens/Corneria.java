@@ -21,7 +21,7 @@ public class Corneria extends MapScreen {
         String[] dialogue = new String[1];
         String[] types = {"Dancer"};
 
-        npcs = new B2WorldCreator(world, map).createGenericNPCs(dialogue, types);
+        npcs = new B2WorldCreator(world, map).createGenericNPCs(dialogue, types, this);
         WorldContactListener.npcs = npcs;
     }
 
@@ -33,7 +33,7 @@ public class Corneria extends MapScreen {
         String[] dialogue = new String[1];
         String[] types = {"Dancer"};
 
-        npcs = new B2WorldCreator(world, map).createGenericNPCs(dialogue, types);
+        npcs = new B2WorldCreator(world, map).createGenericNPCs(dialogue, types, this);
         WorldContactListener.npcs = npcs;
     }
 
@@ -42,13 +42,17 @@ public class Corneria extends MapScreen {
         super.handleInput(dt);
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            changeMap(new Corneria(game, 8, 8));
-        }
-        //only used for testing; deprecated
-        if(Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-            revertMap();
+            Corneria m = new Corneria(game, 8, 8);
+            m.setToDispose(this);
+            changeMap(m);
         }
 
+        if(player.b2body.getPosition().x <= 0)
+        {
+            Corneria m = new Corneria(game, 264, 8);
+            m.setToDispose(this);
+            changeMap(m);
+        }
     }
 
 }

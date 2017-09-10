@@ -67,7 +67,7 @@ public abstract class MapScreen extends GameScreen{
         mapCollisions = new TreeSet<String>();
         WorldContactListener.currentCollisions = mapCollisions;
         WorldContactListener.player = player;
-        GameInfo.currentScreen = this;
+        //GameInfo.currentScreen = this;
 
         hud.createTextbox(20, 4);
 
@@ -130,10 +130,10 @@ public abstract class MapScreen extends GameScreen{
         handleInput(dt);
         t.update(dt);
         
-        if(toDispose != null)
+        if(prevScreen != null)
         {
-        	toDispose.dispose();
-        	toDispose = null;
+        	prevScreen.dispose();
+        	prevScreen = null;
         	System.out.println("disposed");
         }
         

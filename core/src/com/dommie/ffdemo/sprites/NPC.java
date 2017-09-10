@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.screens.MapScreen;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
 /**
@@ -51,10 +52,10 @@ public class NPC extends InteractiveTileObject implements Disposable
 
     private float time;
 
-    public NPC(World world, TiledMap map, Rectangle bounds, int index, String name)
+    public NPC(World world, TiledMap map, Rectangle bounds, int index, String name, MapScreen m)
     {
         super(world, map, bounds, true);
-        spr = new Sprite(GameInfo.currentScreen.getNPCAtlas().findRegion(name));
+        spr = new Sprite(m.getNPCAtlas().findRegion(name));
 
         fixture.setUserData(this);
         setCategoryFilter(GameInfo.COLLISION_BIT);
@@ -65,11 +66,11 @@ public class NPC extends InteractiveTileObject implements Disposable
         isMoving = false;
     }
 
-    public NPC(World world, TiledMap map, Rectangle bounds, int index, boolean vertical, int distance, String name)
+    public NPC(World world, TiledMap map, Rectangle bounds, int index, boolean vertical, int distance, String name, MapScreen m)
     {
         super(world, map, bounds, true);
 
-        spr = new Sprite(GameInfo.currentScreen.getNPCAtlas().findRegion(name));
+        spr = new Sprite(m.getNPCAtlas().findRegion(name));
         currentState = State.UP;
         stateTimer = 0;
         animSpeed = 0.125f;

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.dommie.ffdemo.screens.MapScreen;
 import com.dommie.ffdemo.sprites.Collision;
 import com.dommie.ffdemo.sprites.NPC;
 
@@ -49,7 +50,7 @@ public class B2WorldCreator
     }
 
     //TODO checks for direction (direction boolean array?)
-    public ArrayList<NPC> createGenericNPCs(String[] texts, String[] npcTypes)
+    public ArrayList<NPC> createGenericNPCs(String[] texts, String[] npcTypes, MapScreen m)
     {
         //create npc bodies/fixtures
         ArrayList<NPC> npcArray = new ArrayList<NPC>();
@@ -59,7 +60,7 @@ public class B2WorldCreator
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            npcArray.add(new NPC(world, map, rect, npcIndex++, true, 2, npcTypes[i++]));
+            npcArray.add(new NPC(world, map, rect, npcIndex++, true, 2, npcTypes[i++], m));
         }
         return npcArray;
     }
