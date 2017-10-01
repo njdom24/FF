@@ -1,0 +1,68 @@
+
+Textbox.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Blank
+  rotate: false
+  xy: 0, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+D
+  rotate: false
+  xy: 18, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+DL
+  rotate: false
+  xy: 36, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+DR
+  rotate: false
+  xy: 54, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+L
+  rotate: false
+  xy: 72, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+R
+  rotate: false
+  xy: 90, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+U
+  rotate: false
+  xy: 108, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+UL
+  rotate: false
+  xy: 126, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+UR
+  rotate: false
+  xy: 144, 0
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

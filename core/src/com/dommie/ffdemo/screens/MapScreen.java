@@ -69,7 +69,7 @@ public abstract class MapScreen extends GameScreen{
         WorldContactListener.player = player;
         //GameInfo.currentScreen = this;
 
-        hud.createTextbox(20, 4);
+        hud.createTextbox(20, 4, "Testing... testing... Oh? New line!");//just for demo, should only me put in child classes for specific npcs
 
         t = new TestBody(world, map);
     }

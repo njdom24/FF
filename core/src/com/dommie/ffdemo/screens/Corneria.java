@@ -47,6 +47,10 @@ public class Corneria extends MapScreen {
             changeMap(m);
         }
 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+			hud.createTextbox(20, 4, "Testing... testing... Oh? Hello!");
+		}
+
         if(player.b2body.getPosition().x <= 0)
         {
             Corneria m = new Corneria(game, 264, 8);
