@@ -16,6 +16,7 @@ import com.dommie.ffdemo.scenes.Hud;
 import com.dommie.ffdemo.sprites.NPC;
 import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.sprites.TestBody;
+import com.dommie.ffdemo.tools.B2WorldCreator;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
 import java.util.ArrayList;
@@ -39,7 +40,10 @@ public abstract class MapScreen extends GameScreen{
 
     private TestBody t;
 
+
+	protected B2WorldCreator creator;
     protected ArrayList<NPC> npcs;
+    protected int[][] collisions;
 
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
@@ -69,7 +73,7 @@ public abstract class MapScreen extends GameScreen{
         WorldContactListener.player = player;
         //GameInfo.currentScreen = this;
 
-        hud.createTextbox(20, 4, "Testing... testing... Oh? New line!");//just for demo, should only me put in child classes for specific npcs
+        hud.createTextbox(23, 5, "Testing... testing...Oh? New line!");//just for demo, should only me put in child classes for specific npcs
 
         t = new TestBody(world, map);
     }

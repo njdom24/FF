@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 import com.dommie.ffdemo.screens.MapScreen;
 import com.dommie.ffdemo.sprites.Collision;
 import com.dommie.ffdemo.sprites.NPC;
@@ -19,12 +20,12 @@ import java.util.ArrayList;
  * Created by njdom24 on 5/8/2017.
  */
 
-public class B2WorldCreator
+public class B2WorldCreator implements Disposable
 {
     private int npcIndex;
     private World world;
     private TiledMap map;
-    public B2WorldCreator(World world, TiledMap map)
+    public B2WorldCreator(World world, TiledMap map, int[][] collisions)
     {
         npcIndex = 0;
         this.world = world;
@@ -41,15 +42,30 @@ public class B2WorldCreator
                     Rectangle square = new Rectangle();
                     square.setSize(16);
                     square.setPosition(rect.getX()+j, rect.getY()+i);
-                    new Collision(world, map, square);
+                    collisions[collisions.length - 1 - (int)(square.getY()+1)/16][(int)(square.getX()+1)/16] = 1;
+                    new Collision(world, map, square);//TODO: remove
                 }
+
+                /*
+                for(int[] i : collisions)
+				{
+					for(int j : i)
+					{
+						System.out.print(j + ", ");
+					}
+					System.out.println();
+				}
+
+				System.out.println(collisions.length);
+				System.out.println(collisions[0].length);
+				*/
 
             //new Collision(world, map, rect);
         }
 
     }
 
-    //TODO checks for direction (direction boolean array?)
+    //TODO: Checks for direction (direction boolean array?)
     public ArrayList<NPC> createGenericNPCs(String[] texts, String[] npcTypes, MapScreen m)
     {
         //create npc bodies/fixtures
@@ -64,4 +80,10 @@ public class B2WorldCreator
         }
         return npcArray;
     }
+
+	public void dispose()
+	{
+		world.dispose();
+		map.dispose();
+	}
 }

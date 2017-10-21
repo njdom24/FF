@@ -21,7 +21,11 @@ public class Corneria extends MapScreen {
         String[] dialogue = new String[1];
         String[] types = {"Dancer"};
 
-        npcs = new B2WorldCreator(world, map).createGenericNPCs(dialogue, types, this);
+		collisions = new int[prop.get("height", Integer.class)][prop.get("width", Integer.class)];
+		creator = new B2WorldCreator(world, map, collisions);//dispose later?
+		player.setCollisionArray(collisions);
+		player.setStartingIndex(264/16, 8/16);
+		npcs = creator.createGenericNPCs(dialogue, types, this);
         WorldContactListener.npcs = npcs;
     }
 
@@ -33,7 +37,11 @@ public class Corneria extends MapScreen {
         String[] dialogue = new String[1];
         String[] types = {"Dancer"};
 
-        npcs = new B2WorldCreator(world, map).createGenericNPCs(dialogue, types, this);
+		collisions = new int[prop.get("height", Integer.class)][prop.get("width", Integer.class)];
+        creator = new B2WorldCreator(world, map, collisions);
+        player.setCollisionArray(collisions);
+        player.setStartingIndex(264/16, 8/16);
+        npcs = creator.createGenericNPCs(dialogue, types, this);
         WorldContactListener.npcs = npcs;
     }
 
