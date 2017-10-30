@@ -156,6 +156,8 @@ public class NPC extends InteractiveTileObject implements Disposable
         float playerX = WorldContactListener.player.getIntendedPos().x;
         float playerY = WorldContactListener.player.getIntendedPos().y;
 
+        System.out.println("NPC: (" + npcX + ", " + npcY + ")");
+
         if(isVertical)
         {
             //player is either not in the same x position or player is not 16 y pixels below

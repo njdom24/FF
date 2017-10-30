@@ -343,6 +343,8 @@ public class Player extends Sprite implements Disposable
 	//where the body will end up at the end of its movement
 	public Vector2 getIntendedPos()
 	{
+		intendedPos = new Vector2(curX*16 + 8, curY*16 + 8);
+		System.out.println("Player: (" + curX*16 + ", " + curY*16 + ")");
 		return intendedPos;
 	}
 

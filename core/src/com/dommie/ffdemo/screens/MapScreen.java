@@ -47,7 +47,7 @@ public abstract class MapScreen extends GameScreen{
 
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
-        atlas = new TextureAtlas("overworld_jobs.atlas");
+        atlas = new TextureAtlas("overworld_jobs_2.atlas");
         this.game = game;
         gamecam = new OrthographicCamera();
 
@@ -60,7 +60,7 @@ public abstract class MapScreen extends GameScreen{
         renderer = new OrthogonalTiledMapRenderer(map);
 
         world = new World(new Vector2(0, 0), true);//sets gravity properties
-        b2dr = new Box2DDebugRenderer();
+        //b2dr = new Box2DDebugRenderer();
 
         player = new Player(world, this);
         player.b2body.setTransform(locX, locY, 0);//world entrance location
@@ -166,7 +166,7 @@ public abstract class MapScreen extends GameScreen{
         renderer.render();
 
         //render Box2DDebugLines
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
         //set batch to draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
