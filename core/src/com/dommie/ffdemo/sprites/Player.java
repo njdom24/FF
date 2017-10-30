@@ -356,7 +356,9 @@ public class Player extends Sprite implements Disposable
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
 
+		/*
 		FixtureDef fdef = new FixtureDef();
+
 
 		fdef.filter.categoryBits = com.dommie.ffdemo.GameInfo.PLAYER_BIT;
 		//what player can collide with
@@ -405,6 +407,7 @@ public class Player extends Sprite implements Disposable
 		fdef.isSensor = true;
 		b2body.createFixture(fdef).setUserData("right");
 		edge.dispose();
+		*/
 
 	}
 

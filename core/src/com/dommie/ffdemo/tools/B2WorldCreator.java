@@ -43,7 +43,7 @@ public class B2WorldCreator implements Disposable
                     square.setSize(16);
                     square.setPosition(rect.getX()+j, rect.getY()+i);
                     collisions[collisions.length - 1 - (int)(square.getY()+1)/16][(int)(square.getX()+1)/16] = 1;
-                    new Collision(world, map, square);//TODO: remove
+                    //new Collision(world, map, square);
                 }
 
                 /*

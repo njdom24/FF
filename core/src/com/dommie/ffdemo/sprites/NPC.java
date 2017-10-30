@@ -57,7 +57,7 @@ public class NPC extends InteractiveTileObject implements Disposable
         super(world, map, bounds, true);
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
 
-        fixture.setUserData(this);
+        //fixture.setUserData(this);
         setCategoryFilter(GameInfo.COLLISION_BIT);
 
         intendedPos = body.getPosition();
@@ -76,7 +76,7 @@ public class NPC extends InteractiveTileObject implements Disposable
         animSpeed = 0.125f;
         spr.setPosition(16,16);
 
-        fixture.setUserData(this);
+        //fixture.setUserData(this);
         setCategoryFilter(com.dommie.ffdemo.GameInfo.COLLISION_BIT);
 
         intendedPos = body.getPosition();
@@ -304,7 +304,7 @@ public class NPC extends InteractiveTileObject implements Disposable
     {
         Filter filter = new Filter();
         filter.categoryBits = filterBit;
-        fixture.setFilterData(filter);
+        //fixture.setFilterData(filter);
     }
 
     //where the player will end up at the end of their movement

@@ -22,7 +22,7 @@ public abstract class InteractiveTileObject
     protected TiledMapTile tile;
     protected Rectangle bounds;
     public Body body;
-    protected Fixture fixture;
+    //protected Fixture fixture;
 
 
     public InteractiveTileObject(World world, TiledMap map, Rectangle bounds, boolean isDynamic)
@@ -48,7 +48,7 @@ public abstract class InteractiveTileObject
         fdef.shape = shape;
         //shape.dispose();
         fdef.isSensor = true;
-        fixture = body.createFixture(fdef);
+        //fixture = body.createFixture(fdef);
     }
 
     public abstract void onDownCollision();
@@ -60,6 +60,6 @@ public abstract class InteractiveTileObject
     {
         Filter filter = new Filter();
         filter.categoryBits = filterBit;
-        fixture.setFilterData(filter);
+        //fixture.setFilterData(filter);
     }
 }
