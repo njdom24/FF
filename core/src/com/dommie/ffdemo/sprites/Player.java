@@ -201,7 +201,7 @@ public class Player extends Sprite implements Disposable
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curY <= 0 || collisionArray[collisionArray.length-curY-2][curX] == 0)//no upward collisions, allowed to move out of bounds
+					if (curY < collisionArray.length-1 && collisionArray[collisionArray.length-curY-2][curX] == 0)//no upward collisions, not allowed to move out of bounds
                     {
                         isMoving = true;
                         collisionArray[collisionArray.length-curY-1][curX] = 0;
@@ -234,8 +234,9 @@ public class Player extends Sprite implements Disposable
 				setState(Player.State.DOWN);
 				if(canMove)
 				{
+					System.out.println("curY: " + curY);
 					updateAnimationSpeed(0.15f);
-					if (curY >= collisionArray.length-1 || collisionArray[collisionArray.length-curY][curX] == 0)//no downward collisions, allowed to move out of bounds
+					if (curY > 0 && collisionArray[collisionArray.length-curY][curX] == 0)//no downward collisions, not allowed to move out of bounds
 					{
 						isMoving = true;
                         collisionArray[collisionArray.length-curY-1][curX] = 0;
@@ -269,7 +270,7 @@ public class Player extends Sprite implements Disposable
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curX <= 0 || collisionArray[collisionArray.length-curY-1][curX-1] == 0)//no left collisions, allowed to move out of bounds
+					if (curX > 0 && collisionArray[collisionArray.length-curY-1][curX-1] == 0)//no left collisions, not allowed to move out of bounds
 					{
 						isMoving = true;
                         collisionArray[collisionArray.length-curY-1][curX] = 0;
@@ -302,7 +303,7 @@ public class Player extends Sprite implements Disposable
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curX >= collisionArray[0].length-1 || collisionArray[collisionArray.length-curY-1][curX+1] == 0)//no right collisions, allowed to move out of bounds
+					if (curX < collisionArray[0].length-1 && collisionArray[collisionArray.length-curY-1][curX+1] == 0)//no right collisions, not allowed to move out of bounds
 					{
                         isMoving = true;
                         collisionArray[collisionArray.length-curY-1][curX] = 0;
@@ -344,7 +345,7 @@ public class Player extends Sprite implements Disposable
 	public Vector2 getIntendedPos()
 	{
 		intendedPos = new Vector2(curX*16 + 8, curY*16 + 8);
-		System.out.println("Player: (" + curX*16 + ", " + curY*16 + ")");
+		//System.out.println("Player: (" + curX*16 + ", " + curY*16 + ")");
 		return intendedPos;
 	}
 

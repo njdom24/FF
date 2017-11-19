@@ -24,7 +24,7 @@ public class Corneria extends MapScreen {
 		collisions = new int[prop.get("height", Integer.class)][prop.get("width", Integer.class)];
 		creator = new B2WorldCreator(world, map, collisions);//dispose later?
 		player.setCollisionArray(collisions);
-		player.setStartingIndex(264/16, 8/16);
+		player.setStartingIndex((int)(locX/16), (int)(locY/16));
 		npcs = creator.createGenericNPCs(dialogue, types, this);
         WorldContactListener.npcs = npcs;
     }
@@ -50,7 +50,7 @@ public class Corneria extends MapScreen {
         super.handleInput(dt);
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            Corneria m = new Corneria(game, 8, 8);
+            Corneria m = new Corneria(game, 264-(16*2), 8);
             m.setToDispose(this);
             changeMap(m);
         }
