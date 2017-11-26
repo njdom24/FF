@@ -50,9 +50,11 @@ public class NPC extends InteractiveTileObject implements Disposable
     private int distancePos;
     private int distanceNeg;
 
+    private String[] messages;
+
     private float time;
 
-    public NPC(World world, TiledMap map, Rectangle bounds, int index, String name, MapScreen m)
+    public NPC(World world, TiledMap map, Rectangle bounds, String name, MapScreen m)
     {
         super(world, map, bounds, true);
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
@@ -66,10 +68,11 @@ public class NPC extends InteractiveTileObject implements Disposable
         isMoving = false;
     }
 
-    public NPC(World world, TiledMap map, Rectangle bounds, int index, boolean vertical, int distance, String name, MapScreen m)
+    public NPC(World world, TiledMap map, Rectangle bounds, boolean vertical, int distance, String name, MapScreen m)
     {
         super(world, map, bounds, true);
 
+        messages = new String[0];
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
         currentState = State.UP;
         stateTimer = 0;
@@ -306,6 +309,47 @@ public class NPC extends InteractiveTileObject implements Disposable
         filter.categoryBits = filterBit;
         //fixture.setFilterData(filter);
     }
+
+    public boolean playerIsAdjacent(int[][] collisions)
+	{
+		if(!isMoving)
+		{
+			int x = (int) ((getIntendedPos().x + 8) / 16 - 1);
+			int y = (int) ((getIntendedPos().y + 8) / 16);
+
+			System.out.println("X: " + x);
+			System.out.println("Y: " + y);
+
+			if (collisions[collisions.length - (y - 1)][x] == 2)//if player is below NPC
+			{
+				currentState = State.DOWN;
+				update(0);
+				return true;
+			} else if (collisions[collisions.length - (y + 1)][x] == 2)//if player is above NPC
+			{
+				currentState = State.UP;
+				update(0);
+				return true;
+			} else if (collisions[collisions.length - (y)][x - 1] == 2)//if player is to the left of NPC
+			{
+				currentState = State.LEFT;
+				update(0);
+				return true;
+			} else if (collisions[collisions.length - (y)][x + 1] == 2)//if player is to the right of NPC
+			{
+				currentState = State.RIGHT;
+				update(0);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public void setMessages(String[] texts)
+	{
+		messages = texts;
+	}
 
     //where the player will end up at the end of their movement
     public Vector2 getIntendedPos()

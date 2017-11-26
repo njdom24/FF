@@ -22,12 +22,10 @@ import java.util.ArrayList;
 
 public class B2WorldCreator implements Disposable
 {
-    private int npcIndex;
     private World world;
     private TiledMap map;
     public B2WorldCreator(World world, TiledMap map, int[][] collisions)
     {
-        npcIndex = 0;
         this.world = world;
         this.map = map;
 
@@ -66,7 +64,7 @@ public class B2WorldCreator implements Disposable
     }
 
     //TODO: Checks for direction (direction boolean array?)
-    public ArrayList<NPC> createGenericNPCs(String[] texts, String[] npcTypes, MapScreen m)
+    public ArrayList<NPC> createGenericNPCs(String[][] texts, String[] npcTypes, MapScreen m)
     {
         //create npc bodies/fixtures
         ArrayList<NPC> npcArray = new ArrayList<NPC>();
@@ -76,7 +74,10 @@ public class B2WorldCreator implements Disposable
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            npcArray.add(new NPC(world, map, rect, npcIndex++, true, 2, npcTypes[i++], m));
+            NPC newNPC = new NPC(world, map, rect, true, 2, npcTypes[i++], m);
+            npcArray.add(newNPC);
+
+            newNPC.setMessages(texts[i-1]);
         }
         return npcArray;
     }

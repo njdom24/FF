@@ -63,6 +63,8 @@ public class Hud implements Disposable
 				curChar++;
 				curX = 1;
 				curY++;
+				time = 0;
+				dt = 0;
 			}
 			time += dt;
 			if (time >= 0.1)//Update next character
@@ -122,6 +124,7 @@ public class Hud implements Disposable
 	//call this with constructor later when a method to write text without creating a new box is made
 	public void createTextbox(int width, int height, String text)//TODO: Create overloaded method for user-specified origin coordinates
     {
+    	curChar = 0;
     	done = false;
     	curX = 1;
     	curY = 1;

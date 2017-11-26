@@ -1,6 +1,7 @@
 package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -35,18 +36,18 @@ public abstract class MapScreen extends GameScreen{
     //Box2d variables
     protected Player player;
 
-    //Movement variables
-    public Set<String> mapCollisions;
-
     private TestBody t;
-
 
 	protected B2WorldCreator creator;
     protected ArrayList<NPC> npcs;
     protected int[][] collisions;
 
+    private boolean paused;
+
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
+    	paused = false;
+
         atlas = new TextureAtlas("overworld_jobs_2.atlas");
         this.game = game;
         gamecam = new OrthographicCamera();
@@ -68,8 +69,6 @@ public abstract class MapScreen extends GameScreen{
         setCamera();
 
         world.setContactListener(new WorldContactListener());
-        mapCollisions = new TreeSet<String>();
-        WorldContactListener.currentCollisions = mapCollisions;
         WorldContactListener.player = player;
         //GameInfo.currentScreen = this;
 
@@ -87,8 +86,7 @@ public abstract class MapScreen extends GameScreen{
     protected void setChangeElements()
     {
     	super.setChangeElements();
-    	
-    	WorldContactListener.currentCollisions = mapCollisions;
+
     	WorldContactListener.player = player;
     	WorldContactListener.npcs = npcs;
     	
@@ -124,33 +122,40 @@ public abstract class MapScreen extends GameScreen{
 
     public void handleInput(float dt)
     {
-
+    	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+			for(NPC n : npcs)
+			{
+				paused = n.playerIsAdjacent(collisions);
+				break;
+			}
     }
 
     public void update(float dt)//delta time
     {
-        player.update(dt);
+    	if(!paused)
+    	{
+			player.update(dt);
 
-        handleInput(dt);
-        t.update(dt);
-        
-        if(prevScreen != null)
-        {
-        	prevScreen.dispose();
-        	prevScreen = null;
-        	System.out.println("disposed");
-        }
-        
-        world.step(1/60f, 6, 2);
+			handleInput(dt);
+			t.update(dt);
+
+			if (prevScreen != null) {
+				prevScreen.dispose();
+				prevScreen = null;
+				System.out.println("disposed");
+			}
+
+			world.step(1 / 60f, 6, 2);
 
 
-        if(!isTooFarLeft() && !isTooFarRight())
-            gamecam.position.x = player.b2body.getPosition().x;
-        if(!isTooFarUp() && !isTooFarDown())
-            gamecam.position.y = player.b2body.getPosition().y;
+			if (!isTooFarLeft() && !isTooFarRight())
+				gamecam.position.x = player.b2body.getPosition().x;
+			if (!isTooFarUp() && !isTooFarDown())
+				gamecam.position.y = player.b2body.getPosition().y;
 
-        gamecam.update();
-        renderer.setView(gamecam);
+			gamecam.update();
+			renderer.setView(gamecam);
+		}
     }
 
     @Override
@@ -174,7 +179,8 @@ public abstract class MapScreen extends GameScreen{
         player.draw(game.batch);
         for(NPC n : npcs)
         {
-            n.update(delta);
+        	if(!paused)
+            	n.update(delta);
             n.draw(game.batch);
         }
 

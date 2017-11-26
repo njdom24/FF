@@ -234,7 +234,6 @@ public class Player extends Sprite implements Disposable
 				setState(Player.State.DOWN);
 				if(canMove)
 				{
-					System.out.println("curY: " + curY);
 					updateAnimationSpeed(0.15f);
 					if (curY > 0 && collisionArray[collisionArray.length-curY][curX] == 0)//no downward collisions, not allowed to move out of bounds
 					{
