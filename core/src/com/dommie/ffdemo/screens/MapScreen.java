@@ -37,15 +37,18 @@ public abstract class MapScreen extends GameScreen{
     protected Player player;
 
     private TestBody t;
+    private boolean justPaused;
 
 	protected B2WorldCreator creator;
     protected ArrayList<NPC> npcs;
     protected int[][] collisions;
+    private NPC speakingNPC;
 
     private boolean paused;
 
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
+    	justPaused = false;
     	paused = false;
 
         atlas = new TextureAtlas("overworld_jobs_2.atlas");
@@ -72,7 +75,7 @@ public abstract class MapScreen extends GameScreen{
         WorldContactListener.player = player;
         //GameInfo.currentScreen = this;
 
-        hud.createTextbox(23, 5, "Good ol' fashioned\ntest.");//just for demo, should only me put in child classes for specific npcs
+        //hud.createTextbox(23, 5, "Good ol' fashioned\ntest.");//just for demo, should only me put in child classes for specific npcs
 
         t = new TestBody(world, map);
     }
@@ -122,21 +125,48 @@ public abstract class MapScreen extends GameScreen{
 
     public void handleInput(float dt)
     {
-    	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-			for(NPC n : npcs)
+    	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !player.isMoving())
+		{
+			if(!paused)
+				for (NPC n : npcs)
+				{
+					paused = n.playerIsAdjacent(collisions, player.getState());
+					justPaused = paused;
+					if (paused)
+					{
+						speakingNPC = n;
+						n.speak(hud);
+					}
+					break;
+				}
+			System.out.println("Foddy");
+			if(!justPaused)
 			{
-				paused = n.playerIsAdjacent(collisions);
-				break;
+				if(!hud.isFinished())
+					hud.finishText();
+				else
+				{
+					if (speakingNPC != null && !speakingNPC.advanceText(hud))
+					{
+						speakingNPC = null;
+						hud.quitText();
+						paused = false;
+					}
+				}
 			}
+		}
     }
 
     public void update(float dt)//delta time
     {
+		if(justPaused)
+			justPaused = false;
+
+		handleInput(dt);
     	if(!paused)
     	{
 			player.update(dt);
 
-			handleInput(dt);
 			t.update(dt);
 
 			if (prevScreen != null) {

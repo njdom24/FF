@@ -51,8 +51,8 @@ public class Hud implements Disposable
 		table.top();//align at the top of the stage
 		table.setFillParent(true);
         //createTextbox(4,3);
-
-
+		createTextbox(0,0, "");
+		done = true;
 	}
 
 	public void update(float dt)
@@ -120,6 +120,28 @@ public class Hud implements Disposable
 			}
 		}
 	}
+
+	public boolean isFinished()
+	{
+		return done;
+	}
+
+	public void finishText()
+	{
+		while(!done)
+		{
+			update(5);
+		}
+	}
+
+	public void quitText()
+	{
+		System.out.println("QUIT TEXT");
+		done = true;
+		dispose();
+		sprites = new Sprite[0][0];
+	}
+
 
 	//call this with constructor later when a method to write text without creating a new box is made
 	public void createTextbox(int width, int height, String text)//TODO: Create overloaded method for user-specified origin coordinates

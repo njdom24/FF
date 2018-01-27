@@ -22,9 +22,10 @@ public class Corneria extends MapScreen {
         super(game, "corneria.tmx", locX, locY);
 
         npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
-        String[][] dialogue = new String[1][1];
+        String[][] dialogue = new String[1][2];
         String[] types = {"Dancer"};
         dialogue[0][0] = "Hello! I am a dancer!";
+        dialogue[0][1] = "If you're seeing this\nthen the text works!";
 
         npcs = new ArrayList<NPC>();
 

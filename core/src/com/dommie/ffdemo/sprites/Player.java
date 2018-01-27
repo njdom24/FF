@@ -436,12 +436,18 @@ public class Player extends Sprite implements Disposable
 	{
 		//stand.getTexture().dispose();
 
-		super.getTexture().dispose();
+		getTexture().dispose();
 		/*
 		for(TextureRegion t : animFrames)
 			t.getTexture().dispose();
 		*/
 	}
+
+	public boolean isMoving()
+	{
+		return isMoving;
+	}
+
 
 	private void printColArray()
     {

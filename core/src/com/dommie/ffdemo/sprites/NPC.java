@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.scenes.Hud;
 import com.dommie.ffdemo.screens.MapScreen;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
@@ -26,7 +27,7 @@ public class NPC extends InteractiveTileObject implements Disposable
 {
     public State currentState;
     public State previousState;
-    private enum State{LEFT, RIGHT, UP, DOWN};
+    private enum State{LEFT, RIGHT, UP, DOWN}
     
     private Array<TextureRegion> animFrames;
     private Animation<TextureRegion> runHorizontal;
@@ -51,6 +52,7 @@ public class NPC extends InteractiveTileObject implements Disposable
     private int distanceNeg;
 
     private String[] messages;
+    private int messageIndex;
 
     private float time;
 
@@ -73,6 +75,7 @@ public class NPC extends InteractiveTileObject implements Disposable
         super(world, map, bounds, true);
 
         messages = new String[0];
+        messageIndex = 0;
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
         currentState = State.UP;
         stateTimer = 0;
@@ -310,7 +313,7 @@ public class NPC extends InteractiveTileObject implements Disposable
         //fixture.setFilterData(filter);
     }
 
-    public boolean playerIsAdjacent(int[][] collisions)
+    public boolean playerIsAdjacent(int[][] collisions, Player.State playerState)
 	{
 		if(!isMoving)
 		{
@@ -320,22 +323,22 @@ public class NPC extends InteractiveTileObject implements Disposable
 			System.out.println("X: " + x);
 			System.out.println("Y: " + y);
 
-			if (collisions[collisions.length - (y - 1)][x] == 2)//if player is below NPC
+			if (collisions[collisions.length - (y - 1)][x] == 2 && playerState == Player.State.UP)//if player is below NPC
 			{
 				currentState = State.DOWN;
 				update(0);
 				return true;
-			} else if (collisions[collisions.length - (y + 1)][x] == 2)//if player is above NPC
+			} else if (collisions[collisions.length - (y + 1)][x] == 2 && playerState == Player.State.DOWN)//if player is above NPC
 			{
 				currentState = State.UP;
 				update(0);
 				return true;
-			} else if (collisions[collisions.length - (y)][x - 1] == 2)//if player is to the left of NPC
+			} else if (collisions[collisions.length - (y)][x - 1] == 2 && playerState == Player.State.RIGHT)//if player is to the left of NPC
 			{
 				currentState = State.LEFT;
 				update(0);
 				return true;
-			} else if (collisions[collisions.length - (y)][x + 1] == 2)//if player is to the right of NPC
+			} else if (collisions[collisions.length - (y)][x + 1] == 2 && playerState == Player.State.LEFT)//if player is to the right of NPC
 			{
 				currentState = State.RIGHT;
 				update(0);
@@ -349,6 +352,22 @@ public class NPC extends InteractiveTileObject implements Disposable
 	public void setMessages(String[] texts)
 	{
 		messages = texts;
+	}
+
+	public void speak(Hud hud)
+	{
+		hud.createTextbox(23, 5, messages[messageIndex++]);
+	}
+
+	public boolean advanceText(Hud hud)
+	{
+		if(messageIndex < messages.length)
+		{
+			speak(hud);
+			return true;
+		}
+		messageIndex = 0;
+		return false;
 	}
 
     //where the player will end up at the end of their movement
