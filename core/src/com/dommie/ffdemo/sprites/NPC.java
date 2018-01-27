@@ -52,7 +52,6 @@ public class NPC extends InteractiveTileObject implements Disposable
     private int distanceNeg;
 
     private String[] messages;
-    private int messageIndex;
 
     private float time;
 
@@ -75,7 +74,6 @@ public class NPC extends InteractiveTileObject implements Disposable
         super(world, map, bounds, true);
 
         messages = new String[0];
-        messageIndex = 0;
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
         currentState = State.UP;
         stateTimer = 0;
@@ -354,20 +352,9 @@ public class NPC extends InteractiveTileObject implements Disposable
 		messages = texts;
 	}
 
-	public void speak(Hud hud)
+	public String[] getMessages()
 	{
-		hud.createTextbox(23, 5, messages[messageIndex++]);
-	}
-
-	public boolean advanceText(Hud hud)
-	{
-		if(messageIndex < messages.length)
-		{
-			speak(hud);
-			return true;
-		}
-		messageIndex = 0;
-		return false;
+		return messages;
 	}
 
     //where the player will end up at the end of their movement

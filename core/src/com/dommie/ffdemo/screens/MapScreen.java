@@ -21,8 +21,6 @@ import com.dommie.ffdemo.tools.B2WorldCreator;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
 
 public abstract class MapScreen extends GameScreen{
     //Reference to Game, used to set Screens
@@ -37,7 +35,7 @@ public abstract class MapScreen extends GameScreen{
     protected Player player;
 
     private TestBody t;
-    private boolean justPaused;
+    //private boolean justPaused;
 
 	protected B2WorldCreator creator;
     protected ArrayList<NPC> npcs;
@@ -48,7 +46,7 @@ public abstract class MapScreen extends GameScreen{
 
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
-    	justPaused = false;
+    	//justPaused = false;
     	paused = false;
 
         atlas = new TextureAtlas("overworld_jobs_2.atlas");
@@ -125,17 +123,19 @@ public abstract class MapScreen extends GameScreen{
 
     public void handleInput(float dt)
     {
+    	boolean justPaused = false;
     	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !player.isMoving())
 		{
 			if(!paused)
 				for (NPC n : npcs)
 				{
 					paused = n.playerIsAdjacent(collisions, player.getState());
-					justPaused = paused;
 					if (paused)
 					{
+						justPaused = true;
 						speakingNPC = n;
-						n.speak(hud);
+						hud = new Hud(game.batch, gamecam, n.getMessages());
+						hud.speak();
 					}
 					break;
 				}
@@ -145,22 +145,20 @@ public abstract class MapScreen extends GameScreen{
 				if(!hud.isFinished())
 					hud.finishText();
 				else
-				{
-					if (speakingNPC != null && !speakingNPC.advanceText(hud))
+					if (speakingNPC != null && !hud.advanceText())
 					{
 						speakingNPC = null;
 						hud.quitText();
 						paused = false;
 					}
-				}
 			}
 		}
     }
 
     public void update(float dt)//delta time
     {
-		if(justPaused)
-			justPaused = false;
+		//if(justPaused)
+		//	justPaused = false;
 
 		handleInput(dt);
     	if(!paused)

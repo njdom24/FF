@@ -23,13 +23,15 @@ public class Hud implements Disposable
     private Sprite[][] sprites;
     private OrthographicCamera gamecam;
     private TextureAtlas atlas;
-    private String message;//eventually make array
+    private String message;
+	private String[] messages;
 	private Texture letters;
 	private float time;
 
     private int width;
     private int height;
 
+    private int messageIndex;
     private int curChar;
     private int curX;
     private int curY;
@@ -37,6 +39,13 @@ public class Hud implements Disposable
 
 	public Hud(SpriteBatch sb, OrthographicCamera o)
 	{
+		//String[] s1 = {" "};
+		this(sb, o, null);
+	}
+
+	public Hud(SpriteBatch sb, OrthographicCamera o, String[] texts)
+	{
+		messages = texts;
 		curChar = 0;
 		done = false;
         gamecam = o;
@@ -121,6 +130,22 @@ public class Hud implements Disposable
 		}
 	}
 
+	public void speak()
+	{
+		createTextbox(23, 5, messages[messageIndex++]);
+	}
+
+	public boolean advanceText()
+	{
+		if(messageIndex < messages.length)
+		{
+			speak();
+			return true;
+		}
+		messageIndex = 0;
+		return false;
+	}
+
 	public boolean isFinished()
 	{
 		return done;
@@ -129,9 +154,7 @@ public class Hud implements Disposable
 	public void finishText()
 	{
 		while(!done)
-		{
 			update(5);
-		}
 	}
 
 	public void quitText()
