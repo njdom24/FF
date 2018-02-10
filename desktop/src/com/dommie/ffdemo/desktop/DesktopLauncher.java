@@ -13,9 +13,12 @@ public class DesktopLauncher {
 
         config.width = 432;
         config.height = 240;
-		//config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
-		//config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+
+        //Ensures pixel-perfect (integer) scaling
+		config.width = (LwjglApplicationConfiguration.getDesktopDisplayMode().width / com.dommie.ffdemo.GameInfo.V_WIDTH) * com.dommie.ffdemo.GameInfo.V_WIDTH;
+		config.height = (LwjglApplicationConfiguration.getDesktopDisplayMode().width / com.dommie.ffdemo.GameInfo.V_WIDTH) * GameInfo.V_HEIGHT;
 		config.resizable = false;
+		//config.fullscreen = true;
 
 		config.addIcon("Icon/128.png", Files.FileType.Internal);
 		config.addIcon("Icon/32.png", Files.FileType.Internal);

@@ -54,7 +54,7 @@ public abstract class MapScreen extends GameScreen{
         gamecam = new OrthographicCamera();
 
         gamePort = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, com.dommie.ffdemo.GameInfo.V_HEIGHT, gamecam);
-        hud = new Hud(game.batch, gamecam);
+        hud = new Hud(gamecam);
 
         maploader = new TmxMapLoader();
         map = maploader.load(mapName);
@@ -134,8 +134,8 @@ public abstract class MapScreen extends GameScreen{
 					{
 						justPaused = true;
 						speakingNPC = n;
-						hud = new Hud(game.batch, gamecam, n.getMessages());
-						hud.speak();
+						hud = new Hud(gamecam, n.getMessages());
+						hud.displayMessage();
 					}
 					break;
 				}
@@ -199,10 +199,12 @@ public abstract class MapScreen extends GameScreen{
         renderer.render();
 
         //render Box2DDebugLines
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
         //set batch to draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
+
+        //game.hudBatch.setProjectionMatrix(gamecam.view);
         game.batch.begin();
         player.draw(game.batch);
         for(NPC n : npcs)

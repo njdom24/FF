@@ -1,13 +1,12 @@
 package com.dommie.ffdemo.scenes;
 
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -36,15 +35,21 @@ public class Hud implements Disposable
     private int curX;
     private int curY;
     private boolean done;
+    float scale;
+    //float offset;
 
-	public Hud(SpriteBatch sb, OrthographicCamera o)
+	public Hud(OrthographicCamera o)
 	{
 		//String[] s1 = {" "};
-		this(sb, o, null);
+		this(o, null);
 	}
 
-	public Hud(SpriteBatch sb, OrthographicCamera o, String[] texts)
+	public Hud(OrthographicCamera o, String[] texts)
 	{
+		scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
+		//offset = com.dommie.ffdemo.GameInfo.V_WIDTH/2 - (LwjglApplicationConfiguration.getDesktopDisplayMode().width - (com.dommie.ffdemo.GameInfo.V_WIDTH * scale));
+		//System.out.println("OFFSETTTT: " + offset);
+		//scale = 1;
 		messages = texts;
 		curChar = 0;
 		done = false;
@@ -54,7 +59,7 @@ public class Hud implements Disposable
 		letters = new Texture("Text/Chars.png");
 		atlas = new TextureAtlas("Text/Textbox.atlas");
 
-		viewport = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, GameInfo.V_HEIGHT, new OrthographicCamera());
+		viewport = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, GameInfo.V_HEIGHT, gamecam);
 
 		Table table = new Table();//used to organize labels
 		table.top();//align at the top of the stage
@@ -112,7 +117,10 @@ public class Hud implements Disposable
 				else if (toPlace >= 48 && toPlace <= 57)
 					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 48), 48, 8, 8));//Row 7 (0-9)
 
-				sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH - width * 8) / 2 + curX * 8), (height * 8 - (curY + 1) * 8));
+				//sprites[curY][curX].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + curX * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (curY+2) * 8));
+				sprites[curY][curX].setScale(scale);
+				//sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + scale + curX * 8) * scale, (height * 8 - (curY + 0.65f) * 8) * scale);
+				sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + curX * 8) * scale, (height * 8 - (curY) * 8) * scale - 20);
 
 				if (curChar == message.length())
 					done = true;
@@ -130,7 +138,7 @@ public class Hud implements Disposable
 		}
 	}
 
-	public void speak()
+	public void displayMessage()
 	{
 		createTextbox(23, 5, messages[messageIndex++]);
 	}
@@ -139,7 +147,7 @@ public class Hud implements Disposable
 	{
 		if(messageIndex < messages.length)
 		{
-			speak();
+			displayMessage();
 			return true;
 		}
 		messageIndex = 0;
@@ -204,45 +212,6 @@ public class Hud implements Disposable
                 else//sprite to be displayed is not a border
 				{
 					sprites[i][j] = new Sprite(atlas.findRegion("Blank"));
-
-					/*
-					if(curChar < text.length())//sprite to be displayed is a character
-					{
-						if(text.charAt(curChar) >= 65 && text.charAt(curChar) <= 74)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*(text.charAt(curChar) - 65), 0, 8, 8));//Row 1 (A-J)
-						else if(text.charAt(curChar) >= 75 && text.charAt(curChar) <= 85)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*(text.charAt(curChar) - 75), 8, 8, 8));//Row 2 (K-U)
-						else if(text.charAt(curChar) >= 86 && text.charAt(curChar) <= 90)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*(text.charAt(curChar) - 86), 16, 8, 8));//Row 3 (V-Z)
-						else if(text.charAt(curChar) >= 97 && text.charAt(curChar) <= 101)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*((text.charAt(curChar) - 97)+5), 16, 8, 8));//Row 3 (a-e)
-						else if(text.charAt(curChar) >= 102 && text.charAt(curChar) <= 111)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*(text.charAt(curChar) - 102), 24, 8, 8));//Row 4 (f-o)
-						else if(text.charAt(curChar) >= 112 && text.charAt(curChar) <= 121)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*(text.charAt(curChar) - 112), 32, 8, 8));//Row 5 (p-y)
-						else if(text.charAt(curChar) == 122)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 0, 40, 8, 8));//Row 6 (z)
-						else if(text.charAt(curChar) == 45)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8, 40, 8, 8));//Row 6 (-)
-						else if(text.charAt(curChar) == 34)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 16, 40, 8, 8));//Row 6 (")
-						else if(text.charAt(curChar) == 33)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 24, 40, 8, 8));//Row 6 (!)
-						else if(text.charAt(curChar) == 63)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 32, 40, 8, 8));//Row 6 (?)
-						else if(text.charAt(curChar) == 39)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 40, 40, 8, 8));//Row 6 (')
-						else if(text.charAt(curChar) == 44)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 48, 40, 8, 8));//Row 6 (,)
-						else if(text.charAt(curChar) == 46)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 56, 40, 8, 8));//Row 6 (.)
-						else if(text.charAt(curChar) >= 48 && text.charAt(curChar) <= 57)
-							sprites[i][j] = new Sprite(new TextureRegion(letters, 8*(text.charAt(curChar) - 48), 48, 8, 8));//Row 7 (0-9)
-
-
-						curChar++;
-
-					}*/
 				}
             }
         for(int i = 0; i < height; i++)
@@ -250,8 +219,10 @@ public class Hud implements Disposable
             {
                 region = new TextureRegion(sprites[i][j].getTexture(), sprites[i][j].getRegionX(), sprites[i][j].getRegionY(), 8, 8);
                 sprites[i][j].setBounds(0, 0, 8, 8);
+                sprites[i][j].setScale(scale);
                 sprites[i][j].setRegion(region);
-                sprites[i][j].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH - width*8)/2 + j*8), (height*8 -(i+1)*8));
+				//sprites[i][j].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + j * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (i+2) * 8));
+                sprites[i][j].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width*8/2) + j*8) * scale, (height*8 -(i)*8) * scale - 20);
             }
     }
 

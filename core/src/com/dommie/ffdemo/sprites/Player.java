@@ -355,6 +355,7 @@ public class Player extends Sprite implements Disposable
 		bdef.position.set(32, 32);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
+		//b2body.set
 
 		/*
 		FixtureDef fdef = new FixtureDef();
