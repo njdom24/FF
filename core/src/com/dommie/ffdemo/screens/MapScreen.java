@@ -2,6 +2,8 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -43,7 +45,6 @@ public abstract class MapScreen extends GameScreen{
     private NPC speakingNPC;
 
     private boolean paused;
-
     public MapScreen(GameInfo game, String mapName, float locX, float locY)
     {
     	//justPaused = false;
@@ -229,10 +230,7 @@ public abstract class MapScreen extends GameScreen{
 
     public boolean isTooFarLeft()
     {
-        if(player.b2body.getPosition().x+8 <= 14*16)
-            return true;
-        else
-            return false;
+		return player.b2body.getPosition().x + 8 <= 14 * 16;
     }
 
     public boolean isTooFarRight()
@@ -240,10 +238,7 @@ public abstract class MapScreen extends GameScreen{
         int mapWidth = prop.get("width", Integer.class)+1;
         int mapPixelWidth = mapWidth*16;
 
-        if(player.b2body.getPosition().x+8 >= mapPixelWidth - 14*16 - 1)
-            return true;
-        else
-            return false;
+		return player.b2body.getPosition().x + 8 >= mapPixelWidth - 14 * 16 - 1;
     }
 
     public boolean isTooFarUp()
@@ -251,18 +246,12 @@ public abstract class MapScreen extends GameScreen{
         int mapHeight = prop.get("height", Integer.class)+1;
         int mapPixelHeight = mapHeight*16;
 
-        if(player.b2body.getPosition().y+8 >= mapPixelHeight - 8*16 + 1)
-            return true;
-        else
-            return false;
+		return player.b2body.getPosition().y + 8 >= mapPixelHeight - 8 * 16 + 1;
     }
 
     public boolean isTooFarDown()
     {
-        if(player.b2body.getPosition().y+8 <= 8*16)
-            return true;
-        else
-            return false;
+		return player.b2body.getPosition().y + 8 <= 8 * 16;
     }
     
     public void dispose()

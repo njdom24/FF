@@ -1,6 +1,8 @@
 package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -20,6 +22,8 @@ public abstract class GameScreen implements Screen, Disposable{
 
     protected Viewport gamePort;
     protected Hud hud;
+
+    protected Music m;
 
     //Tiled map variables
     protected TiledMap map;
@@ -107,6 +111,7 @@ public abstract class GameScreen implements Screen, Disposable{
         b2dr.dispose();
         hud.dispose();
         world.dispose();
+        m.dispose();
     }
 
 }

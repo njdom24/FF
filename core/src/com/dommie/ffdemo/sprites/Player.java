@@ -52,7 +52,7 @@ public class Player extends Sprite implements Disposable
 
 	public Player(World world, MapScreen screen)
 	{
-		super(screen.getAtlas().findRegion("Warrior"));
+		super(screen.getAtlas().findRegion("RedMage"));
 		this.world = world;
 		currentState = State.UP;
 		stateTimer = 0;
@@ -64,7 +64,7 @@ public class Player extends Sprite implements Disposable
 
 		Array<TextureRegion> frames = new Array<TextureRegion>();
 		for(int i = 0; i <= 1; i++)
-			frames.add(new TextureRegion(getTexture(), i*16+getRegionX()-2, getRegionY(), 16, 16));
+			frames.add(new TextureRegion(getTexture(), i*16+getRegionX(), getRegionY()-1, 16, 16));
 
 		runHorizontal = new Animation<TextureRegion>(animSpeed, frames);
 		animFrames.addAll(frames);
@@ -72,14 +72,14 @@ public class Player extends Sprite implements Disposable
 
 		frames = new Array<TextureRegion>();
 		for(int i = 2; i <= 3; i++)
-			frames.add(new TextureRegion(getTexture(), i*16+getRegionX()-1, getRegionY(), 16, 16));
+			frames.add(new TextureRegion(getTexture(), i*16+getRegionX(), getRegionY()-1, 16, 16));
 		runUp = new Animation<TextureRegion>(animSpeed, frames);
 		animFrames.addAll(frames);
 		frames.clear();
 
 		frames = new Array<TextureRegion>();
 		for(int i = 4; i <= 5; i++)
-			frames.add(new TextureRegion(getTexture(), i*16+getRegionX()+1, getRegionY(), 16, 16));
+			frames.add(new TextureRegion(getTexture(), i*16+getRegionX(), getRegionY()-1, 16, 16));
 		runDown = new Animation<TextureRegion>(animSpeed, frames);
 		animFrames.addAll(frames);
 		frames.clear();

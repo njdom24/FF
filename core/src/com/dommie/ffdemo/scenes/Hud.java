@@ -1,5 +1,7 @@
 package com.dommie.ffdemo.scenes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,8 +37,11 @@ public class Hud implements Disposable
     private int curX;
     private int curY;
     private boolean done;
+    private boolean playText;
     float scale;
     //float offset;
+
+	private Sound textSound  = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/text.wav"));
 
 	public Hud(OrthographicCamera o)
 	{
@@ -46,6 +51,7 @@ public class Hud implements Disposable
 
 	public Hud(OrthographicCamera o, String[] texts)
 	{
+		playText = true;
 		scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
 		//offset = com.dommie.ffdemo.GameInfo.V_WIDTH/2 - (LwjglApplicationConfiguration.getDesktopDisplayMode().width - (com.dommie.ffdemo.GameInfo.V_WIDTH * scale));
 		//System.out.println("OFFSETTTT: " + offset);
@@ -85,6 +91,12 @@ public class Hud implements Disposable
 			{
 				char toPlace = message.charAt(curChar);
 				curChar++;
+
+				if(toPlace != ' ' && playText)
+				{
+					textSound.play();
+					System.out.println("Played");
+				}
 
 				if (toPlace >= 65 && toPlace <= 74)
 					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 65), 0, 8, 8));//Row 1 (A-J)
@@ -161,15 +173,20 @@ public class Hud implements Disposable
 
 	public void finishText()
 	{
+		playText = false;
 		while(!done)
 			update(5);
+		playText = true;
 	}
 
 	public void quitText()
 	{
 		System.out.println("QUIT TEXT");
 		done = true;
-		dispose();
+
+		//textSound.play();
+		destroy();
+
 		sprites = new Sprite[0][0];
 	}
 
@@ -185,7 +202,7 @@ public class Hud implements Disposable
 		this.width = width;
 		this.height = height;
 
-		dispose();
+		destroy();
 
 		letters = new Texture("Text/Chars.png");
         atlas = new TextureAtlas("Text/Textbox.atlas");
@@ -233,6 +250,12 @@ public class Hud implements Disposable
                 s.draw(sb);
     }
 
+    private void destroy()
+	{
+		atlas.dispose();
+		letters.dispose();
+	}
+
     @Override
     public void dispose()
     {
@@ -243,8 +266,8 @@ public class Hud implements Disposable
         */
 
         //region.getTexture().dispose();
-        atlas.dispose();
-        letters.dispose();
+        destroy();
+        textSound.dispose();
     }
 
 }

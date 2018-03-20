@@ -1,7 +1,10 @@
 package com.dommie.ffdemo.screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.backends.lwjgl.audio.Ogg;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.dommie.ffdemo.GameInfo;
@@ -17,9 +20,16 @@ import java.util.ArrayList;
 
 public class Corneria extends MapScreen {
 
+	//private Music m;
     public Corneria(GameInfo game, float locX, float locY)
     {
         super(game, "corneria.tmx", locX, locY);
+
+        m = Gdx.audio.newMusic(Gdx.files.internal("Music/Cornelia/Untitled.ogg"));
+		m.setLooping(true);
+		m.setVolume(0.8f);
+
+		m.play();
 
         npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
         String[][] dialogue = new String[1][2];
