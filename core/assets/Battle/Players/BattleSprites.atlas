@@ -1,0 +1,11 @@
+BattleSprites.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+RedMage
+  rotate: false
+  xy: 0, 0
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1

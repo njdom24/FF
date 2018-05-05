@@ -2,8 +2,6 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -76,22 +74,22 @@ public abstract class MapScreen extends GameScreen{
 
         //hud.createTextbox(23, 5, "Good ol' fashioned\ntest.");//just for demo, should only me put in child classes for specific npcs
 
-        t = new TestBody(world, map);
+        t = new TestBody(world);
     }
-    
+
     public void changeMap(GameScreen m)
     {
     	super.changeMap(m);
     	player.b2body.setTransform(player.getIntendedPos(), 0);
     }
-    
+
     protected void setChangeElements()
     {
     	super.setChangeElements();
 
     	WorldContactListener.player = player;
     	WorldContactListener.npcs = npcs;
-    	
+
     	//System.out.println("Baws");
     }
 
@@ -128,14 +126,14 @@ public abstract class MapScreen extends GameScreen{
     	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !player.isMoving())
 		{
 			if(!paused)
-				for (NPC n : npcs)
+				for (NPC n : npcs)//Checks if player is interacting with an NPC
 				{
 					paused = n.playerIsAdjacent(collisions, player.getState());
 					if (paused)
 					{
 						justPaused = true;
 						speakingNPC = n;
-						hud = new Hud(gamecam, n.getMessages());
+						hud = new Hud(gamecam, n.getMessages());//Creates a text box from NPC's dialogue
 						hud.displayMessage();
 					}
 					break;
@@ -165,8 +163,7 @@ public abstract class MapScreen extends GameScreen{
     	if(!paused)
     	{
 			player.update(dt);
-
-			t.update(dt);
+			//t.update(dt);
 
 			if (prevScreen != null) {
 				prevScreen.dispose();
@@ -200,12 +197,12 @@ public abstract class MapScreen extends GameScreen{
         renderer.render();
 
         //render Box2DDebugLines
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
         //set batch to draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
 
-        //game.hudBatch.setProjectionMatrix(gamecam.view);
+        //game.hudBatch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
         for(NPC n : npcs)
@@ -253,7 +250,7 @@ public abstract class MapScreen extends GameScreen{
     {
 		return player.b2body.getPosition().y + 8 <= 8 * 16;
     }
-    
+
     public void dispose()
     {
     	super.dispose();

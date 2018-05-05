@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.sprites.Enemy;
 
 public class Hud implements Disposable
 {
@@ -132,7 +133,7 @@ public class Hud implements Disposable
 				//sprites[curY][curX].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + curX * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (curY+2) * 8));
 				sprites[curY][curX].setScale(scale);
 				//sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + scale + curX * 8) * scale, (height * 8 - (curY + 0.65f) * 8) * scale);
-				sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + curX * 8) * scale, (height * 8 - (curY) * 8) * scale - 20);
+				sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + curX * 8 + 2) * scale, (height * 8 - (curY) * 8) * scale - 20);
 
 				if (curChar == message.length())
 					done = true;
@@ -239,9 +240,16 @@ public class Hud implements Disposable
                 sprites[i][j].setScale(scale);
                 sprites[i][j].setRegion(region);
 				//sprites[i][j].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + j * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (i+2) * 8));
-                sprites[i][j].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width*8/2) + j*8) * scale, (height*8 -(i)*8) * scale - 20);
+                sprites[i][j].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width*8/2) + j*8 + 2) * scale, (height*8 -(i)*8) * scale - 20);
             }
     }
+
+    public void createBattleMenu(Enemy e)
+	{
+		createTextbox(50, 8, " FIGHT           " + e.getName() + "\n\n ITEM              " + e.getHealth() + "\n\n RUN");
+		finishText();
+	}
+
 
     public void draw(SpriteBatch sb)
     {

@@ -1,10 +1,7 @@
 package com.dommie.ffdemo.screens;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.backends.lwjgl.audio.Ogg;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.dommie.ffdemo.GameInfo;
@@ -34,8 +31,10 @@ public class Corneria extends MapScreen {
         npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
         String[][] dialogue = new String[1][2];
         String[] types = {"Dancer"};
-        dialogue[0][0] = "Hello! I am a dancer!";
-        dialogue[0][1] = "If you're seeing this\nthen the text works!";
+        dialogue[0][0] = "Steph is a heckin\nnerd\nxDDDDDDDDDDDDDDD";
+        dialogue[0][1] = "i want to die please\nhelp me";
+        //dialogue[0][0] = "Hello! I am a dancer!";
+        //dialogue[0][1] = "If you're seeing this\nthen the text works!";
 
         npcs = new ArrayList<NPC>();
 

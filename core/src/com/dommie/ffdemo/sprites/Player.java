@@ -1,8 +1,6 @@
 package com.dommie.ffdemo.sprites;
 
 //import static com.dommie.ffdemo.tools.WorldContactListener.currentCollisions; TODO: Uncomment later for NPC dialogue
-import static com.dommie.ffdemo.tools.WorldContactListener.npcs;
-import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,14 +10,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.screens.MapScreen;
+
+import static com.dommie.ffdemo.tools.WorldContactListener.npcs;
+import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
 
 /**
  * Created by njdom24 on 5/5/2015.
@@ -31,7 +28,6 @@ public class Player extends Sprite implements Disposable
 	public State currentState;
 	public State previousState;
 
-	public World world;
 	public Body b2body;
 	private TextureRegion stand;
 
@@ -53,7 +49,6 @@ public class Player extends Sprite implements Disposable
 	public Player(World world, MapScreen screen)
 	{
 		super(screen.getAtlas().findRegion("RedMage"));
-		this.world = world;
 		currentState = State.UP;
 		stateTimer = 0;
 		animSpeed = 0.15f;
@@ -84,7 +79,7 @@ public class Player extends Sprite implements Disposable
 		animFrames.addAll(frames);
 		frames.clear();
 
-		definePlayer();
+		definePlayer(world);
 
 		setBounds(0, 0, 16, 16);
 	}
@@ -349,7 +344,7 @@ public class Player extends Sprite implements Disposable
 	}
 
 
-	public void definePlayer()
+	public void definePlayer(World world)
 	{
 		BodyDef bdef = new BodyDef();
 		bdef.position.set(32, 32);

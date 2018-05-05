@@ -4,7 +4,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
 /**
@@ -19,7 +18,7 @@ public class Collision extends InteractiveTileObject
     {
         super(world, map, bounds, false);
         fixture.setUserData(this);
-        setCategoryFilter(GameInfo.COLLISION_BIT);
+        //setCategoryFilter(GameInfo.COLLISION_BIT);
     }
 
     @Override

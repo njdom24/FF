@@ -1,12 +1,6 @@
 package com.dommie.ffdemo.sprites;
 
-import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
-
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -14,10 +8,10 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.dommie.ffdemo.GameInfo;
-import com.dommie.ffdemo.scenes.Hud;
 import com.dommie.ffdemo.screens.MapScreen;
 import com.dommie.ffdemo.tools.WorldContactListener;
+
+import static com.dommie.ffdemo.tools.WorldContactListener.smallDifference;
 
 /**
  * Created by njdom24 on 5/27/2017.
@@ -61,7 +55,7 @@ public class NPC extends InteractiveTileObject implements Disposable
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
 
         //fixture.setUserData(this);
-        setCategoryFilter(GameInfo.COLLISION_BIT);
+        //setCategoryFilter(GameInfo.COLLISION_BIT);
 
         intendedPos = body.getPosition();
         isVertical = false;
@@ -81,7 +75,7 @@ public class NPC extends InteractiveTileObject implements Disposable
         spr.setPosition(16,16);
 
         //fixture.setUserData(this);
-        setCategoryFilter(com.dommie.ffdemo.GameInfo.COLLISION_BIT);
+        //setCategoryFilter(com.dommie.ffdemo.GameInfo.COLLISION_BIT);
 
         intendedPos = body.getPosition();
         isVertical = vertical;

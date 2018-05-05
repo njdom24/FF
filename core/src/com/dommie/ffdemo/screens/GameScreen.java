@@ -2,7 +2,7 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -12,13 +12,13 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.scenes.Hud;
-import com.dommie.ffdemo.tools.WorldContactListener;
 
 public abstract class GameScreen implements Screen, Disposable{
     //Reference to Game, used to set Screens
     protected GameInfo game;
     protected TextureAtlas atlas;
     protected TextureAtlas npcAtlas;
+    protected OrthographicCamera gamecam;
 
     protected Viewport gamePort;
     protected Hud hud;
