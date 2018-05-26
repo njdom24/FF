@@ -43,7 +43,7 @@ public abstract class MapScreen extends GameScreen{
     private NPC speakingNPC;
 
     private boolean paused;
-    public MapScreen(GameInfo game, String mapName, float locX, float locY)
+    public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
     {
     	//justPaused = false;
     	paused = false;
@@ -63,7 +63,7 @@ public abstract class MapScreen extends GameScreen{
         world = new World(new Vector2(0, 0), true);//sets gravity properties
         b2dr = new Box2DDebugRenderer();
 
-        player = new Player(world, this);
+        player = new Player(world, this, isOverworld);
         player.b2body.setTransform(locX, locY, 0);//world entrance location
 
         setCamera();
@@ -74,7 +74,7 @@ public abstract class MapScreen extends GameScreen{
 
         //hud.createTextbox(23, 5, "Good ol' fashioned\ntest.");//just for demo, should only me put in child classes for specific npcs
 
-        t = new TestBody(world);
+		//t = new TestBody(world);
     }
 
     public void changeMap(GameScreen m)
@@ -126,18 +126,19 @@ public abstract class MapScreen extends GameScreen{
     	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !player.isMoving())
 		{
 			if(!paused)
-				for (NPC n : npcs)//Checks if player is interacting with an NPC
-				{
-					paused = n.playerIsAdjacent(collisions, player.getState());
-					if (paused)
+				if(npcs != null && !npcs.isEmpty())
+					for (NPC n : npcs)//Checks if player is interacting with an NPC
 					{
-						justPaused = true;
-						speakingNPC = n;
-						hud = new Hud(gamecam, n.getMessages());//Creates a text box from NPC's dialogue
-						hud.displayMessage();
+						paused = n.playerIsAdjacent(collisions, player.getState());
+						if (paused)
+						{
+							justPaused = true;
+							speakingNPC = n;
+							hud = new Hud(gamecam, n.getMessages());//Creates a text box from NPC's dialogue
+							hud.displayMessage();
+						}
+						break;
 					}
-					break;
-				}
 			System.out.println("Foddy");
 			if(!justPaused)
 			{
@@ -205,12 +206,14 @@ public abstract class MapScreen extends GameScreen{
         //game.hudBatch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for(NPC n : npcs)
-        {
-        	if(!paused)
-            	n.update(delta);
-            n.draw(game.batch);
-        }
+
+        if(npcs != null && !npcs.isEmpty())
+			for(NPC n : npcs)
+			{
+				if(!paused)
+					n.update(delta);
+				n.draw(game.batch);
+			}
 
         game.batch.end();
 

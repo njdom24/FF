@@ -20,7 +20,7 @@ public class Corneria extends MapScreen {
 	//private Music m;
     public Corneria(GameInfo game, float locX, float locY)
     {
-        super(game, "corneria.tmx", locX, locY);
+        super(game, "corneria.tmx", locX, locY, false);
 
         m = Gdx.audio.newMusic(Gdx.files.internal("Music/Cornelia/Untitled.ogg"));
 		m.setLooping(true);
@@ -54,7 +54,7 @@ public class Corneria extends MapScreen {
 
     public Corneria(GameInfo game)
     {
-        super(game, "corneria.tmx", 264, 8);
+        super(game, "corneria.tmx", 264, 8, false);
 
         npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
         String[][] dialogue = new String[1][1];

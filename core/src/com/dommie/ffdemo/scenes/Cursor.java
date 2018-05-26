@@ -5,15 +5,18 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Cursor extends Sprite
 {
+	private boolean hidden;
 	int limit;
 	int pos;
 	private int scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
 	public Cursor(int x, int y)
 	{
 		super(new Texture("Battle/Cursor.png"));
+		hidden = false;
 		pos = 3;
 		limit = 3;
 		setPosition((x+8)*scale, (y+32)*scale);
@@ -50,6 +53,23 @@ public class Cursor extends Sprite
 				}
 			}
 	}
+
+	public void hide()
+	{
+		hidden = true;
+	}
+
+	public void unHide()
+	{
+		hidden = false;
+	}
+
+	public void draw(SpriteBatch sb)
+	{
+		if(!hidden)
+			super.draw(sb);
+	}
+
 
 	public int getPos()
 	{

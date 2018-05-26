@@ -1,0 +1,676 @@
+overworld.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+overworld-0x0
+  rotate: false
+  xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x1
+  rotate: false
+  xy: 19, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x2
+  rotate: false
+  xy: 37, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x3
+  rotate: false
+  xy: 55, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x4
+  rotate: false
+  xy: 73, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x5
+  rotate: false
+  xy: 91, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x6
+  rotate: false
+  xy: 109, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x7
+  rotate: false
+  xy: 127, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x8
+  rotate: false
+  xy: 145, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x9
+  rotate: false
+  xy: 163, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x10
+  rotate: false
+  xy: 181, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-0x11
+  rotate: false
+  xy: 199, 1
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x0
+  rotate: false
+  xy: 1, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x1
+  rotate: false
+  xy: 19, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x2
+  rotate: false
+  xy: 37, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x3
+  rotate: false
+  xy: 55, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x4
+  rotate: false
+  xy: 73, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x5
+  rotate: false
+  xy: 91, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x6
+  rotate: false
+  xy: 109, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x7
+  rotate: false
+  xy: 127, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x8
+  rotate: false
+  xy: 145, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x9
+  rotate: false
+  xy: 163, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x10
+  rotate: false
+  xy: 181, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-1x11
+  rotate: false
+  xy: 199, 19
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x0
+  rotate: false
+  xy: 1, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x1
+  rotate: false
+  xy: 19, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x2
+  rotate: false
+  xy: 37, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x3
+  rotate: false
+  xy: 55, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x4
+  rotate: false
+  xy: 73, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x5
+  rotate: false
+  xy: 91, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x6
+  rotate: false
+  xy: 109, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x7
+  rotate: false
+  xy: 127, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x8
+  rotate: false
+  xy: 145, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x9
+  rotate: false
+  xy: 163, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x10
+  rotate: false
+  xy: 181, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-2x11
+  rotate: false
+  xy: 199, 37
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x0
+  rotate: false
+  xy: 1, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x1
+  rotate: false
+  xy: 19, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x2
+  rotate: false
+  xy: 37, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x3
+  rotate: false
+  xy: 55, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x4
+  rotate: false
+  xy: 73, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x5
+  rotate: false
+  xy: 91, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x6
+  rotate: false
+  xy: 109, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x7
+  rotate: false
+  xy: 127, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x8
+  rotate: false
+  xy: 145, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x9
+  rotate: false
+  xy: 163, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x10
+  rotate: false
+  xy: 181, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-3x11
+  rotate: false
+  xy: 199, 55
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x0
+  rotate: false
+  xy: 1, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x1
+  rotate: false
+  xy: 19, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x2
+  rotate: false
+  xy: 37, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x3
+  rotate: false
+  xy: 55, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x4
+  rotate: false
+  xy: 73, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x5
+  rotate: false
+  xy: 91, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x6
+  rotate: false
+  xy: 109, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x7
+  rotate: false
+  xy: 127, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x8
+  rotate: false
+  xy: 145, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x9
+  rotate: false
+  xy: 163, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x10
+  rotate: false
+  xy: 181, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-4x11
+  rotate: false
+  xy: 199, 73
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x0
+  rotate: false
+  xy: 1, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x1
+  rotate: false
+  xy: 19, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x2
+  rotate: false
+  xy: 37, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x3
+  rotate: false
+  xy: 55, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x4
+  rotate: false
+  xy: 73, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x5
+  rotate: false
+  xy: 91, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x6
+  rotate: false
+  xy: 109, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x7
+  rotate: false
+  xy: 127, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x8
+  rotate: false
+  xy: 145, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x9
+  rotate: false
+  xy: 163, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x10
+  rotate: false
+  xy: 181, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-5x11
+  rotate: false
+  xy: 199, 91
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x0
+  rotate: false
+  xy: 1, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x1
+  rotate: false
+  xy: 19, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x2
+  rotate: false
+  xy: 37, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x3
+  rotate: false
+  xy: 55, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x4
+  rotate: false
+  xy: 73, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x5
+  rotate: false
+  xy: 91, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x6
+  rotate: false
+  xy: 109, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x7
+  rotate: false
+  xy: 127, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x8
+  rotate: false
+  xy: 145, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x9
+  rotate: false
+  xy: 163, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x10
+  rotate: false
+  xy: 181, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-6x11
+  rotate: false
+  xy: 199, 109
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x0
+  rotate: false
+  xy: 1, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x1
+  rotate: false
+  xy: 19, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x2
+  rotate: false
+  xy: 37, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x3
+  rotate: false
+  xy: 55, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x4
+  rotate: false
+  xy: 73, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x5
+  rotate: false
+  xy: 91, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x6
+  rotate: false
+  xy: 109, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x7
+  rotate: false
+  xy: 127, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x8
+  rotate: false
+  xy: 145, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x9
+  rotate: false
+  xy: 163, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x10
+  rotate: false
+  xy: 181, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1
+overworld-7x11
+  rotate: false
+  xy: 199, 127
+  size: 16, 16
+  orig: 16, 16
+  soffset: 0, 0
+  index: -1

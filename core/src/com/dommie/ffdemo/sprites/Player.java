@@ -39,6 +39,7 @@ public class Player extends Sprite implements Disposable
 	private float stateTimer;
 	private float animSpeed;
 	private boolean isMoving;
+	private boolean isOverworld;
 
 	private int[][] collisionArray;
 
@@ -46,7 +47,7 @@ public class Player extends Sprite implements Disposable
 	private Vector2 intendedPos;
 	private Vector2 originalPos;
 
-	public Player(World world, MapScreen screen)
+	public Player(World world, MapScreen screen, boolean overworld)
 	{
 		super(screen.getAtlas().findRegion("RedMage"));
 		currentState = State.UP;
@@ -56,6 +57,7 @@ public class Player extends Sprite implements Disposable
 		intendedPos = new Vector2(0,0);
 		originalPos = new Vector2(0,0);
 		animFrames = new Array<TextureRegion>();
+		isOverworld = overworld;
 
 		Array<TextureRegion> frames = new Array<TextureRegion>();
 		for(int i = 0; i <= 1; i++)
@@ -85,10 +87,10 @@ public class Player extends Sprite implements Disposable
 	}
 
 	public void setCollisionArray(int[][] collisions)
-    {
-        collisionArray = collisions;
-        System.out.println("Done!");
-    }
+	{
+		collisionArray = collisions;
+		//System.out.println("Done!");
+	}
 
 	public void update(float dt)
 	{
@@ -170,7 +172,16 @@ public class Player extends Sprite implements Disposable
 
 	public void handleInput(float dt)
 	{
+		if(Gdx.input.isKeyJustPressed(Input.Keys.N))
+		{
+			System.out.println(getPos());
+		}
+		//System.out.println("PLAYER POS: (" + curX + ", " + curY + ")");
 		boolean canMove = false;
+		if(npcs == null || !npcs.isEmpty())
+			canMove = true;
+		//canMove = true;
+
 		float playerX = b2body.getPosition().x;
 		float playerY = b2body.getPosition().y;
 		float npcX = 0;
@@ -183,30 +194,35 @@ public class Player extends Sprite implements Disposable
 
 			if(Gdx.input.isKeyPressed(Input.Keys.UP))
 			{
-				for(NPC n : npcs)
-				{
-					npcX = n.getIntendedPos().x;
-					npcY = n.getIntendedPos().y;
+				if(npcs != null)
+					for(NPC n : npcs)
+					{
+						npcX = n.getIntendedPos().x;
+						npcY = n.getIntendedPos().y;
 
-					if(!smallDifference(npcX, playerX) || !smallDifference(playerY+16,  npcY))
-						canMove = true;
-				}
+						if(!smallDifference(npcX, playerX) || !smallDifference(playerY+16,  npcY))
+							canMove = true;
+					}
 
 				setState(Player.State.UP);
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curY < collisionArray.length-1 && collisionArray[collisionArray.length-curY-2][curX] == 0)//no upward collisions, not allowed to move out of bounds
-                    {
-                        isMoving = true;
-                        collisionArray[collisionArray.length-curY-1][curX] = 0;
-                        curY += 1;
-                        collisionArray[collisionArray.length-curY-1][curX] = 2;
+					if (curY < collisionArray.length-1 && (collisionArray[collisionArray.length-curY-2][curX] == 0 || collisionArray[collisionArray.length-curY-2][curX] == 3))//no upward collisions, not allowed to move out of bounds
+					{
+						isMoving = true;
+						curY += 1;
+
+						if(!isOverworld)
+						{
+							collisionArray[collisionArray.length - (curY - 1) - 1][curX] = 0;
+							collisionArray[collisionArray.length - curY - 1][curX] = 2;
+						}
 						//intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y + 16);
 						b2body.setLinearVelocity(0, 64f);
 						//currentCollisions.clear();
 
-                        printColArray();
+						printColArray();
 					}
 					else
 						updateAnimationSpeed(0.30f);
@@ -217,30 +233,34 @@ public class Player extends Sprite implements Disposable
 			else
 			if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
 			{
-				for(NPC n : npcs)
-				{
-					npcX = n.getIntendedPos().x;
-					npcY = n.getIntendedPos().y;
+				if(npcs != null)
+					for(NPC n : npcs)
+					{
+						npcX = n.getIntendedPos().x;
+						npcY = n.getIntendedPos().y;
 
-					if(!smallDifference(npcX, playerX) || !smallDifference(playerY-16,  npcY))
-						canMove = true;
-				}
+						if(!smallDifference(npcX, playerX) || !smallDifference(playerY-16,  npcY))
+							canMove = true;
+					}
 
 				setState(Player.State.DOWN);
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curY > 0 && collisionArray[collisionArray.length-curY][curX] == 0)//no downward collisions, not allowed to move out of bounds
+					if (curY > 0 && (collisionArray[collisionArray.length-curY][curX] == 0 || collisionArray[collisionArray.length-curY][curX] == 3))//no downward collisions, not allowed to move out of bounds
 					{
 						isMoving = true;
-                        collisionArray[collisionArray.length-curY-1][curX] = 0;
 						curY -= 1;
-                        collisionArray[collisionArray.length-curY-1][curX] = 2;
+						if(!isOverworld)
+						{
+							collisionArray[collisionArray.length - (curY + 1) - 1][curX] = 0;
+							collisionArray[collisionArray.length - curY - 1][curX] = 2;
+						}
 						//intendedPos = new Vector2(b2body.getPosition().x, b2body.getPosition().y - 16);
 						b2body.setLinearVelocity(0, -64f);
 						//currentCollisions.clear();//TODO: Use later for NPC interactions
 
-                        printColArray();
+						printColArray();
 					}
 					else
 						updateAnimationSpeed(0.30f);
@@ -251,30 +271,34 @@ public class Player extends Sprite implements Disposable
 			else
 			if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
 			{
-				for(NPC n : npcs)
-				{
-					npcX = n.getIntendedPos().x;
-					npcY = n.getIntendedPos().y;
+				if(npcs != null)
+					for(NPC n : npcs)
+					{
+						npcX = n.getIntendedPos().x;
+						npcY = n.getIntendedPos().y;
 
-					if(!smallDifference(npcY, playerY) || !smallDifference(playerX-16,  npcX))
-						canMove = true;
-				}
+						if(!smallDifference(npcY, playerY) || !smallDifference(playerX-16,  npcX))
+							canMove = true;
+					}
 
 				setState(Player.State.LEFT);
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curX > 0 && collisionArray[collisionArray.length-curY-1][curX-1] == 0)//no left collisions, not allowed to move out of bounds
+					if (curX > 0 && (collisionArray[collisionArray.length-curY-1][curX-1] == 0 || collisionArray[collisionArray.length-curY-1][curX-1] == 3))//no left collisions, not allowed to move out of bounds
 					{
 						isMoving = true;
-                        collisionArray[collisionArray.length-curY-1][curX] = 0;
-                        curX -= 1;
-                        collisionArray[collisionArray.length-curY-1][curX] = 2;
+						curX -= 1;
+						if(!isOverworld)
+						{
+							collisionArray[collisionArray.length - curY - 1][curX + 1] = 0;
+							collisionArray[collisionArray.length - curY - 1][curX] = 2;
+						}
 						//intendedPos = new Vector2(b2body.getPosition().x - 16, b2body.getPosition().y);
 						b2body.setLinearVelocity(-64f, 0);
 						//currentCollisions.clear();
 
-                        printColArray();
+						printColArray();
 					}
 					else
 						updateAnimationSpeed(0.30f);
@@ -285,29 +309,33 @@ public class Player extends Sprite implements Disposable
 			else
 			if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 			{
-				for(NPC n : npcs)
-				{
-					npcX = n.getIntendedPos().x;
-					npcY = n.getIntendedPos().y;
+				if(npcs != null)
+					for(NPC n : npcs)
+					{
+						npcX = n.getIntendedPos().x;
+						npcY = n.getIntendedPos().y;
 
-					if(!smallDifference(npcY, playerY) || !smallDifference(playerX+16,  npcX))
-						canMove = true;
-				}
+						if(!smallDifference(npcY, playerY) || !smallDifference(playerX+16,  npcX))
+							canMove = true;
+					}
 				setState(Player.State.RIGHT);
 				if(canMove)
 				{
 					updateAnimationSpeed(0.15f);
-					if (curX < collisionArray[0].length-1 && collisionArray[collisionArray.length-curY-1][curX+1] == 0)//no right collisions, not allowed to move out of bounds
+					if (curX < collisionArray[0].length-1 && (collisionArray[collisionArray.length-curY-1][curX+1] == 0 || collisionArray[collisionArray.length-curY-1][curX+1] == 3))//no right collisions, not allowed to move out of bounds
 					{
-                        isMoving = true;
-                        collisionArray[collisionArray.length-curY-1][curX] = 0;
-                        curX += 1;
-                        collisionArray[collisionArray.length-curY-1][curX] = 2;
+						isMoving = true;
+						curX += 1;
+						if(!isOverworld)
+						{
+							collisionArray[collisionArray.length - curY - 1][curX - 1] = 0;
+							collisionArray[collisionArray.length - curY - 1][curX] = 2;
+						}
 						//intendedPos = new Vector2(b2body.getPosition().x + 16, b2body.getPosition().y);
 						b2body.setLinearVelocity(64f, 0);
 						//currentCollisions.clear();
 
-                        printColArray();
+						printColArray();
 					} else
 						updateAnimationSpeed(0.30f);
 				}
@@ -350,61 +378,6 @@ public class Player extends Sprite implements Disposable
 		bdef.position.set(32, 32);
 		bdef.type = BodyDef.BodyType.DynamicBody;
 		b2body = world.createBody(bdef);
-		//b2body.set
-
-		/*
-		FixtureDef fdef = new FixtureDef();
-
-
-		fdef.filter.categoryBits = com.dommie.ffdemo.GameInfo.PLAYER_BIT;
-		//what player can collide with
-		fdef.filter.maskBits = com.dommie.ffdemo.GameInfo.DEFAULT_BIT | GameInfo.COLLISION_BIT;
-
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(8f,8f);
-		fdef.shape = shape;
-		fdef.isSensor = true;
-		b2body.createFixture(fdef);
-		shape.dispose();
-
-
-		//bottom edge
-		fdef = new FixtureDef();
-		EdgeShape edge = new EdgeShape();
-		edge.set(new Vector2(-5, -10f), new Vector2(5, -10f));
-		fdef.shape = edge;
-		fdef.isSensor = true;
-		b2body.createFixture(fdef).setUserData("bottom");
-		edge.dispose();
-
-		//top edge
-		fdef = new FixtureDef();
-		edge = new EdgeShape();
-		edge.set(new Vector2(-5, 10f), new Vector2(5, 10f));
-		fdef.shape = edge;
-		fdef.isSensor = true;
-		b2body.createFixture(fdef).setUserData("top");
-		edge.dispose();
-
-		//left edge
-		fdef = new FixtureDef();
-		edge = new EdgeShape();
-		edge.set(new Vector2(-10f, 5), new Vector2(-10f, -5));
-		fdef.shape = edge;
-		fdef.isSensor = true;
-		b2body.createFixture(fdef).setUserData("left");
-		edge.dispose();
-
-		//right edge
-		fdef = new FixtureDef();
-		edge = new EdgeShape();
-		edge.set(new Vector2(10f, 5), new Vector2(10f, -5));
-		fdef.shape = edge;
-		fdef.isSensor = true;
-		b2body.createFixture(fdef).setUserData("right");
-		edge.dispose();
-		*/
-
 	}
 
 	public void updateAnimationSpeed(float speed)
@@ -423,10 +396,10 @@ public class Player extends Sprite implements Disposable
 	}
 
 	public void setStartingIndex(int x, int y)
-    {
-        curX = x;
-        curY = y;
-    }
+	{
+		curX = x;
+		curY = y;
+	}
 
 	public void dispose()
 	{
@@ -444,17 +417,21 @@ public class Player extends Sprite implements Disposable
 		return isMoving;
 	}
 
+	public int getPos()
+	{
+		return collisionArray[collisionArray.length-curY-1][curX];
+	}
 
 	private void printColArray()
-    {
-        System.out.println("\n\n\n");
-        for(int[] i : collisionArray)
-        {
-            for(int j : i)
-            {
-                System.out.print(j + ", ");
-            }
-            System.out.println();
-        }
-    }
+	{
+		System.out.println("\n\n\n");
+		for(int[] i : collisionArray)
+		{
+			for(int j : i)
+			{
+				System.out.print(j + ", ");
+			}
+			System.out.println();
+		}
+	}
 }

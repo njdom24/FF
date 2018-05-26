@@ -25,29 +25,35 @@ public class BattleScreen extends GameScreen
 	private boolean playerTurn;
 	private Cursor cursor;
 	private float turnTimer;
+	private boolean enemyTurn;
+	private boolean battleWon;
 
-	public BattleScreen(GameInfo game, float locX, float locY)
+	public BattleScreen(GameInfo game)
 	{
 		//TODO: Take reference to MapScreen to transition back
 		turnTimer = 0;;
-		playerTurn = false;
+		playerTurn = true;
+		enemyTurn = false;
 		cursor = new Cursor(8, 16);
 		b2dr = new Box2DDebugRenderer();
 		atlas = new TextureAtlas("Battle/Players/BattleSprites.atlas");
 		this.game = game;
 		gamecam = new OrthographicCamera();
+		battleWon = false;
 
 		gamePort = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, com.dommie.ffdemo.GameInfo.V_HEIGHT, gamecam);
 		renderer = new OrthogonalTiledMapRenderer(map);
 
 		world = new World(new Vector2(0, 0), true);//sets gravity properties
 
-		//b1 = new Battler(world, this);
+		b1 = new Battler("JIMINY");
 		//b1.b2body.setTransform(216, 120, 0);
 		e1 = new Enemy (world, this, 2, "GOBLIN");
 		hud = new Hud(gamecam);
-		hud.createTextbox(50, 8, "A " + e1.getName() + " APPEARS!");
+		//hud.createTextbox(50, 8, "A " + e1.getName() + " APPEARS!");
 		e1.b2body.setTransform(216, 120, 0);
+		hud.createBattleMenu(e1);
+
 		//hud.createBattleMenu();
 	}
 
@@ -59,6 +65,7 @@ public class BattleScreen extends GameScreen
 
 	public void update(float dt)//delta time
 	{
+		boolean pressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 		//if(justPaused)
 		//	justPaused = false;
 		setCamera();
@@ -74,15 +81,19 @@ public class BattleScreen extends GameScreen
 		cursor.update(dt);
 		gamecam.update();
 		renderer.setView(gamecam);
-		if(!playerTurn && hud.isFinished() && Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+
+		if(pressed)
 		{
-			playerTurn = true;
-			hud.createBattleMenu(e1);
-			turnTimer = .1f;
+			if (playerTurn && hud.isFinished())
+			{
+				//hud.createBattleMenu(e1);
+				//turnTimer = .1f;
+			}
+			if (!hud.isFinished())
+				hud.finishText();
+			else
+				progBattle(dt);
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-			hud.finishText();
-		progBattle(dt);
 	}
 
 	@Override
@@ -115,33 +126,56 @@ public class BattleScreen extends GameScreen
 
 	private void progBattle(float dt)
 	{
-		//System.out.println("Timer: " + turnTimer);
-		//System.out.println("PlayerTurn: " + playerTurn);
-		if(turnTimer <= 0)
+		if(battleWon)
 		{
-			turnTimer = 0;
-			if (playerTurn)
-				if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-				{
-					System.out.println("YEEEET");
-					switch (cursor.getPos())
-					{
-						case 3:
-							attack();
-							break;
-						case 2:
-							//heal();
-							break;
-						case 1:
-							System.out.println("No running!");
-						default:
-							break;
-					}
-				}
+			Corneria m = new Corneria(game, 264, 8);
+			m.setToDispose(this);
+			changeMap(m);
 		}
+
+		else if(e1.getHealth() == 0)
+		{
+			hud.createTextbox(50, 8, "YOU WIN!");
+			battleWon = true;
+		}
+
 		else
 		{
-			turnTimer -= dt;
+			//System.out.println("Timer: " + turnTimer);
+			System.out.println("PlayerTurn: " + playerTurn);
+
+			if (playerTurn)
+			{
+				//if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+				//{
+				//turnTimer = 0.1f;
+				playerTurn = false;
+				enemyTurn = true;
+				System.out.println("YEEEET");
+				switch (cursor.getPos())
+				{
+					case 3:
+						attack();
+						break;
+					case 2:
+						//heal();
+						break;
+					case 1:
+						System.out.println("No running!");
+					default:
+						break;
+				}
+				//}
+			} else if (enemyTurn)//Enemy turn
+			{
+				b1.takeDamage();
+				hud.createTextbox(50, 8, "" + e1.getName() + " ATTACKS!\n\nYOU TAKE " + 1 + " DAMAGE!");
+				enemyTurn = false;
+			} else//RESTART PLAYER TURN
+			{
+				playerTurn = true;
+				hud.createBattleMenu(e1);
+			}
 		}
 
 	}
@@ -149,7 +183,6 @@ public class BattleScreen extends GameScreen
 	private void attack()
 	{
 		System.out.println("SQUADALAAAAA");
-		playerTurn = false;
 		//turnTimer = .1f;
 		e1.takeDamage(1);
 		hud.createTextbox(50, 8, e1.getName() + " TAKES " + 1 + " DAMAGE!");//need to put the battle menu back up after this

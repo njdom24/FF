@@ -96,7 +96,7 @@ public class Hud implements Disposable
 				if(toPlace != ' ' && playText)
 				{
 					textSound.play();
-					System.out.println("Played");
+					//System.out.println("Played");
 				}
 
 				if (toPlace >= 65 && toPlace <= 74)

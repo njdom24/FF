@@ -2,6 +2,7 @@ package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,7 +17,9 @@ public class Enemy extends Sprite
 
 	public Enemy(World world, BattleScreen screen, int health, String name)
 	{
-		super(screen.getAtlas().findRegion("RedMage"));
+		super(new Texture("Battle/Enemies/Goblin.png"));
+		this.scale(2);
+		//super(screen.getAtlas().findRegion("RedMage"));
 		BodyDef bdef = new BodyDef();
 		bdef.position.set(32, 32);
 		bdef.type = BodyDef.BodyType.DynamicBody;
@@ -37,7 +40,7 @@ public class Enemy extends Sprite
 
 
 		//puts sprite on b2body
-		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2);
+		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2 + 2*16);
 		//setRegion(getFrame(dt));
 		b2body.setAwake(true);
 	}
