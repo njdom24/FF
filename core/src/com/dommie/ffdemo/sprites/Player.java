@@ -39,6 +39,7 @@ public class Player extends Sprite implements Disposable
 	private float stateTimer;
 	private float animSpeed;
 	private boolean isMoving;
+	private boolean finishedMoving;
 	private boolean isOverworld;
 
 	private int[][] collisionArray;
@@ -57,6 +58,7 @@ public class Player extends Sprite implements Disposable
 		intendedPos = new Vector2(0,0);
 		originalPos = new Vector2(0,0);
 		animFrames = new Array<TextureRegion>();
+		finishedMoving = false;
 		isOverworld = overworld;
 
 		Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -178,7 +180,7 @@ public class Player extends Sprite implements Disposable
 		}
 		//System.out.println("PLAYER POS: (" + curX + ", " + curY + ")");
 		boolean canMove = false;
-		if(npcs == null || !npcs.isEmpty())
+		if(npcs == null || npcs.isEmpty())
 			canMove = true;
 		//canMove = true;
 
@@ -222,7 +224,7 @@ public class Player extends Sprite implements Disposable
 						b2body.setLinearVelocity(0, 64f);
 						//currentCollisions.clear();
 
-						printColArray();
+						//printColArray();
 					}
 					else
 						updateAnimationSpeed(0.30f);
@@ -260,7 +262,7 @@ public class Player extends Sprite implements Disposable
 						b2body.setLinearVelocity(0, -64f);
 						//currentCollisions.clear();//TODO: Use later for NPC interactions
 
-						printColArray();
+						//printColArray();
 					}
 					else
 						updateAnimationSpeed(0.30f);
@@ -298,7 +300,7 @@ public class Player extends Sprite implements Disposable
 						b2body.setLinearVelocity(-64f, 0);
 						//currentCollisions.clear();
 
-						printColArray();
+						//printColArray();
 					}
 					else
 						updateAnimationSpeed(0.30f);
@@ -335,7 +337,7 @@ public class Player extends Sprite implements Disposable
 						b2body.setLinearVelocity(64f, 0);
 						//currentCollisions.clear();
 
-						printColArray();
+						//printColArray();
 					} else
 						updateAnimationSpeed(0.30f);
 				}

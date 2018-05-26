@@ -25,19 +25,7 @@ public class Battler
 
 	public void update(float dt)
 	{
-		/*
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-			b2body.setLinearVelocity(-10, 0);
-		else
-			b2body.setLinearVelocity(0,0);
 
-
-
-		puts sprite on b2body
-		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2);
-		setRegion(getFrame(dt));
-		b2body.setAwake(true);
-		*/
 	}
 
 	public String getName()

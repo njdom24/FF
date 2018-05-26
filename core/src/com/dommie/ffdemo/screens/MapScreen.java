@@ -43,6 +43,8 @@ public abstract class MapScreen extends GameScreen{
     private NPC speakingNPC;
 
     private boolean paused;
+    protected boolean enteringBattle;
+
     public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
     {
     	//justPaused = false;
@@ -70,6 +72,8 @@ public abstract class MapScreen extends GameScreen{
 
         world.setContactListener(new WorldContactListener());
         WorldContactListener.player = player;
+
+        enteringBattle = false;
         //GameInfo.currentScreen = this;
 
         //hud.createTextbox(23, 5, "Good ol' fashioned\ntest.");//just for demo, should only me put in child classes for specific npcs
@@ -160,10 +164,12 @@ public abstract class MapScreen extends GameScreen{
 		//if(justPaused)
 		//	justPaused = false;
 
-		handleInput(dt);
+		if(!enteringBattle)
+			handleInput(dt);
     	if(!paused)
     	{
-			player.update(dt);
+    		if(!enteringBattle)
+				player.update(dt);
 			//t.update(dt);
 
 			if (prevScreen != null) {
@@ -189,12 +195,12 @@ public abstract class MapScreen extends GameScreen{
     public void render(float delta) {
         //update separately from render
         update(delta);
-
         //clear the game screen with black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //render game map
+		//renderer.getBatch().setColor(com.badlogic.gdx.graphics.Color.OLIVE);
         renderer.render();
 
         //render Box2DDebugLines
@@ -202,11 +208,12 @@ public abstract class MapScreen extends GameScreen{
 
         //set batch to draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
-
         //game.hudBatch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-        player.draw(game.batch);
 
+		if(!enteringBattle)
+			player.draw(game.batch);
+		//player.setColor(400,0,0,1);
         if(npcs != null && !npcs.isEmpty())
 			for(NPC n : npcs)
 			{
@@ -259,8 +266,9 @@ public abstract class MapScreen extends GameScreen{
     	super.dispose();
     	player.dispose();
 
-    	for(NPC n : npcs)
-    		n.dispose();
+    	if(npcs != null)
+			for(NPC n : npcs)
+				n.dispose();
 
     }
 

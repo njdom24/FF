@@ -15,6 +15,7 @@ import com.dommie.ffdemo.scenes.Cursor;
 import com.dommie.ffdemo.scenes.Hud;
 import com.dommie.ffdemo.sprites.Battler;
 import com.dommie.ffdemo.sprites.Enemy;
+import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.sprites.TestBody;
 
 public class BattleScreen extends GameScreen
@@ -27,9 +28,14 @@ public class BattleScreen extends GameScreen
 	private float turnTimer;
 	private boolean enemyTurn;
 	private boolean battleWon;
+	private Player.State mapState;
 
-	public BattleScreen(GameInfo game)
+	private Vector2 returnPos;
+
+	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		returnPos = playerPos;
+		mapState = state;
 		//TODO: Take reference to MapScreen to transition back
 		turnTimer = 0;;
 		playerTurn = true;
@@ -128,7 +134,7 @@ public class BattleScreen extends GameScreen
 	{
 		if(battleWon)
 		{
-			Corneria m = new Corneria(game, 264, 8);
+			Overworld m = new Overworld(game, returnPos.x, returnPos.y, mapState);
 			m.setToDispose(this);
 			changeMap(m);
 		}

@@ -2,7 +2,8 @@ package com.dommie.ffdemo;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dommie.ffdemo.screens.Corneria;
+import com.dommie.ffdemo.screens.Overworld;
+import com.dommie.ffdemo.sprites.Player;
 
 public class GameInfo extends Game {
 	public static final int V_WIDTH = 432;
@@ -24,8 +25,8 @@ public class GameInfo extends Game {
 		batch = new SpriteBatch();
 		hudBatch = new SpriteBatch();
 
-		setScreen(new Corneria(this, 264, 8));
-		//setScreen(new Overworld(this, 219 *16+8, 576+8));
+		//setScreen(new Corneria(this, 264, 8));
+		setScreen(new Overworld(this, 219 *16+8, 576+8, Player.State.DOWN));
 		//setScreen(new BattleScreen(this));
 	}
 
