@@ -70,11 +70,6 @@ public class Overworld extends MapScreen
 			{
 				movedLastFrame = false;
 				flash();
-				/*
-				BattleScreen btlScrn = new BattleScreen(game, player.getIntendedPos(), player.getState());
-				btlScrn.setToDispose(this);
-				changeMap(btlScrn);
-				*/
 			}
 			if(player.isMoving())
 				movedLastFrame = true;

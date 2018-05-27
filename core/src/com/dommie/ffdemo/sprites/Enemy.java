@@ -21,7 +21,7 @@ public class Enemy extends Sprite
 	public Enemy(World world, BattleScreen screen, int health, String name)
 	{
 		super(new Texture("Battle/Enemies/Goblin.png"));
-		this.scale(2);
+		scale(2);
 		//super(screen.getAtlas().findRegion("RedMage"));
 		BodyDef bdef = new BodyDef();
 		bdef.position.set(32, 32);
@@ -40,24 +40,25 @@ public class Enemy extends Sprite
 
 	public void update(float dt)
 	{
-		System.out.println("LAST FLASH: " + lastFlash + "\nFLASH TIMER: " + flashTimer);
-		if(flashTimer >= 0)
+		if(flashTimer >= 0.3)
 		{
 			flashTimer -= dt;
-			if ((lastFlash-flashTimer) >= 0.2)
+			if(flashTimer < 1)
 			{
-				invisible = false;
-				lastFlash = flashTimer;
-			}
-			else if((lastFlash - flashTimer) >= 0.1)
-			{
-				invisible = true;
+				if ((lastFlash - flashTimer) >= 0.1)
+				{
+					invisible = false;
+					lastFlash = flashTimer;
+				} else if ((lastFlash - flashTimer) >= 0.05)
+				{
+					invisible = true;
+				}
 			}
 		}
 		else
 			invisible = false;
 		//puts sprite on b2body
-		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2 + 2*16);
+		setPosition(b2body.getPosition().x - getWidth() / 2 - 128, b2body.getPosition().y - getHeight()/2 + 2*16);
 		//setRegion(getFrame(dt));
 		b2body.setAwake(true);
 
@@ -82,8 +83,8 @@ public class Enemy extends Sprite
 
 	private void flash()
 	{
-		flashTimer = 1;
-		lastFlash = 1.1f;
+		flashTimer = 1.5f;
+		lastFlash = 1.6f;
 	}
 
 	public void draw(SpriteBatch sb)

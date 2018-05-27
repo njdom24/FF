@@ -25,19 +25,20 @@ public class BattleScreen extends GameScreen
 	private TestBody t;
 	private boolean playerTurn;
 	private Cursor cursor;
-	private float turnTimer;
 	private boolean enemyTurn;
 	private boolean battleWon;
 	private Player.State mapState;
+
+	private float animTimer;
 
 	private Vector2 returnPos;
 
 	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		animTimer = -1;
 		returnPos = playerPos;
 		mapState = state;
 		//TODO: Take reference to MapScreen to transition back
-		turnTimer = 0;;
 		playerTurn = true;
 		enemyTurn = false;
 		cursor = new Cursor(8, 16);
@@ -52,7 +53,7 @@ public class BattleScreen extends GameScreen
 
 		world = new World(new Vector2(0, 0), true);//sets gravity properties
 
-		b1 = new Battler("JIMINY");
+		b1 = new Battler(world, "RedMage", this);
 		//b1.b2body.setTransform(216, 120, 0);
 		e1 = new Enemy (world, this, 2, "GOBLIN");
 		hud = new Hud(gamecam);
@@ -77,6 +78,7 @@ public class BattleScreen extends GameScreen
 		setCamera();
 		//handleInput(dt);
 		e1.update(dt);
+		b1.update(dt);
 		if (prevScreen != null) {
 			prevScreen.dispose();
 			prevScreen = null;
@@ -88,18 +90,28 @@ public class BattleScreen extends GameScreen
 		gamecam.update();
 		renderer.setView(gamecam);
 
-		if(pressed)
+		if(animTimer < 0)
 		{
-			if (playerTurn && hud.isFinished())
+			b1.b2body.setLinearVelocity(0,0);
+			if (pressed)
 			{
-				//hud.createBattleMenu(e1);
-				//turnTimer = .1f;
+				if (playerTurn && hud.isFinished())
+				{
+					//hud.createBattleMenu(e1);
+					//turnTimer = .1f;
+				}
+				if (!hud.isFinished())
+					hud.finishText();
+				else
+					progBattle(dt);
 			}
-			if (!hud.isFinished())
-				hud.finishText();
-			else
-				progBattle(dt);
 		}
+		else//if the animation is still happening
+		{
+			b1.animate(animTimer, dt);
+			animTimer -= dt;
+		}
+
 	}
 
 	@Override
@@ -117,7 +129,9 @@ public class BattleScreen extends GameScreen
 		//game.hudBatch.setProjectionMatrix(gamecam.combined);
 
 		game.batch.begin();
-		e1.draw(game.batch);
+		if(!battleWon)
+			e1.draw(game.batch);
+		b1.draw(game.batch);
 		game.batch.end();
 
 		game.hudBatch.begin();
@@ -188,6 +202,7 @@ public class BattleScreen extends GameScreen
 
 	private void attack()
 	{
+		animTimer = 1.5f;
 		System.out.println("SQUADALAAAAA");
 		//turnTimer = .1f;
 		e1.takeDamage(1);
