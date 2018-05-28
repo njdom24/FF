@@ -1,5 +1,7 @@
 package com.dommie.ffdemo.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,10 +19,15 @@ public class Enemy extends Sprite
 	private boolean invisible;
 	private float flashTimer;
 	private float lastFlash;
+	private boolean dmgTaken;
+
+	private Sound damaged;
 
 	public Enemy(World world, BattleScreen screen, int health, String name)
 	{
 		super(new Texture("Battle/Enemies/Goblin.png"));
+		dmgTaken = false;
+		damaged = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/Bash.wav"));
 		scale(2);
 		//super(screen.getAtlas().findRegion("RedMage"));
 		BodyDef bdef = new BodyDef();
@@ -45,6 +52,11 @@ public class Enemy extends Sprite
 			flashTimer -= dt;
 			if(flashTimer < 1)
 			{
+				if(dmgTaken)
+				{
+					damaged.play();
+					dmgTaken = false;
+				}
 				if ((lastFlash - flashTimer) >= 0.1)
 				{
 					invisible = false;
@@ -66,8 +78,8 @@ public class Enemy extends Sprite
 
 	public void takeDamage(int dmg)
 	{
+		dmgTaken = true;
 		health -= dmg;
-
 		flash();
 	}
 
@@ -91,6 +103,11 @@ public class Enemy extends Sprite
 	{
 		if(!invisible)
 			super.draw(sb);
+	}
+
+	public void dispose()
+	{
+		getTexture().dispose();
 	}
 
 }

@@ -2,6 +2,7 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,25 +17,32 @@ import com.dommie.ffdemo.scenes.Hud;
 import com.dommie.ffdemo.sprites.Battler;
 import com.dommie.ffdemo.sprites.Enemy;
 import com.dommie.ffdemo.sprites.Player;
-import com.dommie.ffdemo.sprites.TestBody;
 
 public class BattleScreen extends GameScreen
 {
 	Enemy e1;
 	Battler b1;
-	private TestBody t;
 	private boolean playerTurn;
 	private Cursor cursor;
 	private boolean enemyTurn;
 	private boolean battleWon;
 	private Player.State mapState;
 
+	private Music fanfare;
 	private float animTimer;
 
 	private Vector2 returnPos;
 
 	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		m = Gdx.audio.newMusic(Gdx.files.internal("Music/Battle/Last Surprise.ogg"));
+		m.setLooping(true);
+		m.setVolume(0.2f);
+		m.play();
+		fanfare = Gdx.audio.newMusic(Gdx.files.internal("Music/Battle/Fanfare.ogg"));
+		fanfare.setLooping(true);
+		fanfare.setVolume(0.3f);
+
 		animTimer = -1;
 		returnPos = playerPos;
 		mapState = state;
@@ -60,8 +68,6 @@ public class BattleScreen extends GameScreen
 		//hud.createTextbox(50, 8, "A " + e1.getName() + " APPEARS!");
 		e1.b2body.setTransform(216, 120, 0);
 		hud.createBattleMenu(e1);
-
-		//hud.createBattleMenu();
 	}
 
 	public void setCamera()
@@ -150,13 +156,18 @@ public class BattleScreen extends GameScreen
 		{
 			Overworld m = new Overworld(game, returnPos.x, returnPos.y, mapState);
 			m.setToDispose(this);
+			b1.dispose();
+			e1.dispose();
 			changeMap(m);
 		}
 
 		else if(e1.getHealth() == 0)
 		{
+			m.pause();
+			fanfare.play();
 			hud.createTextbox(50, 8, "YOU WIN!");
 			battleWon = true;
+			b1.battleWon = true;
 		}
 
 		else
@@ -188,6 +199,7 @@ public class BattleScreen extends GameScreen
 				//}
 			} else if (enemyTurn)//Enemy turn
 			{
+				//animTimer = 1;
 				b1.takeDamage();
 				hud.createTextbox(50, 8, "" + e1.getName() + " ATTACKS!\n\nYOU TAKE " + 1 + " DAMAGE!");
 				enemyTurn = false;
@@ -203,15 +215,20 @@ public class BattleScreen extends GameScreen
 	private void attack()
 	{
 		animTimer = 1.5f;
+		b1.stopFlash();
 		System.out.println("SQUADALAAAAA");
 		//turnTimer = .1f;
 		e1.takeDamage(1);
 		hud.createTextbox(50, 8, e1.getName() + " TAKES " + 1 + " DAMAGE!");//need to put the battle menu back up after this
 	}
 
-
 	@Override
 	public void resize(int width, int height) {
 		gamePort.update(width, height);
+	}
+	public void dispose()
+	{
+		super.dispose();
+		fanfare.dispose();
 	}
 }

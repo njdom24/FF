@@ -2,6 +2,7 @@ package com.dommie.ffdemo.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,9 +14,13 @@ public class Cursor extends Sprite
 	int limit;
 	int pos;
 	private int scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
+	private Sound moveCursor;
+
 	public Cursor(int x, int y)
 	{
 		super(new Texture("Battle/Cursor.png"));
+		moveCursor = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/Cursor Move.wav"));
+
 		hidden = false;
 		pos = 3;
 		limit = 3;
@@ -27,6 +32,7 @@ public class Cursor extends Sprite
 	{
 		if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
 		{
+			moveCursor.play();
 			if(pos < limit)
 			{
 				setY(this.getY() + 16 * scale);
@@ -41,6 +47,7 @@ public class Cursor extends Sprite
 		else
 			if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN))
 			{
+				moveCursor.play();
 				if(pos > 1)
 				{
 					setY(this.getY() - 16 * scale);

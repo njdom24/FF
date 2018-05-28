@@ -42,7 +42,7 @@ public class Hud implements Disposable
     float scale;
     //float offset;
 
-	private Sound textSound  = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/text.wav"));
+	private Sound textSound;
 
 	public Hud(OrthographicCamera o)
 	{
@@ -52,6 +52,7 @@ public class Hud implements Disposable
 
 	public Hud(OrthographicCamera o, String[] texts)
 	{
+		textSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/text.wav"));
 		playText = true;
 		scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
 		//offset = com.dommie.ffdemo.GameInfo.V_WIDTH/2 - (LwjglApplicationConfiguration.getDesktopDisplayMode().width - (com.dommie.ffdemo.GameInfo.V_WIDTH * scale));
