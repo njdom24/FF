@@ -9,11 +9,11 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.scenes.Hud;
+import com.dommie.ffdemo.sprites.Battler;
 import com.dommie.ffdemo.sprites.NPC;
 import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.sprites.TestBody;
@@ -45,7 +45,12 @@ public abstract class MapScreen extends GameScreen{
     private boolean paused;
     protected boolean enteringBattle;
 
-    public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
+	public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
+	{
+		this(game, mapName, locX, locY, isOverworld, null);
+	}
+
+    public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld, Battler b)
     {
     	//justPaused = false;
     	paused = false;
@@ -63,7 +68,7 @@ public abstract class MapScreen extends GameScreen{
         renderer = new OrthogonalTiledMapRenderer(map);
 
         world = new World(new Vector2(0, 0), true);//sets gravity properties
-        b2dr = new Box2DDebugRenderer();
+        //b2dr = new Box2DDebugRenderer();
 
         player = new Player(world, this, isOverworld);
         player.b2body.setTransform(locX, locY, 0);//world entrance location
@@ -127,6 +132,9 @@ public abstract class MapScreen extends GameScreen{
     public void handleInput(float dt)
     {
     	boolean justPaused = false;
+		if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+			System.out.println("X: " + player.b2body.getPosition().x + "\nY: " + player.b2body.getPosition().y);
+		}
     	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !player.isMoving())
 		{
 			if(!paused)
@@ -204,11 +212,11 @@ public abstract class MapScreen extends GameScreen{
         renderer.render();
 
         //render Box2DDebugLines
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
         //set batch to draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
-        //game.hudBatch.setProjectionMatrix(gamecam.combined);
+        game.hudBatch.setProjectionMatrix(gamecam.projection);
         game.batch.begin();
 
 		if(!enteringBattle)
@@ -269,6 +277,9 @@ public abstract class MapScreen extends GameScreen{
     	if(npcs != null)
 			for(NPC n : npcs)
 				n.dispose();
+    	System.out.println("SCOOP");
+		m.pause();
+    	m.dispose();
 
     }
 

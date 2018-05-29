@@ -49,7 +49,7 @@ public class BattleScreen extends GameScreen
 		//TODO: Take reference to MapScreen to transition back
 		playerTurn = true;
 		enemyTurn = false;
-		cursor = new Cursor(8, 16);
+		cursor = new Cursor(-201, -77);
 		b2dr = new Box2DDebugRenderer();
 		atlas = new TextureAtlas("Battle/Players/BattleSprites.atlas");
 		this.game = game;
@@ -132,7 +132,7 @@ public class BattleScreen extends GameScreen
 
 		//set batch to draw what the Hud camera sees
 		game.batch.setProjectionMatrix(gamecam.combined);
-		//game.hudBatch.setProjectionMatrix(gamecam.combined);
+		game.hudBatch.setProjectionMatrix(gamecam.projection);
 
 		game.batch.begin();
 		if(!battleWon)
@@ -185,13 +185,13 @@ public class BattleScreen extends GameScreen
 				System.out.println("YEEEET");
 				switch (cursor.getPos())
 				{
-					case 3:
+					case 1:
 						attack();
 						break;
 					case 2:
 						//heal();
 						break;
-					case 1:
+					case 3:
 						System.out.println("No running!");
 					default:
 						break;

@@ -27,6 +27,7 @@ public class GameInfo extends Game {
 
 		//setScreen(new Corneria(this, 264, 8));
 		setScreen(new Overworld(this, 219 *16+8, 576+8, Player.State.DOWN));
+		//setScreen(new Shop(this, null));
 		//setScreen(new BattleScreen(this));
 	}
 

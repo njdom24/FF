@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.sprites.NPC;
+import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.tools.B2WorldCreator;
 import com.dommie.ffdemo.tools.WorldContactListener;
 
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class Corneria extends MapScreen {
 
 	//private Music m;
-    public Corneria(GameInfo game, float locX, float locY)
+    public Corneria(GameInfo game, float locX, float locY, Player.State state)
     {
         super(game, "corneria.tmx", locX, locY, false);
 
@@ -42,6 +43,7 @@ public class Corneria extends MapScreen {
 		creator = new B2WorldCreator(world, map, collisions);//dispose later?
 		player.setCollisionArray(collisions);
 		player.setStartingIndex((int)(locX/16+0.01f), (int)(locY/16+0.01f));
+		player.setState(state);
 		//npcs = creator.createGenericNPCs(dialogue, types, this);
 
 		Rectangle r = new Rectangle(19*16, 7*16, 16, 16);
@@ -69,25 +71,41 @@ public class Corneria extends MapScreen {
     }
 
     public void handleInput(float dt)
-    {
-        super.handleInput(dt);
+	{
+		super.handleInput(dt);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            Corneria m = new Corneria(game, 264-(16*2), 8);
-            m.setToDispose(this);
-            changeMap(m);
-        }
-
-		if(Gdx.input.isKeyJustPressed(Input.Keys.B)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.B))
+		{
 			hud.createTextbox(20, 4, "Testing... testing... Oh? Hello!");
 		}
 
-        if(player.b2body.getPosition().x <= 0)
-        {
-            Corneria m = new Corneria(game, 264, 8);
-            m.setToDispose(this);
-            changeMap(m);
-        }
-    }
+		if (player.b2body.getPosition().x <= 0)
+		{
+			Corneria map = new Corneria(game, 264, 8, Player.State.UP);
+			map.setToDispose(this);
+			changeMap(map);
+		}
+
+		if ((player.b2body.getPosition().x == 264 && player.b2body.getPosition().y == 8 && Gdx.input.isKeyPressed(Input.Keys.DOWN))
+				|| (player.b2body.getPosition().x == 504 && player.b2body.getPosition().y == 184 && Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+				|| (player.b2body.getPosition().x == 264 && player.b2body.getPosition().y == 376 && Gdx.input.isKeyPressed(Input.Keys.UP)))
+		{
+			Overworld map = new Overworld(game, 3512, 616, Player.State.DOWN);
+			map.setToDispose(this);
+			changeMap(map);
+		}
+	}
+
+	public void update(float dt)
+	{
+		super.update(dt);
+
+		if(player.b2body.getPosition().x == 184 && player.b2body.getPosition().y == 216)
+		{
+			Shop map = new Shop(game);
+			map.setToDispose(this);
+			changeMap(map);
+		}
+	}
 
 }

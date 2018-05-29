@@ -2,7 +2,6 @@ package com.dommie.ffdemo.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -39,22 +38,26 @@ public class Hud implements Disposable
     private int curY;
     private boolean done;
     private boolean playText;
-    float scale;
+    private boolean centered;
+    private float scale;
+    private int offsetX;
+    private int offsetY;
     //float offset;
 
 	private Sound textSound;
 
 	public Hud(OrthographicCamera o)
 	{
-		//String[] s1 = {" "};
 		this(o, null);
 	}
 
 	public Hud(OrthographicCamera o, String[] texts)
 	{
+		centered = true;
 		textSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/text.wav"));
 		playText = true;
-		scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
+		scale = 1;
+		//scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
 		//offset = com.dommie.ffdemo.GameInfo.V_WIDTH/2 - (LwjglApplicationConfiguration.getDesktopDisplayMode().width - (com.dommie.ffdemo.GameInfo.V_WIDTH * scale));
 		//System.out.println("OFFSETTTT: " + offset);
 		//scale = 1;
@@ -134,7 +137,10 @@ public class Hud implements Disposable
 				//sprites[curY][curX].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + curX * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (curY+2) * 8));
 				sprites[curY][curX].setScale(scale);
 				//sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + scale + curX * 8) * scale, (height * 8 - (curY + 0.65f) * 8) * scale);
-				sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + curX * 8 + 2) * scale, (height * 8 - (curY) * 8) * scale - 20);
+				if(centered)
+					sprites[curY][curX].setPosition((curX * 8 - width*4) * scale, ((height-16) * 8 - (curY) * 8) * scale);
+				else
+					sprites[curY][curX].setPosition(((curX+offsetX) * 8 - width*4) * scale, ((height-16) * 8 - (curY+offsetY) * 8) * scale);
 
 				if (curChar == message.length())
 					done = true;
@@ -192,10 +198,17 @@ public class Hud implements Disposable
 		sprites = new Sprite[0][0];
 	}
 
-
+	public void createTextbox(int width, int height, String text)
+	{
+		createTextbox(width, height, text, 0, 0);
+	}
 	//call this with constructor later when a method to write text without creating a new box is made
-	public void createTextbox(int width, int height, String text)//TODO: Create overloaded method for user-specified origin coordinates
+	public void createTextbox(int width, int height, String text, int x, int y)
     {
+    	if(x != 0 || y != 0)
+    		centered = false;
+    	offsetX = x;
+    	offsetY = -y;
     	curChar = 0;
     	done = false;
     	curX = 1;
@@ -241,7 +254,10 @@ public class Hud implements Disposable
                 sprites[i][j].setScale(scale);
                 sprites[i][j].setRegion(region);
 				//sprites[i][j].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + j * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (i+2) * 8));
-                sprites[i][j].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width*8/2) + j*8 + 2) * scale, (height*8 -(i)*8) * scale - 20);
+				if(centered)
+                	sprites[i][j].setPosition((j*8 - width*4) * scale, ((height-16)*8 -(i)*8) * scale);
+				else
+					sprites[i][j].setPosition(((j+offsetX)*8 - width*4) * scale, ((height-16)*8 -(i+offsetY)*8) * scale);
             }
     }
 

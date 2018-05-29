@@ -2,12 +2,17 @@ package com.dommie.ffdemo.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.dommie.ffdemo.screens.GameScreen;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Battler extends Sprite
 {
@@ -29,6 +34,7 @@ public class Battler extends Sprite
 	private boolean invisible;
 	private float flashTimer;
 	private float lastFlash;
+	private int wepIndex;
 
 	private Sound damaged;
 
@@ -50,7 +56,38 @@ public class Battler extends Sprite
 
 		health = 10;
 
-		sword = new Sprite(new TextureAtlas("Battle/Players/Sword.atlas").findRegion("Sword"));
+		sword = new Sprite(new TextureAtlas("Battle/Players/Swords/Sword.atlas").findRegion("Sword"));
+
+		wepIndex = 0;
+		try
+		{
+			BufferedReader reader = new BufferedReader(new FileReader("TempSave.txt"));
+			wepIndex = Integer.parseInt(reader.readLine());
+
+			reader.close();
+		}
+		catch (IOException e)
+		{
+		}
+
+		System.out.println("COLORS: \n" + Color.GOLD.r + ", " + Color.GOLD.g + ", " + Color.GOLD.b);
+		Color col = new Color(255, 220, 22, 1);
+
+		switch(wepIndex)
+		{
+			case 1:
+				sword.setColor(Color.ORANGE);
+				break;
+			case 2:
+				sword.setColor(Color.WHITE);
+				break;
+			case 3:
+				sword.setColor(Color.GOLD);
+				break;
+			case 4:
+				sword.setColor(Color.CYAN);
+				break;
+		}
 
 		sword.scale(2);
 		animFrames = new Array<TextureRegion>();
@@ -215,6 +252,11 @@ public class Battler extends Sprite
 	{
 		sword.getTexture().dispose();
 		getTexture().dispose();
+	}
+
+	public void setWepIndex(int i)
+	{
+		wepIndex = i;
 	}
 
 }

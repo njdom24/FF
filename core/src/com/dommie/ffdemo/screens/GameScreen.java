@@ -104,15 +104,19 @@ public abstract class GameScreen implements Screen, Disposable{
     public void dispose()
     {
     	game.dispose();
-    	atlas.dispose();
+    	if(atlas != null)
+    		atlas.dispose();
     	if(npcAtlas != null)
     		npcAtlas.dispose();
     	if(map != null)
     		map.dispose();
-        renderer.dispose();
-        b2dr.dispose();
+        if(renderer != null)
+        	renderer.dispose();
+        if(b2dr != null)
+            b2dr.dispose();
         hud.dispose();
-        world.dispose();
+        if(world != null)
+        	world.dispose();
         if(m != null)
 			m.dispose();
     }

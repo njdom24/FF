@@ -3,7 +3,6 @@ package com.dommie.ffdemo.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,18 +12,25 @@ public class Cursor extends Sprite
 	private boolean hidden;
 	int limit;
 	int pos;
-	private int scale = LwjglApplicationConfiguration.getDesktopDisplayMode().width /com.dommie.ffdemo.GameInfo.V_WIDTH;
+	private int dist;
+	private int scale = 1;
 	private Sound moveCursor;
 
 	public Cursor(int x, int y)
 	{
+		this(x, y, 3, 1);
+	}
+
+	public Cursor(int x, int y, int positions, int distance)
+	{
 		super(new Texture("Battle/Cursor.png"));
+		dist = distance;
 		moveCursor = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/Cursor Move.wav"));
 
 		hidden = false;
-		pos = 3;
-		limit = 3;
-		setPosition((x+8)*scale, (y+32)*scale);
+		pos = positions;
+		limit = positions;
+		setPosition(x, y);
 		this.setScale(scale);
 	}
 
@@ -35,12 +41,12 @@ public class Cursor extends Sprite
 			moveCursor.play();
 			if(pos < limit)
 			{
-				setY(this.getY() + 16 * scale);
+				setY(this.getY() + 16 * dist * scale);
 				pos++;
 			}
 			else
 			{
-				setY(this.getY() - (16*scale)*(limit-1));
+				setY(this.getY() - (16*dist*scale)*(limit-1));
 				pos = 1;
 			}
 		}
@@ -50,12 +56,12 @@ public class Cursor extends Sprite
 				moveCursor.play();
 				if(pos > 1)
 				{
-					setY(this.getY() - 16 * scale);
+					setY(this.getY() - 16 * dist * scale);
 					pos--;
 				}
 				else
 				{
-					setY(this.getY() + (16*scale)*(limit-1));
+					setY(this.getY() + (16*dist*scale)*(limit-1));
 					pos = limit;
 				}
 			}
@@ -80,6 +86,6 @@ public class Cursor extends Sprite
 
 	public int getPos()
 	{
-		return pos;
+		return limit-pos+1;
 	}
 }

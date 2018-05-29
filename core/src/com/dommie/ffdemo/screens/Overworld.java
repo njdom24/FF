@@ -24,7 +24,6 @@ public class Overworld extends MapScreen
 		super(game, "Overworld/Overworld.tmx", locX, locY, true);
 
 		movedLastFrame = false;
-
 		m = Gdx.audio.newMusic(Gdx.files.internal("Music/Overworld/Overworld Loop.ogg"));
 		m.setLooping(true);
 		m.setVolume(0.4f);
@@ -48,6 +47,12 @@ public class Overworld extends MapScreen
 	public void update(float dt)
 	{
 		super.update(dt);
+		if(player.b2body.getPosition().x == 3512 && player.b2body.getPosition().y == 632)
+		{
+			MapScreen corneria = new Corneria(game, 264, 8, Player.State.UP);
+			corneria.setToDispose(this);
+			changeMap(corneria);
+		}
 		if(flashTimer >= 0)
 		{
 			flashTimer -= dt;
