@@ -2,6 +2,9 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.dommie.ffdemo.GameInfo;
@@ -18,7 +21,6 @@ import java.util.ArrayList;
 
 public class Corneria extends MapScreen {
 
-	//private Music m;
     public Corneria(GameInfo game, float locX, float locY, Player.State state)
     {
         super(game, "corneria.tmx", locX, locY, false);
@@ -27,15 +29,11 @@ public class Corneria extends MapScreen {
 		m.setLooping(true);
 		m.setVolume(0.8f);
 
-		m.play();
-
         npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
         String[][] dialogue = new String[1][2];
-        String[] types = {"Dancer"};
+        //String[] types = {"Dancer"};
         dialogue[0][0] = "Steph is a heckin\nnerd\nxDDDDDDDDDDDDDDD";
         dialogue[0][1] = "i want to die please\nhelp me";
-        //dialogue[0][0] = "Hello! I am a dancer!";
-        //dialogue[0][1] = "If you're seeing this\nthen the text works!";
 
         npcs = new ArrayList<NPC>();
 
@@ -51,22 +49,6 @@ public class Corneria extends MapScreen {
 		npcs.get(0).setMessages(dialogue[0]);
 
 
-        WorldContactListener.npcs = npcs;
-    }
-
-    public Corneria(GameInfo game)
-    {
-        super(game, "corneria.tmx", 264, 8, false);
-
-        npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
-        String[][] dialogue = new String[1][1];
-        String[] types = {"Dancer"};
-
-		collisions = new int[prop.get("height", Integer.class)][prop.get("width", Integer.class)];
-        creator = new B2WorldCreator(world, map, collisions);
-        player.setCollisionArray(collisions);
-        player.setStartingIndex(264/16, 8/16);
-        //npcs = creator.createGenericNPCs(dialogue, types, this);
         WorldContactListener.npcs = npcs;
     }
 
@@ -90,9 +72,11 @@ public class Corneria extends MapScreen {
 				|| (player.b2body.getPosition().x == 504 && player.b2body.getPosition().y == 184 && Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 				|| (player.b2body.getPosition().x == 264 && player.b2body.getPosition().y == 376 && Gdx.input.isKeyPressed(Input.Keys.UP)))
 		{
-			Overworld map = new Overworld(game, 3512, 616, Player.State.DOWN);
-			map.setToDispose(this);
-			changeMap(map);
+			transitionSound.dispose();
+			transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/ExitTown.wav"));
+			queuedMap = new Overworld(game, 3512, 616, Player.State.DOWN);
+			flash();
+			flashColor = Color.DARK_GRAY;
 		}
 	}
 
@@ -100,11 +84,25 @@ public class Corneria extends MapScreen {
 	{
 		super.update(dt);
 
-		if(player.b2body.getPosition().x == 184 && player.b2body.getPosition().y == 216)
+		if(flashTimer == -1)
 		{
-			Shop map = new Shop(game);
-			map.setToDispose(this);
-			changeMap(map);
+			m.play();
+			if (player.b2body.getPosition().x == 184 && player.b2body.getPosition().y == 216)
+			{
+				door = new Sprite(new Texture("Overworld/Maps/Corneria/OpenedDoor.png"));
+				door.setPosition(player.b2body.getPosition().x-8, player.b2body.getPosition().y-8);
+				transitionSound.dispose();
+				transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/Door.wav"));
+				queuedMap = new WeaponShop(game, new Corneria(game, 184, 200, Player.State.DOWN));
+				flash();
+				flashColor = Color.PURPLE;
+			}
+		}
+
+		if(queuedMap != null && flashUpdate(dt, flashColor))//if flashing is finished
+		{
+			queuedMap.setToDispose(this);
+			changeMap(queuedMap);
 		}
 	}
 

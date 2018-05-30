@@ -17,7 +17,8 @@ import java.io.IOException;
 public class Battler extends Sprite
 {
 	public Body b2body;
-	private int health;
+	public int health;
+	private int maxHealth;
 	//String name;
 
 	private boolean swinging;
@@ -34,7 +35,8 @@ public class Battler extends Sprite
 	private boolean invisible;
 	private float flashTimer;
 	private float lastFlash;
-	private int wepIndex;
+	public int wepIndex;
+	private int level;
 
 	private Sound damaged;
 
@@ -43,7 +45,8 @@ public class Battler extends Sprite
 	public Battler(World world, String name, GameScreen screen)
 	{
 		super(screen.getAtlas().findRegion(name));
-		//this.name = name;
+
+		level = Integer.parseInt(GameScreen.getLine(1));
 		battleWon = false;
 		damaged = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/Take Damage.wav"));
 		scale(2);
@@ -54,14 +57,15 @@ public class Battler extends Sprite
 
 		setBounds(0, 0, 26, 26);
 
-		health = 10;
+		maxHealth = 10 + 5*level;
+		health = Integer.parseInt(GameScreen.getLine(2));
 
 		sword = new Sprite(new TextureAtlas("Battle/Players/Swords/Sword.atlas").findRegion("Sword"));
 
 		wepIndex = 0;
 		try
 		{
-			BufferedReader reader = new BufferedReader(new FileReader("TempSave.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("Save.txt"));
 			wepIndex = Integer.parseInt(reader.readLine());
 
 			reader.close();
@@ -69,9 +73,6 @@ public class Battler extends Sprite
 		catch (IOException e)
 		{
 		}
-
-		System.out.println("COLORS: \n" + Color.GOLD.r + ", " + Color.GOLD.g + ", " + Color.GOLD.b);
-		Color col = new Color(255, 220, 22, 1);
 
 		switch(wepIndex)
 		{
@@ -152,8 +153,8 @@ public class Battler extends Sprite
 
 		getFrame(dt);
 		//sword.setPosition(b2body.getPosition().x - getWidth() + 2, b2body.getPosition().y + 26);
-		sword.setPosition(b2body.getPosition().x - getWidth() - 6 - 32, b2body.getPosition().y + 40 - 1*16);
-		setPosition(b2body.getPosition().x - getWidth() / 2 - 32, b2body.getPosition().y - getHeight()/2 + 16);
+		sword.setPosition(b2body.getPosition().x - getWidth() - 6 - 30, b2body.getPosition().y + 40 - 1*16);
+		setPosition(b2body.getPosition().x - getWidth() / 2 - 30, b2body.getPosition().y - getHeight()/2 + 16);
 		//setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2 + 2*16);
 	}
 
@@ -185,6 +186,12 @@ public class Battler extends Sprite
 			}
 			else if(timer > 0)
 				b2body.setLinearVelocity(120, 0);
+			else
+			{
+				sword.setPosition(b2body.getPosition().x - getWidth() - 6 - 30, b2body.getPosition().y + 40 - 1*16);
+				setPosition(b2body.getPosition().x - getWidth() / 2 - 30, b2body.getPosition().y - getHeight()/2 + 16);
+			}
+
 		}
 	}
 
@@ -254,9 +261,8 @@ public class Battler extends Sprite
 		getTexture().dispose();
 	}
 
-	public void setWepIndex(int i)
+	public String getHealth()
 	{
-		wepIndex = i;
+		return "" + health + "/" + maxHealth;
 	}
-
 }

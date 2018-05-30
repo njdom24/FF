@@ -13,8 +13,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.scenes.Hud;
 
+import java.io.*;
+
 public abstract class GameScreen implements Screen, Disposable{
     //Reference to Game, used to set Screens
+	private static final int LINE_COUNT = 4;
     protected GameInfo game;
     protected TextureAtlas atlas;
     protected TextureAtlas npcAtlas;
@@ -35,22 +38,13 @@ public abstract class GameScreen implements Screen, Disposable{
     
     protected GameScreen prevScreen;//dispose on normal change, keep on BattleScreen change
 
-    public void changeMap(GameScreen m)
+    public void changeMap(GameScreen scrn)
     {
         //GameInfo.screens.push(this);
         //GameInfo.currentScreen = m;
 
-        game.setScreen(m);
+        game.setScreen(scrn);
     }
-
-    /*
-    public void revertMap()
-    {
-    	//prevScreen.setChangeElements();
-        game.setScreen(prevScreen);
-    	prevScreen.setToDispose(this);
-    }*/
-
     
     protected void setChangeElements()
     {
@@ -62,6 +56,105 @@ public abstract class GameScreen implements Screen, Disposable{
     {
     	prevScreen = g;
     }
+
+    protected void changeLine(int line, String content)
+	{
+		try
+		{
+			BufferedWriter writer = new BufferedWriter(new FileWriter("TempSave.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("Save.txt"));
+			for(int i = 0; i < LINE_COUNT; i++)
+				if(i != line)
+				{
+					writer.write(reader.readLine());
+					writer.newLine();
+				}
+				else
+				{
+					reader.readLine();
+					writer.write(content);
+					writer.newLine();
+				}
+			reader.close();
+
+			writer.close();
+			reader.close();
+			writer = new BufferedWriter(new FileWriter("Save.txt"));
+			reader = new BufferedReader(new FileReader("TempSave.txt"));
+
+			for(int i = 0; i < LINE_COUNT; i++)
+			{
+				writer.write(reader.readLine());
+				writer.newLine();
+			}
+
+			writer.close();
+			reader.close();
+		}
+		catch (IOException e)
+		{
+		}
+	}
+
+	public static void incrementLine(int line, int change)
+	{
+		try
+		{
+			BufferedWriter writer = new BufferedWriter(new FileWriter("TempSave.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader("Save.txt"));
+			for(int i = 0; i < LINE_COUNT; i++)
+				if(i != line)
+				{
+					writer.write(reader.readLine());
+					writer.newLine();
+				}
+				else
+				{
+					writer.write("" + (Integer.parseInt(reader.readLine()) + change));
+					writer.newLine();
+				}
+			reader.close();
+
+			writer.close();
+			reader.close();
+			writer = new BufferedWriter(new FileWriter("Save.txt"));
+			reader = new BufferedReader(new FileReader("TempSave.txt"));
+
+			for(int i = 0; i < LINE_COUNT; i++)
+			{
+				writer.write(reader.readLine());
+				writer.newLine();
+			}
+
+			writer.close();
+			reader.close();
+		}
+		catch (IOException e)
+		{
+		}
+	}
+
+	public static String getLine(int line)
+	{
+		String toReturn = "";
+		try
+		{
+			BufferedReader reader = new BufferedReader(new FileReader("Save.txt"));
+			for(int i = 0; i < LINE_COUNT; i++)
+				if(i != line)
+					reader.readLine();
+				else
+				{
+					toReturn = reader.readLine();
+					break;
+				}
+				reader.close();
+		}
+		catch (IOException e)
+		{
+		}
+		return toReturn;
+	}
 
     public TextureAtlas getAtlas()
     {

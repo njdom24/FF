@@ -2,9 +2,10 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -27,21 +28,21 @@ public class BattleScreen extends GameScreen
 	private boolean enemyTurn;
 	private boolean battleWon;
 	private Player.State mapState;
+	private Sprite background;
 
-	private Music fanfare;
 	private float animTimer;
 
 	private Vector2 returnPos;
 
 	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		background = new Sprite(new Texture("Battle/ForestBG.png"));
+		//background.scale(2);
+		background.setPosition(0,GameInfo.V_HEIGHT-32);
 		m = Gdx.audio.newMusic(Gdx.files.internal("Music/Battle/Last Surprise.ogg"));
 		m.setLooping(true);
 		m.setVolume(0.2f);
-		m.play();
-		fanfare = Gdx.audio.newMusic(Gdx.files.internal("Music/Battle/Fanfare.ogg"));
-		fanfare.setLooping(true);
-		fanfare.setVolume(0.3f);
+		//m.play();
 
 		animTimer = -1;
 		returnPos = playerPos;
@@ -67,7 +68,7 @@ public class BattleScreen extends GameScreen
 		hud = new Hud(gamecam);
 		//hud.createTextbox(50, 8, "A " + e1.getName() + " APPEARS!");
 		e1.b2body.setTransform(216, 120, 0);
-		hud.createBattleMenu(e1);
+		hud.createBattleMenu(e1, b1);
 	}
 
 	public void setCamera()
@@ -78,6 +79,7 @@ public class BattleScreen extends GameScreen
 
 	public void update(float dt)//delta time
 	{
+		m.play();
 		boolean pressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 		//if(justPaused)
 		//	justPaused = false;
@@ -135,6 +137,7 @@ public class BattleScreen extends GameScreen
 		game.hudBatch.setProjectionMatrix(gamecam.projection);
 
 		game.batch.begin();
+		background.draw(game.batch);
 		if(!battleWon)
 			e1.draw(game.batch);
 		b1.draw(game.batch);
@@ -161,11 +164,16 @@ public class BattleScreen extends GameScreen
 			changeMap(m);
 		}
 
-		else if(e1.getHealth() == 0)
+		else if(e1.getHealth() <= 0)
 		{
 			m.pause();
-			fanfare.play();
-			hud.createTextbox(50, 8, "YOU WIN!");
+			m.dispose();
+			m = Gdx.audio.newMusic(Gdx.files.internal("Music/Battle/Fanfare.ogg"));
+			m.setVolume(0.3f);
+			m.setLooping(true);
+			hud.createTextbox(50, 8, "YOU WIN!\n\nGOT 10G!");
+			incrementLine(3, 10);
+			changeLine(2, "" + b1.health);
 			battleWon = true;
 			b1.battleWon = true;
 		}
@@ -206,7 +214,7 @@ public class BattleScreen extends GameScreen
 			} else//RESTART PLAYER TURN
 			{
 				playerTurn = true;
-				hud.createBattleMenu(e1);
+				hud.createBattleMenu(e1, b1);
 			}
 		}
 
@@ -218,8 +226,8 @@ public class BattleScreen extends GameScreen
 		b1.stopFlash();
 		System.out.println("SQUADALAAAAA");
 		//turnTimer = .1f;
-		e1.takeDamage(1);
-		hud.createTextbox(50, 8, e1.getName() + " TAKES " + 1 + " DAMAGE!");//need to put the battle menu back up after this
+		e1.takeDamage(b1.wepIndex);
+		hud.createTextbox(50, 8, e1.getName() + " TAKES " + b1.wepIndex + " DAMAGE!");
 	}
 
 	@Override
@@ -229,6 +237,5 @@ public class BattleScreen extends GameScreen
 	public void dispose()
 	{
 		super.dispose();
-		fanfare.dispose();
 	}
 }

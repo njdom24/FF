@@ -2,8 +2,11 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dommie.ffdemo.GameInfo;
 import com.dommie.ffdemo.scenes.Hud;
-import com.dommie.ffdemo.sprites.Battler;
 import com.dommie.ffdemo.sprites.NPC;
 import com.dommie.ffdemo.sprites.Player;
 import com.dommie.ffdemo.sprites.TestBody;
@@ -45,13 +47,19 @@ public abstract class MapScreen extends GameScreen{
     private boolean paused;
     protected boolean enteringBattle;
 
-	public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
-	{
-		this(game, mapName, locX, locY, isOverworld, null);
-	}
+	protected float flashTimer;
+	protected float lastFlash;
+	protected GameScreen queuedMap;
+	protected Color flashColor;
 
-    public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld, Battler b)
+	protected Sound transitionSound;
+	protected Sprite door;
+
+    public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
     {
+		transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/EnterTown.wav"));
+		flashTimer = -1;
+		lastFlash = -1;
     	//justPaused = false;
     	paused = false;
 
@@ -199,6 +207,55 @@ public abstract class MapScreen extends GameScreen{
 		}
     }
 
+    protected boolean flashUpdate(float dt, Color col)
+	{
+		if(flashTimer >= 0)
+		{
+			flashTimer -= dt;
+			if ((lastFlash-flashTimer) >= 0.2)
+			{
+				if(door != null)
+					door.setColor(Color.WHITE);
+				renderer.getBatch().setColor(Color.WHITE);
+				lastFlash = flashTimer;
+			}
+			else if((lastFlash - flashTimer) >= 0.1)
+			{
+				if(door != null)
+					door.setColor(col);
+				renderer.getBatch().setColor(col);
+			}
+		}
+		else if (enteringBattle && flashTimer >= -0.6)
+		{
+			if(door != null)
+				door.setColor(Color.BLACK);
+			renderer.getBatch().setColor(Color.BLACK);
+			flashTimer -= dt;
+		}
+		else if(lastFlash != -1)//Flashing is just finished
+		{
+			return true;
+		}
+		else
+		{
+			if(door != null)
+				door.setColor(Color.WHITE);
+			renderer.getBatch().setColor(Color.WHITE);
+		}
+		return false;
+	}
+
+	protected void flash()
+	{
+		m.pause();
+		//enterBattle.play();
+		enteringBattle = true;
+		flashTimer = 1;
+		lastFlash = 1.1f;
+		transitionSound.play();
+	}
+
     @Override
     public void render(float delta) {
         //update separately from render
@@ -211,6 +268,9 @@ public abstract class MapScreen extends GameScreen{
 		//renderer.getBatch().setColor(com.badlogic.gdx.graphics.Color.OLIVE);
         renderer.render();
 
+        if(flashTimer == -1)
+        	m.play();
+
         //render Box2DDebugLines
         //b2dr.render(world, gamecam.combined);
 
@@ -222,13 +282,15 @@ public abstract class MapScreen extends GameScreen{
 		if(!enteringBattle)
 			player.draw(game.batch);
 		//player.setColor(400,0,0,1);
-        if(npcs != null && !npcs.isEmpty())
+        if(npcs != null && !npcs.isEmpty() && flashTimer == -1)
 			for(NPC n : npcs)
 			{
 				if(!paused)
 					n.update(delta);
 				n.draw(game.batch);
 			}
+		if(door != null)
+			door.draw(game.batch);
 
         game.batch.end();
 

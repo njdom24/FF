@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.sprites.Battler;
 import com.dommie.ffdemo.sprites.Enemy;
 
 public class Hud implements Disposable
@@ -131,6 +132,8 @@ public class Hud implements Disposable
 					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 48, 40, 8, 8));//Row 6 (,)
 				else if (toPlace == 46)
 					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 56, 40, 8, 8));//Row 6 (.)
+				else if (toPlace == 47)
+					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 64, 40, 8, 8));//Row 6 (/)
 				else if (toPlace >= 48 && toPlace <= 57)
 					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 48), 48, 8, 8));//Row 7 (0-9)
 
@@ -157,6 +160,7 @@ public class Hud implements Disposable
 			}
 		}
 	}
+
 
 	public void displayMessage()
 	{
@@ -261,9 +265,9 @@ public class Hud implements Disposable
             }
     }
 
-    public void createBattleMenu(Enemy e)
+    public void createBattleMenu(Enemy e, Battler b)
 	{
-		createTextbox(50, 8, " FIGHT           " + e.getName() + "\n\n ITEM              " + e.getHealth() + "\n\n RUN");
+		createTextbox(50, 8, " FIGHT           " + "   PLAYER             " + e.getName() + "\n\n ITEM               " + b.getHealth() + "                 " + e.getHealth() + "\n\n RUN");
 		finishText();
 	}
 

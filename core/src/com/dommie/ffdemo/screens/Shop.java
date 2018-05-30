@@ -1,7 +1,6 @@
 package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,42 +8,39 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dommie.ffdemo.GameInfo;
-import com.dommie.ffdemo.scenes.Cursor;
 import com.dommie.ffdemo.scenes.Hud;
-import com.dommie.ffdemo.sprites.Player;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
-public class Shop extends GameScreen
+public abstract class Shop extends GameScreen
 {
 	private Sprite player;
 	private Sprite shopkeep;
-	private Hud wepList;
-	private Cursor c;
+	private GameScreen returnScreen;
+	protected Hud moneyDisp;
 
-	public Shop(GameInfo game)
+	public Shop(GameInfo game, String question, String shopType, GameScreen exit)
 	{
 		this.game = game;
+		returnScreen = exit;
 
-		c = new Cursor(130, 35, 4, 2);
+		m = Gdx.audio.newMusic(Gdx.files.internal("Music/Cornelia/Wep.ogg"));
+		m.setLooping(true);
+		m.setVolume(0.8f);
 
 		gamecam = new OrthographicCamera();
 		gamePort = new FitViewport(com.dommie.ffdemo.GameInfo.V_WIDTH, com.dommie.ffdemo.GameInfo.V_HEIGHT, gamecam);
 		hud = new Hud(gamecam);
-		hud.createTextbox(9, 5, "What doyou\nwant?", -21, 24);
+		hud.createTextbox(9, 5, question, -21, 24);
 		hud.finishText();
 
-		wepList = new Hud(gamecam);
-		wepList.createTextbox(9, 19, "\n\nWood\n\n\n\nIron\n\n\n\nGolden\n\n\n\nMagic", 22, 5);
-		wepList.finishText();
+		moneyDisp = new Hud(gamecam);
+		moneyDisp.createTextbox(9, 3, " " + getLine(3) + "G", 0, 27);
+		moneyDisp.finishText();
 
 		player = new Sprite(new TextureAtlas("Battle/Players/BattleSprites.atlas").findRegion("RedMage"));
 		player.scale(2);
 		player.setPosition(32,-8);
 
-		shopkeep = new Sprite(new Texture("Shops/WeaponShop.png"));
+		shopkeep = new Sprite(new Texture("Shops/" + shopType + "Shop.png"));
 		shopkeep.scale(2);
 		shopkeep.setPosition(-96,-43);
 	}
@@ -66,48 +62,20 @@ public class Shop extends GameScreen
 		player.draw(game.batch);
 		shopkeep.draw(game.batch);
 		game.batch.end();
-
-		game.hudBatch.begin();
-
-		hud.update(delta);
-		hud.draw(game.hudBatch);
-		wepList.update(delta);
-		wepList.draw(game.hudBatch);
-
-		c.draw(game.hudBatch);
-
-		game.hudBatch.end();
 	}
 
-	private void update(float dt)
+	protected void update(float dt)
 	{
+		m.play();
 		if (prevScreen != null) {
 			prevScreen.dispose();
 			prevScreen = null;
 		}
-		c.update(dt);
-		handleInput(dt);
 	}
 
-	public void handleInput(float dt)
+	protected void exit()
 	{
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-		{
-			try
-			{
-				BufferedWriter writer = new BufferedWriter(new FileWriter("TempSave.txt"));
-				writer.write("" + c.getPos());
-
-				writer.close();
-
-				Corneria map = new Corneria(game, 184, 200, Player.State.DOWN);
-				map.setToDispose(this);
-				changeMap(map);
-			}
-			catch (IOException e)
-			{
-
-			}
-		}
+		returnScreen.setToDispose(this);
+		changeMap(returnScreen);
 	}
 }

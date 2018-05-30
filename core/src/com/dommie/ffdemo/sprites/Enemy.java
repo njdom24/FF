@@ -70,7 +70,7 @@ public class Enemy extends Sprite
 		else
 			invisible = false;
 		//puts sprite on b2body
-		setPosition(b2body.getPosition().x - getWidth() / 2 - 128, b2body.getPosition().y - getHeight()/2 + 2*16);
+		setPosition(b2body.getPosition().x - getWidth() / 2 - 128, b2body.getPosition().y - getHeight()/2 + 26);
 		//setRegion(getFrame(dt));
 		b2body.setAwake(true);
 
