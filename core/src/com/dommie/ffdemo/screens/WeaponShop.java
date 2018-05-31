@@ -28,14 +28,22 @@ public class WeaponShop extends Shop
 
 		game.hudBatch.begin();
 
-		moneyDisp.update(dt);
-		moneyDisp.draw(game.hudBatch);
-		hud.update(dt);
-		hud.draw(game.hudBatch);
-		wepList.update(dt);
-		wepList.draw(game.hudBatch);
-
-		c.draw(game.hudBatch);
+		if(flashTimer == -1)
+		{
+			moneyDisp.update(dt);
+			moneyDisp.draw(game.hudBatch);
+			hud.update(dt);
+			hud.draw(game.hudBatch);
+			wepList.update(dt);
+			wepList.draw(game.hudBatch);
+			c.draw(game.hudBatch);
+		}
+		else
+		{
+			moneyDisp.dispose();
+			hud.dispose();
+			wepList.dispose();
+		}
 
 		game.hudBatch.end();
 	}

@@ -2,7 +2,6 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -45,21 +44,15 @@ public abstract class MapScreen extends GameScreen{
     private NPC speakingNPC;
 
     private boolean paused;
-    protected boolean enteringBattle;
+    protected boolean enteringArea;
 
-	protected float flashTimer;
-	protected float lastFlash;
 	protected GameScreen queuedMap;
 	protected Color flashColor;
 
-	protected Sound transitionSound;
 	protected Sprite door;
 
     public MapScreen(GameInfo game, String mapName, float locX, float locY, boolean isOverworld)
     {
-		transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/EnterTown.wav"));
-		flashTimer = -1;
-		lastFlash = -1;
     	//justPaused = false;
     	paused = false;
 
@@ -86,7 +79,7 @@ public abstract class MapScreen extends GameScreen{
         world.setContactListener(new WorldContactListener());
         WorldContactListener.player = player;
 
-        enteringBattle = false;
+        enteringArea = false;
         //GameInfo.currentScreen = this;
 
         //hud.createTextbox(23, 5, "Good ol' fashioned\ntest.");//just for demo, should only me put in child classes for specific npcs
@@ -145,7 +138,7 @@ public abstract class MapScreen extends GameScreen{
 		}
     	if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !player.isMoving())
 		{
-			if(!paused)
+			if(!paused)//If not already talking
 				if(npcs != null && !npcs.isEmpty())
 					for (NPC n : npcs)//Checks if player is interacting with an NPC
 					{
@@ -159,7 +152,6 @@ public abstract class MapScreen extends GameScreen{
 						}
 						break;
 					}
-			System.out.println("Foddy");
 			if(!justPaused)
 			{
 				if(!hud.isFinished())
@@ -180,11 +172,11 @@ public abstract class MapScreen extends GameScreen{
 		//if(justPaused)
 		//	justPaused = false;
 
-		if(!enteringBattle)
+		if(!enteringArea)
 			handleInput(dt);
     	if(!paused)
     	{
-    		if(!enteringBattle)
+    		if(!enteringArea)
 				player.update(dt);
 			//t.update(dt);
 
@@ -226,7 +218,7 @@ public abstract class MapScreen extends GameScreen{
 				renderer.getBatch().setColor(col);
 			}
 		}
-		else if (enteringBattle && flashTimer >= -0.6)
+		else if (enteringArea && flashTimer >= -0.6)
 		{
 			if(door != null)
 				door.setColor(Color.BLACK);
@@ -248,12 +240,8 @@ public abstract class MapScreen extends GameScreen{
 
 	protected void flash()
 	{
-		m.pause();
-		//enterBattle.play();
-		enteringBattle = true;
-		flashTimer = 1;
-		lastFlash = 1.1f;
-		transitionSound.play();
+		super.flash();
+		enteringArea = true;
 	}
 
     @Override
@@ -279,7 +267,7 @@ public abstract class MapScreen extends GameScreen{
         game.hudBatch.setProjectionMatrix(gamecam.projection);
         game.batch.begin();
 
-		if(!enteringBattle)
+		if(!enteringArea)
 			player.draw(game.batch);
 		//player.setColor(400,0,0,1);
         if(npcs != null && !npcs.isEmpty() && flashTimer == -1)

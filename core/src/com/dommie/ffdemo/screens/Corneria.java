@@ -32,8 +32,8 @@ public class Corneria extends MapScreen {
         npcAtlas = new TextureAtlas("Overworld/Maps/Corneria/NPC/NPCs.atlas");
         String[][] dialogue = new String[1][2];
         //String[] types = {"Dancer"};
-        dialogue[0][0] = "Steph is a heckin\nnerd\nxDDDDDDDDDDDDDDD";
-        dialogue[0][1] = "i want to die please\nhelp me";
+        dialogue[0][0] = "Go to the shop with asword sign on it to\nbuy a sword.";
+        dialogue[0][1] = "Whomst'd've thunk it?";
 
         npcs = new ArrayList<NPC>();
 
@@ -47,7 +47,6 @@ public class Corneria extends MapScreen {
 		Rectangle r = new Rectangle(19*16, 7*16, 16, 16);
 		npcs.add(new NPC(world, map, r, true, 2, "Dancer", this));
 		npcs.get(0).setMessages(dialogue[0]);
-
 
         WorldContactListener.npcs = npcs;
     }

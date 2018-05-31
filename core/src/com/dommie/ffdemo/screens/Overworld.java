@@ -10,15 +10,18 @@ import java.util.Random;
 
 public class Overworld extends MapScreen
 {
-	private boolean movedLastFrame;
+	private int tilesMoved;
 
 	private Random rnd;
+	private boolean battleTriggered;
 
 	public Overworld(GameInfo game, float locX, float locY, Player.State state)
 	{
 		super(game, "Overworld/Overworld.tmx", locX, locY, true);
 
-		movedLastFrame = false;
+		battleTriggered = false;
+		tilesMoved = 0;
+
 		m = Gdx.audio.newMusic(Gdx.files.internal("Music/Overworld/Overworld Loop.ogg"));
 		m.setLooping(true);
 		m.setVolume(0.4f);
@@ -55,23 +58,28 @@ public class Overworld extends MapScreen
 			changeMap(queuedMap);
 		}
 
-		if(player.getPos() == 3 && flashTimer < 0)
-		{
-			if(rnd.nextInt(99) < 10)
+		if(flashTimer == -1)
+			if (battleTriggered && !player.isMoving())//AKA Player stopped moving
 			{
-				if (movedLastFrame && !player.isMoving())//AKA Player stopped moving
-				{
-					transitionSound.dispose();
-					transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/EnterBattle.wav"));
-					movedLastFrame = false;
-					queuedMap = new BattleScreen(game, player.getIntendedPos(), player.getState());
-					flash();
-					flashColor = Color.OLIVE;
-				}
-				if (player.isMoving())
-					movedLastFrame = true;
+				transitionSound.dispose();
+				transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/EnterBattle.wav"));
+				queuedMap = new BattleScreen(game, player.getIntendedPos(), player.getState());
+				flash();
+				flashColor = Color.OLIVE;
 			}
-		}
+			else if(player.getPos() == 3 && player.movedThisFrame)
+			{
+				System.out.println("?????");
+				if(!battleTriggered)
+				{
+					player.movedThisFrame = false;
+					if (tilesMoved < 10)
+						tilesMoved++;
+					int thing = rnd.nextInt(99);
+					if (thing < (5 + tilesMoved))
+						battleTriggered = true;
+				}
+			}
 	}
 
 	protected void flash()

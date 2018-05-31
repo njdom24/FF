@@ -1,7 +1,9 @@
 package com.dommie.ffdemo.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -37,6 +39,17 @@ public abstract class GameScreen implements Screen, Disposable{
     protected Box2DDebugRenderer b2dr;
     
     protected GameScreen prevScreen;//dispose on normal change, keep on BattleScreen change
+
+	protected float flashTimer;
+	protected float lastFlash;
+	protected Sound transitionSound;
+
+	public GameScreen()
+	{
+		transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/EnterTown.wav"));
+		flashTimer = -1;
+		lastFlash = -1;
+	}
 
     public void changeMap(GameScreen scrn)
     {
@@ -94,6 +107,14 @@ public abstract class GameScreen implements Screen, Disposable{
 		catch (IOException e)
 		{
 		}
+	}
+
+	protected void flash()
+	{
+		m.pause();
+		flashTimer = 1;
+		lastFlash = 1.1f;
+		transitionSound.play();
 	}
 
 	public static void incrementLine(int line, int change)

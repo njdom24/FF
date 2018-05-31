@@ -39,7 +39,7 @@ public class Player extends Sprite implements Disposable
 	private float stateTimer;
 	private float animSpeed;
 	private boolean isMoving;
-	private boolean finishedMoving;
+	public boolean movedThisFrame;
 	private boolean isOverworld;
 
 	private int[][] collisionArray;
@@ -58,7 +58,7 @@ public class Player extends Sprite implements Disposable
 		intendedPos = new Vector2(0,0);
 		originalPos = new Vector2(0,0);
 		animFrames = new Array<TextureRegion>();
-		finishedMoving = false;
+		movedThisFrame = false;
 		isOverworld = overworld;
 
 		Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -96,7 +96,10 @@ public class Player extends Sprite implements Disposable
 
 	public void update(float dt)
 	{
+		movedThisFrame = false;
 		handleInput(dt);
+		if(movedThisFrame)
+			System.out.println("TEEEEEEEET");
 		//puts sprite on b2body
 		setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2);
 		setRegion(getFrame(dt));
@@ -212,6 +215,7 @@ public class Player extends Sprite implements Disposable
 					updateAnimationSpeed(0.15f);
 					if (curY < collisionArray.length-1 && (collisionArray[collisionArray.length-curY-2][curX] == 0 || collisionArray[collisionArray.length-curY-2][curX] == 3))//no upward collisions, not allowed to move out of bounds
 					{
+						movedThisFrame = true;
 						isMoving = true;
 						curY += 1;
 
@@ -251,6 +255,7 @@ public class Player extends Sprite implements Disposable
 					updateAnimationSpeed(0.15f);
 					if (curY > 0 && (collisionArray[collisionArray.length-curY][curX] == 0 || collisionArray[collisionArray.length-curY][curX] == 3))//no downward collisions, not allowed to move out of bounds
 					{
+						movedThisFrame = true;
 						isMoving = true;
 						curY -= 1;
 						if(!isOverworld)
@@ -289,6 +294,7 @@ public class Player extends Sprite implements Disposable
 					updateAnimationSpeed(0.15f);
 					if (curX > 0 && (collisionArray[collisionArray.length-curY-1][curX-1] == 0 || collisionArray[collisionArray.length-curY-1][curX-1] == 3))//no left collisions, not allowed to move out of bounds
 					{
+						movedThisFrame = true;
 						isMoving = true;
 						curX -= 1;
 						if(!isOverworld)
@@ -326,6 +332,7 @@ public class Player extends Sprite implements Disposable
 					updateAnimationSpeed(0.15f);
 					if (curX < collisionArray[0].length-1 && (collisionArray[collisionArray.length-curY-1][curX+1] == 0 || collisionArray[collisionArray.length-curY-1][curX+1] == 3))//no right collisions, not allowed to move out of bounds
 					{
+						movedThisFrame = true;
 						isMoving = true;
 						curX += 1;
 						if(!isOverworld)

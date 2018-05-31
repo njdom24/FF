@@ -15,6 +15,7 @@ public class Cursor extends Sprite
 	private int dist;
 	private int scale = 1;
 	private Sound moveCursor;
+	private int y;
 
 	public Cursor(int x, int y)
 	{
@@ -30,6 +31,7 @@ public class Cursor extends Sprite
 		hidden = false;
 		pos = positions;
 		limit = positions;
+		this.y = y;
 		setPosition(x, y);
 		this.setScale(scale);
 	}
@@ -41,12 +43,12 @@ public class Cursor extends Sprite
 			moveCursor.play();
 			if(pos < limit)
 			{
-				setY(this.getY() + 16 * dist * scale);
+				//setY(this.getY() + 16 * dist * scale);
 				pos++;
 			}
 			else
 			{
-				setY(this.getY() - (16*dist*scale)*(limit-1));
+				//setY(this.getY() - (16*dist*scale)*(limit-1));
 				pos = 1;
 			}
 		}
@@ -56,12 +58,10 @@ public class Cursor extends Sprite
 				moveCursor.play();
 				if(pos > 1)
 				{
-					setY(this.getY() - 16 * dist * scale);
 					pos--;
 				}
 				else
 				{
-					setY(this.getY() + (16*dist*scale)*(limit-1));
 					pos = limit;
 				}
 			}
@@ -79,6 +79,7 @@ public class Cursor extends Sprite
 
 	public void draw(SpriteBatch sb)
 	{
+		setY(y+(pos-limit)*16*dist);
 		if(!hidden)
 			super.draw(sb);
 	}
@@ -86,6 +87,14 @@ public class Cursor extends Sprite
 
 	public int getPos()
 	{
+		System.out.println("ACTUAL POS: " + pos);
 		return limit-pos+1;
+	}
+	public void setPos(int newPos)
+	{
+		if(limit-pos+1 > 0 && limit-pos+1 <= limit)
+		{
+			pos = limit+1 - newPos;
+		}
 	}
 }

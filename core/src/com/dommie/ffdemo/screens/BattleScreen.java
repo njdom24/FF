@@ -24,6 +24,7 @@ public class BattleScreen extends GameScreen
 	Enemy e1;
 	Battler b1;
 	private boolean playerTurn;
+	private boolean itemMenu;
 	private Cursor cursor;
 	private boolean enemyTurn;
 	private boolean battleWon;
@@ -36,6 +37,7 @@ public class BattleScreen extends GameScreen
 
 	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		itemMenu = false;
 		background = new Sprite(new Texture("Battle/ForestBG.png"));
 		//background.scale(2);
 		background.setPosition(0,GameInfo.V_HEIGHT-32);
@@ -148,7 +150,11 @@ public class BattleScreen extends GameScreen
 		hud.draw(game.hudBatch);
 
 		if(playerTurn)
+		{
+			if(itemMenu && cursor.getPos() == 3)
+				cursor.setPos(1);
 			cursor.draw(game.hudBatch);
+		}
 
 		game.hudBatch.end();
 	}
@@ -188,19 +194,44 @@ public class BattleScreen extends GameScreen
 				//if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
 				//{
 				//turnTimer = 0.1f;
-				playerTurn = false;
-				enemyTurn = true;
 				System.out.println("YEEEET");
+				b1.stopFlash();
 				switch (cursor.getPos())
 				{
 					case 1:
-						attack();
+						playerTurn = false;
+						enemyTurn = true;
+						if(!itemMenu)
+						{
+							attack();
+						}
+						else
+						{
+							hud.createTextbox(50, 8, "YOU GAIN " + 5 + " HP!");
+							b1.health += 5;
+							itemMenu = false;
+						}
 						break;
 					case 2:
+						if(!itemMenu)
+						{
+							cursor.setPos(1);
+							hud.createTextbox(50, 8, " POTION xINF.\n\n EXIT");
+							hud.finishText();
+							itemMenu = true;
+						}
+						else
+						{
+							itemMenu = false;
+							hud.createBattleMenu(e1, b1);
+						}
 						//heal();
 						break;
 					case 3:
-						System.out.println("No running!");
+						changeLine(2, "" + b1.health);
+						battleWon = true;
+						hud.createTextbox(50, 8, "GOT AWAY SAFELY!");
+						cursor.hide();
 					default:
 						break;
 				}
@@ -223,7 +254,7 @@ public class BattleScreen extends GameScreen
 	private void attack()
 	{
 		animTimer = 1.5f;
-		b1.stopFlash();
+		//b1.stopFlash();
 		System.out.println("SQUADALAAAAA");
 		//turnTimer = .1f;
 		e1.takeDamage(b1.wepIndex);

@@ -169,7 +169,6 @@ public class Battler extends Sprite
 
 	public void animate(float timer, float dt)
 	{
-		System.out.println(timer);
 		if(flashTimer < 0)
 		{
 			swinging = false;
