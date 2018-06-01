@@ -149,8 +149,8 @@ public abstract class MapScreen extends GameScreen{
 							speakingNPC = n;
 							hud = new Hud(gamecam, n.getMessages());//Creates a text box from NPC's dialogue
 							hud.displayMessage();
+							break;
 						}
-						break;
 					}
 			if(!justPaused)
 			{

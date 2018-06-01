@@ -19,7 +19,7 @@ import java.io.*;
 
 public abstract class GameScreen implements Screen, Disposable{
     //Reference to Game, used to set Screens
-	private static final int LINE_COUNT = 4;
+	private static final int LINE_COUNT = 5;
     protected GameInfo game;
     protected TextureAtlas atlas;
     protected TextureAtlas npcAtlas;

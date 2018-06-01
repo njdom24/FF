@@ -2,6 +2,7 @@ package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -30,6 +31,12 @@ public class BattleScreen extends GameScreen
 	private boolean battleWon;
 	private Player.State mapState;
 	private Sprite background;
+	private boolean gameOver;
+	private Sprite youDied;
+	private Sprite blackScreen;
+	private Sound death;
+	private boolean played;
+	private int potionCount;
 
 	private float animTimer;
 
@@ -37,6 +44,13 @@ public class BattleScreen extends GameScreen
 
 	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		potionCount = Integer.parseInt(getLine(4));
+		death = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/YouDied.wav"));
+		played = false;
+
+		gameOver = false;
+		youDied = new Sprite(new Texture("Battle/Death.png"));
+		blackScreen = new Sprite(new Texture("Battle/Black.png"));
 		itemMenu = false;
 		background = new Sprite(new Texture("Battle/ForestBG.png"));
 		//background.scale(2);
@@ -81,7 +95,8 @@ public class BattleScreen extends GameScreen
 
 	public void update(float dt)//delta time
 	{
-		m.play();
+		if(!gameOver)
+			m.play();
 		boolean pressed = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 		//if(justPaused)
 		//	justPaused = false;
@@ -112,13 +127,14 @@ public class BattleScreen extends GameScreen
 				}
 				if (!hud.isFinished())
 					hud.finishText();
-				else
+				else if(!gameOver)
 					progBattle(dt);
 			}
 		}
 		else//if the animation is still happening
 		{
-			b1.animate(animTimer, dt);
+			if(!gameOver)
+				b1.animate(animTimer, dt);
 			animTimer -= dt;
 		}
 
@@ -140,13 +156,14 @@ public class BattleScreen extends GameScreen
 
 		game.batch.begin();
 		background.draw(game.batch);
-		if(!battleWon)
+
+		if (!battleWon)
 			e1.draw(game.batch);
 		b1.draw(game.batch);
 		game.batch.end();
-
 		game.hudBatch.begin();
 		hud.update(delta);
+
 		hud.draw(game.hudBatch);
 
 		if(playerTurn)
@@ -157,6 +174,38 @@ public class BattleScreen extends GameScreen
 		}
 
 		game.hudBatch.end();
+
+		game.batch.begin();
+		if(gameOver)
+		{
+			if (animTimer <= 5)
+			{
+				if(!played)
+				{
+					death.play();
+					played = true;
+				}
+				animTimer -= delta;
+				blackScreen.setAlpha(1);
+				if (animTimer > 0)
+				{
+					float change = (5 - animTimer) / 5;
+					youDied.setScale(change/4 + 0.75f);
+					youDied.setAlpha(change);
+					if(change*5/3 <= 1)
+						blackScreen.setAlpha((5 - animTimer) / 3);
+				}
+				blackScreen.draw(game.batch);
+				youDied.draw(game.batch);
+			}
+			else
+			{
+				m.pause();
+				m.stop();
+				m.dispose();
+			}
+		}
+		game.batch.end();
 	}
 
 	private void progBattle(float dt)
@@ -179,6 +228,7 @@ public class BattleScreen extends GameScreen
 			m.setLooping(true);
 			hud.createTextbox(50, 8, "YOU WIN!\n\nGOT 10G!");
 			incrementLine(3, 10);
+			changeLine(4, "" + potionCount);
 			changeLine(2, "" + b1.health);
 			battleWon = true;
 			b1.battleWon = true;
@@ -205,8 +255,9 @@ public class BattleScreen extends GameScreen
 						{
 							attack();
 						}
-						else
+						else if(potionCount > 0 && b1.health < b1.maxHealth)
 						{
+							potionCount--;
 							hud.createTextbox(50, 8, "YOU GAIN " + 5 + " HP!");
 							b1.health += 5;
 							itemMenu = false;
@@ -216,7 +267,7 @@ public class BattleScreen extends GameScreen
 						if(!itemMenu)
 						{
 							cursor.setPos(1);
-							hud.createTextbox(50, 8, " POTION xINF.\n\n EXIT");
+							hud.createTextbox(50, 8, " POTION x" + potionCount + "\n\n EXIT");
 							hud.finishText();
 							itemMenu = true;
 						}
@@ -242,6 +293,11 @@ public class BattleScreen extends GameScreen
 				b1.takeDamage();
 				hud.createTextbox(50, 8, "" + e1.getName() + " ATTACKS!\n\nYOU TAKE " + 1 + " DAMAGE!");
 				enemyTurn = false;
+				if(b1.health <= 0)
+				{
+					gameOver = true;
+					animTimer = 7;
+				}
 			} else//RESTART PLAYER TURN
 			{
 				playerTurn = true;

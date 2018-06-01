@@ -18,7 +18,7 @@ public class Battler extends Sprite
 {
 	public Body b2body;
 	public int health;
-	private int maxHealth;
+	public int maxHealth;
 	//String name;
 
 	private boolean swinging;
@@ -31,7 +31,6 @@ public class Battler extends Sprite
 	public boolean battleWon;
 	private boolean wasMoving;
 	private float stateTimer;
-
 	private boolean invisible;
 	private float flashTimer;
 	private float lastFlash;
@@ -150,7 +149,11 @@ public class Battler extends Sprite
 		else
 			invisible = false;
 
-
+		if(health <= 0)
+		{
+			invisible = false;
+			flash();
+		}
 		getFrame(dt);
 		//sword.setPosition(b2body.getPosition().x - getWidth() + 2, b2body.getPosition().y + 26);
 		sword.setPosition(b2body.getPosition().x - getWidth() - 6 - 30, b2body.getPosition().y + 40 - 1*16);
@@ -196,40 +199,44 @@ public class Battler extends Sprite
 
 	public void getFrame(float dt)
 	{
-		if(flashTimer < 0)
-		if(battleWon)
-		{
-			setRegion(victory.getKeyFrame(stateTimer, true));
-			stateTimer += dt;
-		}
+		if(false)
+			setRegion(new TextureRegion(getTexture(), 4*26+getRegionX(), getRegionY(), 26, 26));
 		else
 		{
-			//TextureRegion region;
-			if (b2body.getLinearVelocity().x != 0 || b2body.getLinearVelocity().y != 0)
-			{
-				wasMoving = true;
-				setRegion(runHorizontal.getKeyFrame(stateTimer, true));
-			} else
-			{
-				wasMoving = false;
-
-				if (swinging)
+			if (flashTimer < 0)
+				if (battleWon)
 				{
-					setRegion(attacking.getKeyFrame(stateTimer, true));
-					sword.setRegion(swordSwing.getKeyFrame(stateTimer, true));
+					setRegion(victory.getKeyFrame(stateTimer, true));
+					stateTimer += dt;
 				} else
 				{
-					setRegion(runHorizontal.getKeyFrame(0));
-					sword.setRegion(swordSwing.getKeyFrame(0));
+					//TextureRegion region;
+					if (b2body.getLinearVelocity().x != 0 || b2body.getLinearVelocity().y != 0)
+					{
+						wasMoving = true;
+						setRegion(runHorizontal.getKeyFrame(stateTimer, true));
+					} else
+					{
+						wasMoving = false;
+
+						if (swinging)
+						{
+							setRegion(attacking.getKeyFrame(stateTimer, true));
+							sword.setRegion(swordSwing.getKeyFrame(stateTimer, true));
+						} else
+						{
+							setRegion(runHorizontal.getKeyFrame(0));
+							sword.setRegion(swordSwing.getKeyFrame(0));
+						}
+					}
+
+					if (wasMoving || swinging)
+						stateTimer += dt;
+					else
+						stateTimer = 0;
+
+					//return region;
 				}
-			}
-
-			if (wasMoving || swinging)
-				stateTimer += dt;
-			else
-				stateTimer = 0;
-
-			//return region;
 		}
 	}
 

@@ -69,7 +69,7 @@ public class NPC extends InteractiveTileObject implements Disposable
 
         messages = new String[0];
         spr = new Sprite(m.getNPCAtlas().findRegion(name));
-        currentState = State.UP;
+        currentState = State.DOWN;
         stateTimer = 0;
         animSpeed = 0.125f;
         spr.setPosition(16,16);

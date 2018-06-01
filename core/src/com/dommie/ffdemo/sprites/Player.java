@@ -207,6 +207,11 @@ public class Player extends Sprite implements Disposable
 
 						if(!smallDifference(npcX, playerX) || !smallDifference(playerY+16,  npcY))
 							canMove = true;
+						else
+						{
+							canMove = false;
+							break;
+						}
 					}
 
 				setState(Player.State.UP);
@@ -247,6 +252,11 @@ public class Player extends Sprite implements Disposable
 
 						if(!smallDifference(npcX, playerX) || !smallDifference(playerY-16,  npcY))
 							canMove = true;
+						else
+						{
+							canMove = false;
+							break;
+						}
 					}
 
 				setState(Player.State.DOWN);
@@ -286,6 +296,11 @@ public class Player extends Sprite implements Disposable
 
 						if(!smallDifference(npcY, playerY) || !smallDifference(playerX-16,  npcX))
 							canMove = true;
+						else
+						{
+							canMove = false;
+							break;
+						}
 					}
 
 				setState(Player.State.LEFT);
@@ -325,6 +340,11 @@ public class Player extends Sprite implements Disposable
 
 						if(!smallDifference(npcY, playerY) || !smallDifference(playerX+16,  npcX))
 							canMove = true;
+						else
+						{
+							canMove = false;
+							break;
+						}
 					}
 				setState(Player.State.RIGHT);
 				if(canMove)
