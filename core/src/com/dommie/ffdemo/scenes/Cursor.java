@@ -42,15 +42,9 @@ public class Cursor extends Sprite
 		{
 			moveCursor.play();
 			if(pos < limit)
-			{
-				//setY(this.getY() + 16 * dist * scale);
 				pos++;
-			}
 			else
-			{
-				//setY(this.getY() - (16*dist*scale)*(limit-1));
 				pos = 1;
-			}
 		}
 		else
 			if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN))

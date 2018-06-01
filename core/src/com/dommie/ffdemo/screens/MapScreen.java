@@ -269,7 +269,6 @@ public abstract class MapScreen extends GameScreen{
 
 		if(!enteringArea)
 			player.draw(game.batch);
-		//player.setColor(400,0,0,1);
         if(npcs != null && !npcs.isEmpty() && flashTimer == -1)
 			for(NPC n : npcs)
 			{

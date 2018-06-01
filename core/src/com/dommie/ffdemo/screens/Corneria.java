@@ -48,7 +48,7 @@ public class Corneria extends MapScreen {
 		npcs.get(0).setMessages(dialogue);
 		r = new Rectangle(72-8, 360-8, 16, 16);
 		npcs.add(new NPC(world, map, r, false, 0, "Dancer", this));
-		dialogue = new String[]{"Please end me."};
+		dialogue = new String[]{"        !  !!\n\n        !! !-"};
 		npcs.get(1).setMessages(dialogue);
 
         WorldContactListener.npcs = npcs;

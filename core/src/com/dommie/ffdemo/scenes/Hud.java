@@ -137,9 +137,7 @@ public class Hud implements Disposable
 				else if (toPlace >= 48 && toPlace <= 57)
 					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 48), 48, 8, 8));//Row 7 (0-9)
 
-				//sprites[curY][curX].setPosition(((int)(gamecam.position.x+0.1)/16 - width*4 + curX * 8 - 16), ((int)(gamecam.position.y+0.1)/16 - (curY+2) * 8));
 				sprites[curY][curX].setScale(scale);
-				//sprites[curY][curX].setPosition(((com.dommie.ffdemo.GameInfo.V_WIDTH/2 - width * 8 / 2) + scale + curX * 8) * scale, (height * 8 - (curY + 0.65f) * 8) * scale);
 				if(centered)
 					sprites[curY][curX].setPosition((curX * 8 - width*4) * scale, ((height-16) * 8 - (curY) * 8) * scale);
 				else
