@@ -169,6 +169,9 @@ public class BattleScreen extends GameScreen
 		if(playerTurn)
 		{
 			if(itemMenu && cursor.getPos() == 3)
+				if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
+					cursor.setPos(2);
+			else
 				cursor.setPos(1);
 			cursor.draw(game.hudBatch);
 		}
