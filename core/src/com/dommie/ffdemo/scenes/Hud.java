@@ -93,7 +93,7 @@ public class Hud implements Disposable
 				dt = 0;
 			}
 			time += dt;
-			if (time >= 0.1)//Update next character
+			if (time >= 0.075)//Update next character
 			{
 				char toPlace = message.charAt(curChar);
 				curChar++;
@@ -104,38 +104,52 @@ public class Hud implements Disposable
 					//System.out.println("Played");
 				}
 
-				if (toPlace >= 65 && toPlace <= 74)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 65), 0, 8, 8));//Row 1 (A-J)
-				else if (toPlace >= 75 && toPlace <= 85)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 75), 8, 8, 8));//Row 2 (K-U)
-				else if (toPlace >= 86 && toPlace <= 90)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 86), 16, 8, 8));//Row 3 (V-Z)
-				else if (toPlace >= 97 && toPlace <= 101)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * ((toPlace - 97) + 5), 16, 8, 8));//Row 3 (a-e)
-				else if (toPlace >= 102 && toPlace <= 111)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 102), 24, 8, 8));//Row 4 (f-o)
-				else if (toPlace >= 112 && toPlace <= 121)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 112), 32, 8, 8));//Row 5 (p-y)
-				else if (toPlace == 122)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 0, 40, 8, 8));//Row 6 (z)
-				else if (toPlace == 45)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8, 40, 8, 8));//Row 6 (-)
-				else if (toPlace == 34)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 16, 40, 8, 8));//Row 6 (")
-				else if (toPlace == 33)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 24, 40, 8, 8));//Row 6 (!)
-				else if (toPlace == 63)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 32, 40, 8, 8));//Row 6 (?)
-				else if (toPlace == 39)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 40, 40, 8, 8));//Row 6 (')
-				else if (toPlace == 44)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 48, 40, 8, 8));//Row 6 (,)
-				else if (toPlace == 46)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 56, 40, 8, 8));//Row 6 (.)
-				else if (toPlace == 47)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 64, 40, 8, 8));//Row 6 (/)
-				else if (toPlace >= 48 && toPlace <= 57)
-					sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 48), 48, 8, 8));//Row 7 (0-9)
+				if(toPlace >= 65)
+				{
+					if (toPlace >= 65 && toPlace <= 74)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 65), 0, 8, 8));//Row 1 (A-J)
+					else if (toPlace >= 75 && toPlace <= 85)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 75), 8, 8, 8));//Row 2 (K-U)
+					else if (toPlace >= 86 && toPlace <= 90)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 86), 16, 8, 8));//Row 3 (V-Z)
+					else if (toPlace >= 97 && toPlace <= 101)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * ((toPlace - 97) + 5), 16, 8, 8));//Row 3 (a-e)
+					else if (toPlace >= 102 && toPlace <= 111)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 102), 24, 8, 8));//Row 4 (f-o)
+					else if (toPlace >= 112 && toPlace <= 121)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 112), 32, 8, 8));//Row 5 (p-y)
+					else if (toPlace == 122)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 0, 40, 8, 8));//Row 6 (z)
+				}
+				else if(toPlace >= 45)
+				{
+					if (toPlace == 45)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8, 40, 8, 8));//Row 6 (-)
+					else if (toPlace == 46)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 56, 40, 8, 8));//Row 6 (.)
+					else if (toPlace == 47)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 64, 40, 8, 8));//Row 6 (/)
+					else if (toPlace == 60)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 72, 40, 8, 8));//Row 6 (<)
+					else if (toPlace == 62)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 80, 40, 8, 8));//Row 6 (>)
+					else if (toPlace == 63)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 32, 40, 8, 8));//Row 6 (?)
+					else if (toPlace >= 48 && toPlace <= 57)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 8 * (toPlace - 48), 48, 8, 8));//Row 7 (0-9)
+				}
+				else
+				{
+					if (toPlace == 34)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 16, 40, 8, 8));//Row 6 (")
+					else if (toPlace == 33)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 24, 40, 8, 8));//Row 6 (!)
+
+					else if (toPlace == 39)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 40, 40, 8, 8));//Row 6 (')
+					else if (toPlace == 44)
+						sprites[curY][curX] = new Sprite(new TextureRegion(letters, 48, 40, 8, 8));//Row 6 (,)
+				}
 
 				sprites[curY][curX].setScale(scale);
 				if(centered)
@@ -265,7 +279,11 @@ public class Hud implements Disposable
 
     public void createBattleMenu(Enemy e, Battler b)
 	{
-		createTextbox(50, 8, " FIGHT           " + "   PLAYER             " + e.getName() + "\n\n ITEM               " + b.getHealth() + "                 " + e.getHealth() + "\n\n RUN");
+		String itemLine = "ITEM" + addSpaces(23 - 6 - b.getHealth(true).length()/2)+ b.getHealth(true);
+		itemLine += addSpaces(47 - itemLine.length() - ("" + e.getHealth()).length() - 2) + e.getHealth();
+		createTextbox(50, 8, " FIGHT           " + "   PLAYER" + addSpaces(48-26 - e.getName().length() - e.getName().length()/2 + 1) + e.getName() +
+						 "\n\n " + itemLine +
+						 "\n\n RUN");//123456789012345678901234567890123456789012345678
 		finishText();
 	}
 
@@ -296,5 +314,13 @@ public class Hud implements Disposable
         destroy();
         textSound.dispose();
     }
+
+    private String addSpaces(int spaces)
+	{
+		String s = "";
+		for(int i = 0; i < spaces; i++)
+			s += ' ';
+		return s;
+	}
 
 }

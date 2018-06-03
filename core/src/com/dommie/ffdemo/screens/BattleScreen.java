@@ -20,6 +20,8 @@ import com.dommie.ffdemo.sprites.Battler;
 import com.dommie.ffdemo.sprites.Enemy;
 import com.dommie.ffdemo.sprites.Player;
 
+import java.util.Random;
+
 public class BattleScreen extends GameScreen
 {
 	Enemy e1;
@@ -29,14 +31,18 @@ public class BattleScreen extends GameScreen
 	private Cursor cursor;
 	private boolean enemyTurn;
 	private boolean battleWon;
+	private boolean levelUp;
 	private Player.State mapState;
 	private Sprite background;
 	private boolean gameOver;
 	private Sprite youDied;
 	private Sprite blackScreen;
 	private Sound death;
+	private Sound heal;
 	private boolean played;
 	private int potionCount;
+	private int superPotionCount;
+	private Random rnd;
 
 	private float animTimer;
 
@@ -44,8 +50,12 @@ public class BattleScreen extends GameScreen
 
 	public BattleScreen(GameInfo game, Vector2 playerPos, Player.State state)
 	{
+		rnd = new Random();
+		levelUp = false;
 		potionCount = Integer.parseInt(getLine(4));
+		superPotionCount = Integer.parseInt(getLine(5));
 		death = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/YouDied.wav"));
+		heal = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Battle/Healing.wav"));
 		played = false;
 
 		gameOver = false;
@@ -80,11 +90,29 @@ public class BattleScreen extends GameScreen
 
 		b1 = new Battler(world, "RedMage", this);
 		//b1.b2body.setTransform(216, 120, 0);
-		e1 = new Enemy (world, this, 2, "GOBLIN");
+		e1 = new Enemy (world, this, pickEnemy());
 		hud = new Hud(gamecam);
 		//hud.createTextbox(50, 8, "A " + e1.getName() + " APPEARS!");
 		e1.b2body.setTransform(216, 120, 0);
 		hud.createBattleMenu(e1, b1);
+	}
+
+	private String pickEnemy()
+	{
+		String s;
+		switch(rnd.nextInt(3) + 1)
+		{
+			case 1:
+				s = "Goblin";
+				break;
+			case 2:
+				s = "Wolf";
+				break;
+			default:
+				s = "Unicorn";
+				break;
+		}
+		return s;
 	}
 
 	public void setCamera()
@@ -137,7 +165,6 @@ public class BattleScreen extends GameScreen
 				b1.animate(animTimer, dt);
 			animTimer -= dt;
 		}
-
 	}
 
 	@Override
@@ -168,11 +195,13 @@ public class BattleScreen extends GameScreen
 
 		if(playerTurn)
 		{
+			/*
 			if(itemMenu && cursor.getPos() == 3)
 				if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
 					cursor.setPos(2);
 			else
 				cursor.setPos(1);
+			*/
 			cursor.draw(game.hudBatch);
 		}
 
@@ -181,7 +210,7 @@ public class BattleScreen extends GameScreen
 		game.batch.begin();
 		if(gameOver)
 		{
-			if (animTimer <= 5)
+			if (animTimer <= 10)
 			{
 				if(!played)
 				{
@@ -189,14 +218,14 @@ public class BattleScreen extends GameScreen
 					played = true;
 				}
 				animTimer -= delta;
-				blackScreen.setAlpha(1);
+				//blackScreen.setAlpha(1);
 				if (animTimer > 0)
 				{
-					float change = (5 - animTimer) / 5;
+					float change = (10 - animTimer) / 10;
 					youDied.setScale(change/4 + 0.75f);
 					youDied.setAlpha(change);
-					if(change*5/3 <= 1)
-						blackScreen.setAlpha((5 - animTimer) / 3);
+					//if(change*10/12 <= 1)
+						blackScreen.setAlpha(change*10 / 11);
 				}
 				blackScreen.draw(game.batch);
 				youDied.draw(game.batch);
@@ -229,10 +258,27 @@ public class BattleScreen extends GameScreen
 			m = Gdx.audio.newMusic(Gdx.files.internal("Music/Battle/Fanfare.ogg"));
 			m.setVolume(0.3f);
 			m.setLooping(true);
-			hud.createTextbox(50, 8, "YOU WIN!\n\nGOT 10G!");
-			incrementLine(3, 10);
-			changeLine(4, "" + potionCount);
-			changeLine(2, "" + b1.health);
+			int addGold = e1.giveGold();
+			int addExp = e1.giveExp();
+			String output = "YOU WIN!\n\nGOT " + addGold + "G!\n\nGOT " + addExp + " XP!";
+
+			incrementLine(3, addGold);
+			int exp = Integer.parseInt(getLine(6));
+			exp += addExp;
+			int level = Integer.parseInt(getLine(1));
+			while(exp >= level*10)//Exp required to level up is 1*current level
+			{
+				levelUp = true;
+				level++;
+				exp -= level*10;
+			}
+			if(levelUp)
+				output += "      LEVEL UP! " + level;
+			hud.createTextbox(50, 8, output);
+
+			changeLine(6, "" + exp);
+			changeLine(1, "" + level);
+			//saveValues();
 			battleWon = true;
 			b1.battleWon = true;
 		}
@@ -249,43 +295,66 @@ public class BattleScreen extends GameScreen
 				//turnTimer = 0.1f;
 				System.out.println("YEEEET");
 				b1.stopFlash();
+				//cursor.playSound();
 				switch (cursor.getPos())
 				{
 					case 1:
-						playerTurn = false;
-						enemyTurn = true;
 						if(!itemMenu)
 						{
 							attack();
 						}
 						else if(potionCount > 0 && b1.health < b1.maxHealth)
 						{
+							heal.play();
+							playerTurn = false;
+							enemyTurn = true;
 							potionCount--;
 							hud.createTextbox(50, 8, "YOU GAIN " + 5 + " HP!");
 							b1.health += 5;
+							if(b1.health > b1.maxHealth)
+								b1.health = b1.maxHealth;
 							itemMenu = false;
 						}
+						else
+							cursor.incorrect();
 						break;
 					case 2:
 						if(!itemMenu)
 						{
 							cursor.setPos(1);
-							hud.createTextbox(50, 8, " POTION x" + potionCount + "\n\n EXIT");
+							hud.createTextbox(50, 8, " POTION x" + potionCount + "\n\n SUPER POTION x" + superPotionCount + "\n\n EXIT");
 							hud.finishText();
 							itemMenu = true;
+						}
+						else if(superPotionCount > 0 && b1.health < b1.maxHealth)
+						{
+							heal.play();
+							playerTurn = false;
+							enemyTurn = true;
+							superPotionCount--;
+							hud.createTextbox(50, 8, "YOU GAIN " + 10 + " HP!");
+							b1.health += 10;
+							if(b1.health > b1.maxHealth)
+								b1.health = b1.maxHealth;
+							itemMenu = false;
+						}
+						else
+							cursor.incorrect();
+						//heal();
+						break;
+					case 3:
+						if(!itemMenu)
+						{
+							changeLine(2, "" + b1.health);
+							battleWon = true;
+							hud.createTextbox(50, 8, "GOT AWAY SAFELY!");
+							cursor.hide();
 						}
 						else
 						{
 							itemMenu = false;
 							hud.createBattleMenu(e1, b1);
 						}
-						//heal();
-						break;
-					case 3:
-						changeLine(2, "" + b1.health);
-						battleWon = true;
-						hud.createTextbox(50, 8, "GOT AWAY SAFELY!");
-						cursor.hide();
 					default:
 						break;
 				}
@@ -293,13 +362,13 @@ public class BattleScreen extends GameScreen
 			} else if (enemyTurn)//Enemy turn
 			{
 				//animTimer = 1;
-				b1.takeDamage();
-				hud.createTextbox(50, 8, "" + e1.getName() + " ATTACKS!\n\nYOU TAKE " + 1 + " DAMAGE!");
+				b1.takeDamage(e1.damage);
+				hud.createTextbox(50, 8, "" + e1.getName() + " ATTACKS!\n\nYOU TAKE " + e1.damage + " DAMAGE!");
 				enemyTurn = false;
-				if(b1.health <= 0)
+				if(b1.health <= 0)//PLAYER DIES
 				{
 					gameOver = true;
-					animTimer = 7;
+					animTimer = 12;//7
 				}
 			} else//RESTART PLAYER TURN
 			{
@@ -312,12 +381,14 @@ public class BattleScreen extends GameScreen
 
 	private void attack()
 	{
+		playerTurn = false;
+		enemyTurn = true;
 		animTimer = 1.5f;
 		//b1.stopFlash();
 		System.out.println("SQUADALAAAAA");
 		//turnTimer = .1f;
-		e1.takeDamage(b1.wepIndex);
-		hud.createTextbox(50, 8, e1.getName() + " TAKES " + b1.wepIndex + " DAMAGE!");
+		e1.takeDamage((int)(b1.wepIndex*1.5) + b1.level);
+		hud.createTextbox(50, 8, e1.getName() + " TAKES " + ((int)(b1.wepIndex*1.5) + b1.level) + " DAMAGE!");
 	}
 
 	@Override
@@ -327,5 +398,14 @@ public class BattleScreen extends GameScreen
 	public void dispose()
 	{
 		super.dispose();
+		saveValues();
+		cursor.dispose();
+	}
+
+	private void saveValues()
+	{
+		changeLine(2, "" + b1.health);
+		changeLine(4, "" + potionCount);
+		changeLine(5, "" + superPotionCount);
 	}
 }

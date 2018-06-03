@@ -1,6 +1,7 @@
 package com.dommie.ffdemo.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,21 +10,27 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.dommie.ffdemo.GameInfo;
+import com.dommie.ffdemo.scenes.Cursor;
 import com.dommie.ffdemo.scenes.Hud;
 
 public abstract class Shop extends GameScreen
 {
-	private Sprite player;
+	protected Sprite player;
 	private Sprite shopkeep;
-	private Sprite keepCover;
+	protected Sprite keepCover;
 	private GameScreen returnScreen;
 	protected Hud moneyDisp;
+	protected Hud prompt;
+	protected Cursor c;
+	protected int money;
+	protected Sound purchase;
 
 	public Shop(GameInfo game, String question, String shopType, GameScreen exit)
 	{
 		this.game = game;
 		returnScreen = exit;
 		transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/Door.wav"));
+		purchase = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/Select (4).wav"));
 
 		m = Gdx.audio.newMusic(Gdx.files.internal("Music/Cornelia/Wep.ogg"));
 		m.setLooping(true);
@@ -35,15 +42,16 @@ public abstract class Shop extends GameScreen
 		hud.createTextbox(9, 5, question, -21, 24);
 		hud.finishText();
 
+		money = Integer.parseInt(getLine(3));
 		moneyDisp = new Hud(gamecam);
-		moneyDisp.createTextbox(9, 3, " " + getLine(3) + "G", 0, 27);
+		moneyDisp.createTextbox(9, 3, " " + money + "G", 0, 27);
 		moneyDisp.finishText();
 
 		player = new Sprite(new TextureAtlas("Battle/Players/BattleSprites.atlas").findRegion("RedMage"));
 		player.scale(2);
 		player.setPosition(32,-8);
 
-		shopkeep = new Sprite(new Texture("Shops/" + shopType + "Shop.png"));
+		shopkeep = new Sprite(new Texture("Shops/" + shopType + ".png"));
 		shopkeep.scale(2);
 		shopkeep.setPosition(-96,-43);
 
@@ -71,11 +79,30 @@ public abstract class Shop extends GameScreen
 			player.draw(game.batch);
 		else
 		{
-			hud.dispose();
+			//hud.dispose();
 			keepCover.draw(game.batch);
 		}
 
 		game.batch.end();
+
+		game.hudBatch.begin();
+
+		if(flashTimer == -1)
+		{
+			prompt.update(delta);
+			prompt.draw(game.hudBatch);
+			moneyDisp.update(delta);
+			moneyDisp.draw(game.hudBatch);
+			hud.update(delta);
+			hud.draw(game.hudBatch);
+		}
+		else
+		{
+			moneyDisp.dispose();
+			//hud.dispose();
+		}
+
+		game.hudBatch.end();
 	}
 
 	protected void update(float dt)
@@ -127,8 +154,13 @@ public abstract class Shop extends GameScreen
 
 	protected void exit()
 	{
+		incrementLine(3, money - Integer.parseInt(getLine(3)));
 		flash();
 		m.pause();
 		m.dispose();
+		hud.dispose();
+		moneyDisp.dispose();
+		c.dispose();
+		purchase.dispose();
 	}
 }

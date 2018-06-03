@@ -91,11 +91,22 @@ public class Corneria extends MapScreen {
 			m.play();
 			if (player.b2body.getPosition().x == 184 && player.b2body.getPosition().y == 216)
 			{
-				door = new Sprite(new Texture("Overworld/Maps/Corneria/OpenedDoor.png"));
-				door.setPosition(player.b2body.getPosition().x-8, player.b2body.getPosition().y-8);
-				transitionSound.dispose();
-				transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/Door.wav"));
+				openDoor();
 				queuedMap = new WeaponShop(game, new Corneria(game, 184, 200, Player.State.DOWN));
+				flash();
+				flashColor = Color.PURPLE;
+			}
+			else if (player.b2body.getPosition().x == 440 && player.b2body.getPosition().y == 216)
+			{
+				openDoor();
+				queuedMap = new ItemShop(game, new Corneria(game, 440, 200, Player.State.DOWN));
+				flash();
+				flashColor = Color.PURPLE;
+			}
+			else if (player.b2body.getPosition().x == 184 && player.b2body.getPosition().y == 88)
+			{
+				openDoor();
+				queuedMap = new Inn(game, new Corneria(game, 184, 72, Player.State.DOWN));
 				flash();
 				flashColor = Color.PURPLE;
 			}
@@ -106,6 +117,14 @@ public class Corneria extends MapScreen {
 			queuedMap.setToDispose(this);
 			changeMap(queuedMap);
 		}
+	}
+
+	private void openDoor()
+	{
+		door = new Sprite(new Texture("Overworld/Maps/Corneria/OpenedDoor.png"));
+		door.setPosition(player.b2body.getPosition().x-8, player.b2body.getPosition().y-8);
+		transitionSound.dispose();
+		transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/Door.wav"));
 	}
 
 }

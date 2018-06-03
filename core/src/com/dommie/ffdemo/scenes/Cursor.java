@@ -16,6 +16,7 @@ public class Cursor extends Sprite
 	private int scale = 1;
 	private Sound moveCursor;
 	private int y;
+	private Sound incorrect;
 
 	public Cursor(int x, int y)
 	{
@@ -27,6 +28,7 @@ public class Cursor extends Sprite
 		super(new Texture("Battle/Cursor.png"));
 		dist = distance;
 		moveCursor = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Text/Cursor Move.wav"));
+		incorrect = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/Incorrect.wav"));
 
 		hidden = false;
 		pos = positions;
@@ -78,7 +80,15 @@ public class Cursor extends Sprite
 			super.draw(sb);
 	}
 
+	public void playSound()
+	{
+		moveCursor.play();
+	}
 
+	public void incorrect()
+	{
+		incorrect.play();
+	}
 	public int getPos()
 	{
 		System.out.println("ACTUAL POS: " + pos);
@@ -90,5 +100,12 @@ public class Cursor extends Sprite
 		{
 			pos = limit+1 - newPos;
 		}
+	}
+
+	public void dispose()
+	{
+		moveCursor.dispose();
+		incorrect.dispose();
+		getTexture().dispose();
 	}
 }

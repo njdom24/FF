@@ -35,7 +35,7 @@ public class Battler extends Sprite
 	private float flashTimer;
 	private float lastFlash;
 	public int wepIndex;
-	private int level;
+	public int level;
 
 	private Sound damaged;
 
@@ -161,11 +161,11 @@ public class Battler extends Sprite
 		//setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight()/2 + 2*16);
 	}
 
-	public void takeDamage()
+	public void takeDamage(int damage)
 	{
 		damaged.play();
 		setRegion(new TextureRegion(getTexture(), 4*26+getRegionX(), getRegionY(), 26, 26));
-		health--;
+		health -= damage;
 		System.out.println("Player health is: " + health);
 		flash();
 	}
@@ -269,6 +269,25 @@ public class Battler extends Sprite
 
 	public String getHealth()
 	{
-		return "" + health + "/" + maxHealth;
+		return getHealth(false);
 	}
+
+	public String getHealth(boolean formatted)
+	{
+		String s = "";
+		if(formatted)
+		{
+			int numSpaces = 0;
+
+			while (maxHealth / health >= Math.pow(10, (numSpaces)))
+			{
+				numSpaces++;
+			}
+			for (int i = 0; i < numSpaces; i++)
+				s += " ";
+		}
+		return s + health + "/" + maxHealth;
+	}
+
+
 }

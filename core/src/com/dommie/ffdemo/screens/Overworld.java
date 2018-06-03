@@ -43,13 +43,19 @@ public class Overworld extends MapScreen
 	{
 		super.update(dt);
 		if(flashTimer == -1)
-			if(player.b2body.getPosition().x == 3512 && player.b2body.getPosition().y == 632)
+			if(player.b2body.getPosition().x >= 3496 && player.b2body.getPosition().x <= 3528 && player.b2body.getPosition().y >= 584 && player.b2body.getPosition().y <= 632)
 			{
-				//transitionSound.dispose();
-				//transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/EnterTown.wav"));
-				flash();
-				flashColor = Color.DARK_GRAY;
-				queuedMap = new Corneria(game, 264, 8, Player.State.UP);
+				if ((player.b2body.getPosition().x == 3512 && player.b2body.getPosition().y == 632) ||
+					(player.b2body.getPosition().x == 3496 && player.b2body.getPosition().y == 600) ||
+					(player.b2body.getPosition().x == 3496 && player.b2body.getPosition().y == 616) ||
+					(player.b2body.getPosition().x == 3528 && player.b2body.getPosition().y == 616))
+				{
+					//transitionSound.dispose();
+					//transitionSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Town/EnterTown.wav"));
+					flash();
+					flashColor = Color.DARK_GRAY;
+					queuedMap = new Corneria(game, 264, 8, Player.State.UP);
+				}
 			}
 
 		if(queuedMap != null && flashUpdate(dt, flashColor))//if flashing is finished
@@ -67,19 +73,24 @@ public class Overworld extends MapScreen
 				flash();
 				flashColor = Color.OLIVE;
 			}
-			else if(player.getPos() == 3 && player.movedThisFrame)
+			else if(player.getPos() == 3)
 			{
-				System.out.println("?????");
-				if(!battleTriggered)
+				if(player.movedThisFrame)
 				{
-					player.movedThisFrame = false;
-					if (tilesMoved < 10)
-						tilesMoved++;
-					int thing = rnd.nextInt(99);
-					if (thing < (5 + tilesMoved))
-						battleTriggered = true;
+					System.out.println("?????");
+					if (!battleTriggered)
+					{
+						player.movedThisFrame = false;
+						if (tilesMoved < 10)
+							tilesMoved++;
+						int thing = rnd.nextInt(99);
+						if (thing < (5 + tilesMoved))
+							battleTriggered = true;
+					}
 				}
 			}
+			else
+				tilesMoved = 0;
 	}
 
 	protected void flash()

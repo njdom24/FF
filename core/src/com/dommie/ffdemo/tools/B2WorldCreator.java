@@ -29,12 +29,14 @@ public class B2WorldCreator implements Disposable
 		convertToArray(collisions, 1, 1);//collisions
 		convertToArray(collisions, 2, 3);//enemy-spawning tiles
 
+		/*
         for(int[] i : collisions)
 		{
 			System.out.println();
 			for (int j : i)
 				System.out.print(j);
 		}
+		*/
     }
 
     private void convertToArray(int[][] collisions, int layer, int index)
